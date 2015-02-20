@@ -1,10 +1,17 @@
 angular.module('roveretoSegnala.controllers.segnala', [])
 
 .factory('segnalaService', function ($http, $q) {
-
+    var clientId = 'b790f7d57013adb';
+    var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
     var latlong = [0, 0];
     var segnalaService = {};
     var name = '';
+    segnalaService.getclientId = function () {
+        return clientId;
+    };
+    segnalaService.getclientSecret = function () {
+        return clientSecret;
+    };
     segnalaService.getName = function () {
         return name;
     };
@@ -259,13 +266,12 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                             }
 
 
-                            $scope.showConfirm(name);
+                            $scope.showConfirm(name, position.coords.latitude, position.coords.longitude);
                         }).
                         error(function (data, status, headers, config) {
                             //            $scope.error = true;
                         });
 
-                        segnalaService.setPosition(position.coords.latitude, position.coords.longitude);
 
                     });
                 },
@@ -299,7 +305,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             //            $http.post('http://posttestserver.com/post.php?dir=jsfiddle', JSON.stringify(data)).success(function () { /*success callback*/ });
         }
 
-        $scope.showConfirm = function (name) {
+        $scope.showConfirm = function (name, lat, long) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Is it the right place?',
                 template: name
@@ -308,6 +314,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 if (res) {
                     console.log('You are sure');
                     $scope.result = name;
+                    segnalaService.setPosition(lat, long);
+
                 } else {
                     console.log('You are not sure');
                 }
