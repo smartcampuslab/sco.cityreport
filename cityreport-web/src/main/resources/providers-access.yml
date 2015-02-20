@@ -1,0 +1,34 @@
+providers:
+  - id: ComuneRovereto
+    password: rovereto
+    services:
+        - serviceId: problems
+          name: City Problems
+          description: Channel for signalling generic city problems
+          category: general
+          keywords:
+            - problem
+            - generic
+          ackMessage: Thank you for your report. The issue will be processed by our staff.
+          metadata:
+            attribute:
+              - code: field1
+                editable: true
+                label: Field1
+                type: STRING
+                required: true
+                description: test field1
+              - code: field2
+                editable: true
+                label: Field1
+                type: SINGLEVALUELIST
+                required: false
+                description: test field2
+                value:
+                  - key: key1
+                    value: value1
+                  - key: key2
+                    value: value2  
+                  
+          
+          
