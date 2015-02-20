@@ -47,12 +47,12 @@ public class IssueController {
 	@Autowired
 	private ServiceManager serviceManager;
 	
-	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issue/{issueId}")
+	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issues/{issueId}")
 	public @ResponseBody Response<ServiceIssue> getIssue(@PathVariable String providerId, @PathVariable String serviceId, String issueId) {
 		return new Response<ServiceIssue>(manager.findIssue(issueId, serviceId, providerId));
 	}
 	
-	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issue")
+	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issues")
 	public @ResponseBody Response<List<ServiceIssue>> getServiceIssues(@PathVariable String providerId, @PathVariable String serviceId) {
 		return new Response<List<ServiceIssue>>(manager.findServiceIssues(providerId, serviceId));
 	}
@@ -72,7 +72,7 @@ public class IssueController {
 		issue.setProviderId(providerId);
 		issue.setServiceId(serviceId);
 		issue.setIssuer(UserUtils.user());
-		ServiceIssue result = manager.saveIssue(issue);
+		ServiceIssue result = manager.createIssue(issue);
 		return new Response<IssueResponse>(new IssueResponse(providerId, serviceId, result.getId(), service.getAckMessage()));
 	}
 }

@@ -30,6 +30,7 @@ public class UserUtils {
 	public static Issuer user() {
 		Issuer issuer = new Issuer();
 		// TODO fill in user data
+		issuer.setUserId("1");
 		return issuer;
 	}
 

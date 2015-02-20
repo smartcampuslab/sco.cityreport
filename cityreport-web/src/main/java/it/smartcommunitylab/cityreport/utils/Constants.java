@@ -22,4 +22,7 @@ package it.smartcommunitylab.cityreport.utils;
  */
 public class Constants {
 
+	public static final String STATUS_OPEN = "open";
+	public static final String STATUS_CLOSED = "closed";
+
 }

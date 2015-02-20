@@ -43,7 +43,6 @@ public class TestServiceManager {
 	private ServiceRepository serviceRepository;
 	@Autowired
 	private ServiceManager manager;
-
 	@After
 	public void init() {
 		serviceRepository.deleteAll();

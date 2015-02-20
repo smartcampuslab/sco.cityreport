@@ -18,6 +18,7 @@ package it.smartcommunitylab.cityreport.services;
 
 import it.smartcommunitylab.cityreport.data.IssueRepository;
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
+import it.smartcommunitylab.cityreport.utils.Constants;
 
 import java.util.List;
 
@@ -39,8 +40,12 @@ public class IssueManager {
 	@Autowired
 	private IssueRepository repository;
 
-	public ServiceIssue  saveIssue(ServiceIssue issue) {
+	public ServiceIssue  createIssue(ServiceIssue issue) {
 		logger.debug("creating issue {}",issue.getNotes());
+		
+		issue.setCreated(System.currentTimeMillis());
+		issue.setStatus(Constants.STATUS_OPEN);
+		
 		return repository.save(issue);
 	}
 	
