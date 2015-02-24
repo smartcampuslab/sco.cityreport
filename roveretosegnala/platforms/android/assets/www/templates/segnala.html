@@ -1,18 +1,21 @@
-<ion-view view-title="{{'segnala_title' | translate}}">
+<ion-view view-title="{{'segnala_title' | translate}}" data-ng-init="setAutocomplete(params.place)">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-checkmark-round" ng-click="submit()"></button>
+    </ion-nav-buttons>
     <ion-content>
-        <form novalidate class="simple-form">
+        <form novalidate class="simple-form" name="signal_form">
             <div class="list list-inset">
 
                 <div class="item item-input-inset">
                     <label class="item-input-wrapper">
-                        <input type="text" placeholder="{{'segnala_input_title' | translate}}">
+                        <input ng-model="signal.title" name="signal_title" type="text" placeholder="{{'segnala_input_title' | translate}}">
                     </label>
 
                 </div>
 
                 <div class="item item-input-inset">
                     <label class="item-input-wrapper">
-                        <input type="text" placeholder="{{'segnala_input_description' | translate}}">
+                        <input ng-model="signal.description" type="text" placeholder="{{'segnala_input_description' | translate}}">
                     </label>
 
                 </div>
@@ -63,12 +66,19 @@
                     </button>
                 </div>
                 <ion-scroll>
-                    <img ng-repeat="image in images" ng-src="{{urlForImage(image)}}" height="200px" />
+                    <!--
+<img id="immagine" ng-src="http://vignette4.wikia.nocookie.net/robber-penguin-agency/images/6/6e/Small-mario.png" height="200px" />
+<canvas id="myCanvas" />
+-->
+
+                    <img ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="removeImage(image)" height="200px" />
                 </ion-scroll>
 
-                <button class="button button-block button-positive" ng-click="submit()">
-                    {{'segnala_button_send' | translate}}
-                </button>
+                <!--
+<button class="button button-block button-positive" ng-click="submit()">
+    {{'segnala_button_send' | translate}}
+</button>
+-->
             </div>
         </form>
     </ion-content>

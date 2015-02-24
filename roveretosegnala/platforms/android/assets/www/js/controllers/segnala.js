@@ -1,10 +1,23 @@
 angular.module('roveretoSegnala.controllers.segnala', [])
 
 .factory('segnalaService', function ($http, $q) {
-
+    var clientId = 'b790f7d57013adb';
+    var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
     var latlong = [0, 0];
     var segnalaService = {};
-
+    var name = '';
+    segnalaService.getclientId = function () {
+        return clientId;
+    };
+    segnalaService.getclientSecret = function () {
+        return clientSecret;
+    };
+    segnalaService.getName = function () {
+        return name;
+    };
+    segnalaService.setName = function (nameinput) {
+        name = nameinput;
+    };
     segnalaService.getPosition = function () {
         return latlong;
     };
@@ -13,10 +26,29 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         latlong[1] = long;
     };
 
+    segnalaService.sendSignal = function (signal) {
+
+
+        return $http.post('server sent the data')
+            .then(function (response) {
+                if (typeof response.data === 'object') {
+                    return response.data;
+                } else {
+                    // invalid response
+                    return $q.reject(response.data);
+                }
+
+            }, function (response) {
+                // something went wrong
+                return $q.reject(response.data);
+            });
+
+    };
+
     return segnalaService;
 })
 
-.controller('Map4AdrressCtrl', function ($scope, $location, $window, $q, $http, leafletData, archiveService, segnalaService) {
+.controller('Map4AdrressCtrl', function ($scope, $location, $window, $q, $http, $ionicPopup, leafletData, archiveService, segnalaService) {
 
         leafletData.getMap().then(function (map) {
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -25,6 +57,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             }).addTo(map);
         });
         $scope.$on("leafletDirectiveMap.click", function (event, args) {
+            segnalaService.setPosition(args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
             alert(args.leafletEvent.latlng.lat + ' ' + args.leafletEvent.latlng.lng);
             var placedata = $q.defer();
             var places = {};
@@ -33,12 +66,32 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             $http.get(encodeURI(url)).
             success(function (data, status, headers, config) {
                 places = data.response.docs;
+                name = '';
+                if (data.response.docs[0]) {
+                    if (data.response.docs[0].street)
+                        name = name + data.response.docs[0].street;
+                    if (data.response.docs[0].housenumber) {
+                        if (name)
+                            name = name + ', ';
+                        name = name + data.response.docs[0].housenumber;
+                    }
+                    if (data.response.docs[0].city) {
+                        if (name)
+                            name = name + ', ';
+                        name = name + data.response.docs[0].city;
+                    }
+
+
+                    $scope.showConfirm(name);
+                } else {
+                    $scope.showNoPlace();
+                }
             }).
             error(function (data, status, headers, config) {
                 //            $scope.error = true;
             });
-            segnalaService.setPosition(args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
-            $window.history.back();
+
+            //$scope.showConfirm(name);
         });
         $scope.detail = function (view) {
             window.location.assign(view);
@@ -49,6 +102,34 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 map.closePopup();
             });
         }
+
+        $scope.showConfirm = function (name) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Is it the right place?',
+                template: name
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    console.log('You are sure');
+                    segnalaService.setPosition(segnalaService.getPosition()[0], segnalaService.getPosition()[1]);
+                    segnalaService.setName(name);
+                    //                    window.history.back();
+                    window.location.assign('#/app/segnala/' + name);
+                } else {
+
+                    console.log('You are not sure');
+                }
+            });
+        }
+        $scope.showNoPlace = function () {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Don\'t eat that!',
+                template: 'It might taste good'
+            });
+            alertPopup.then(function (res) {
+                console.log('Thank you for not eating my delicious ice cream cone');
+            });
+        };
         angular.extend($scope, {
             center: {
                 lat: 45.849036,
@@ -59,9 +140,15 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         });
 
     })
-    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, segnalaService, PlacesRetriever) {
+    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, $ionicPopup, $ionicLoading, $stateParams, segnalaService, PlacesRetriever) {
 
         // 1
+        $scope.signal = {
+            title: null,
+            description: null,
+            coordinates: null,
+            gallery: null
+        };
         $scope.images = [];
         $scope.placesandcoordinates = {};
         $scope.openMap4Address = function () {
@@ -166,12 +253,20 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $scope.doSomethingElse = function (suggestion) {
             console.log("Suggestion selected: " + suggestion);
+
         }
 
         $scope.urlForImage = function (imageName) {
             var name = imageName.substr(imageName.lastIndexOf('/') + 1);
             var trueOrigin = cordova.file.dataDirectory + name;
             return trueOrigin;
+        }
+        $scope.removeImage = function (imageName) {
+            var index = $scope.images.indexOf(imageName);
+            if (index > -1) {
+                $scope.images.splice(index, 1);
+            }
+
         }
 
         $scope.locateMe = function () {
@@ -186,12 +281,29 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                         $http.get(encodeURI(url)).
                         success(function (data, status, headers, config) {
                             places = data.response.docs;
+                            //show a pop up where u can choose if address is correct and set up in the bar
+                            // A confirm dialog
+                            name = '';
+                            if (data.response.docs[0].street)
+                                name = name + data.response.docs[0].street;
+                            if (data.response.docs[0].housenumber) {
+                                if (name)
+                                    name = name + ', ';
+                                name = name + data.response.docs[0].housenumber;
+                            }
+                            if (data.response.docs[0].city) {
+                                if (name)
+                                    name = name + ', ';
+                                name = name + data.response.docs[0].city;
+                            }
+
+
+                            $scope.showConfirm(name, position.coords.latitude, position.coords.longitude);
                         }).
                         error(function (data, status, headers, config) {
                             //            $scope.error = true;
                         });
 
-                        segnalaService.setPosition(position.coords.latitude, position.coords.longitude);
 
                     });
                 },
@@ -201,20 +313,129 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         };
         $scope.changeString = function (suggestion) {
             // segnalaService.setPosition(position.coords.latitude, position.coords.longitude);
-            alert($scope.placesandcoordinates[suggestion].latlong);
+            //            alert($scope.placesandcoordinates[suggestion].latlong);
+            segnalaService.setPosition($scope.placesandcoordinates[suggestion].latlong.split(',')[0], $scope.placesandcoordinates[suggestion].latlong.split(',')[1]);
         }
-        $scope.data = {
-            firstname: "default",
-            emailaddress: "default",
-            gender: "default",
-            member: false,
-            file_profile: "default",
-            file_avatar: "default"
-        };
+
+        $scope.setAutocomplete = function () {
+            if ($stateParams.place) {
+                $scope.result = $stateParams.place;
+            } else {
+                $scope.resul = '';
+            }
+        }
+
         $scope.submit = function () {
-            alert("posting data...." + segnalaService.getPosition());
-            //            $http.post('http://posttestserver.com/post.php?dir=jsfiddle', JSON.stringify(data)).success(function () { /*success callback*/ });
+            $scope.signal.coordinates = segnalaService.getPosition();
+            $scope.signal.gallery=$scope.images;
+            if ($scope.checkForm($scope.signal)) {
+                $ionicLoading.show({
+                    template: 'Loading...'
+                });
+                var uploadedimages = 0;
+                for (var i = 0; i < $scope.signal.gallery.length; i++) {
+                    $http({
+                        method: 'POST',
+                        url: 'https://api.imgur.com/3/image',
+                        headers: {
+                            Authorization: 'Client-ID b790f7d57013adb',
+                            Accept: 'application/json'
+                        },
+                        data: {
+                            image: $scope.getBase64Image($scope.signal.gallery[i]),
+                            type: 'base64'
+
+                        }
+                    }).
+                    success(function (data, status, headers, config) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        uploadedimages++
+                        //send to ws the server
+                        if (uploadedimages == $scope.signal.gallery.length) {
+                            segnalaService.sendSignal($scope.signal).then(function (data) {
+                                //chiudi pop up bella la' e esci
+                                $ionicLoading.hide();
+                                alert("upload images success. No send data to server...." + segnalaService.getPosition());
+
+                            }, function (error) {
+                                $ionicLoading.hide();
+                                alert("problems" + data + status + headers + config);
+
+                                //chiudi pop up ed errore sul server smarcommunity
+                            });
+                        }
+                    }).
+                    error(function (data, status, headers, config) {
+                        $ionicLoading.hide();
+                        alert("problems" + data + status + headers + config);
+                        //chiudi pop up ed errore sul server immagini
+
+                    });
+                }
+                $ionicLoading.hide();
+            } else {
+                //show popup 
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Don\'t eat that!',
+                    template: 'It might taste good'
+                });
+                alertPopup.then(function (res) {
+                    console.log('Thank you for not eating my delicious ice cream cone');
+                });
+            }
         }
+
+        $scope.checkForm = function (signal) {
+            var check = true;
+            //check title
+            if (!signal.title) {
+                check = false;
+            }
+            //check coordinates
+            if (!signal.coordinates) {
+                check = false;
+            }
+            return check;
+        }
+        $scope.getBase64Image = function (img) {
+            var image = new Image();
+            image.src = img;
+            // Create an empty canvas element
+            var canvas = document.createElement("canvas");
+            canvas.width = image.width;
+            canvas.height = image.height;
+
+            // Copy the image contents to the canvas
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(image, 0, 0);
+
+            // Get the data-URL formatted image
+            // Firefox supports PNG and JPEG. You could check img.src to
+            // guess the original format, but be aware the using "image/jpg"
+            // will re-encode the image.
+            var dataURL = canvas.toDataURL("image/png");
+
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+        $scope.showConfirm = function (name, lat, long) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Is it the right place?',
+                template: name
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    console.log('You are sure');
+                    $scope.result = name;
+                    segnalaService.setPosition(lat, long);
+
+                } else {
+                    console.log('You are not sure');
+                }
+            });
+        }
+
+
     })
 
 
@@ -233,30 +454,34 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $http.get(encodeURI(url)).
         success(function (data, status, headers, config) {
+            places = [];
             //            places = data.response.docs;
             //store the data
             //return the labels
+            k = 0;
             for (var i = 0; i < data.response.docs.length; i++) {
-                //                if (data.response.docs[i].name != 'undefined') {
-                //                    names[i] = data.response.docs[i].name;
-                //                } else {
-                //                    names[i] = data.response.docs[i].street;
-                //                }
-                names[i] = '';
+                temp = '';
                 if (data.response.docs[i].street)
-                    names[i] = names[i] + data.response.docs[i].street;
+                    temp = temp + data.response.docs[i].street;
                 if (data.response.docs[i].housenumber) {
-                    if (names[i])
-                        names[i] = names[i] + ', ';
-                    names[i] = names[i] + data.response.docs[i].housenumber;
+                    if (temp)
+                        temp = temp + ', ';
+                    temp = temp + data.response.docs[i].housenumber;
                 }
                 if (data.response.docs[i].city) {
-                    if (names[i])
-                        names[i] = names[i] + ', ';
-                    names[i] = names[i] + data.response.docs[i].city;
+                    if (temp)
+                        temp = temp + ', ';
+                    temp = temp + data.response.docs[i].city;
                 }
-                places[names[i]] = {
-                    latlong: data.response.docs[i].coordinate
+
+                //check se presente
+                if (!places[temp]) {
+                    //se non presente
+                    names[k] = temp;
+                    k++
+                    places[temp] = {
+                        latlong: data.response.docs[i].coordinate
+                    }
                 }
             }
             placedata.resolve(names);

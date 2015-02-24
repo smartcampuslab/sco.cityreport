@@ -45,7 +45,7 @@ angular.module('roveretoSegnala', [
 
 
     .state('app.segnala', {
-        url: "/segnala",
+        url: "/segnala/:place",
         views: {
             'menuContent': {
                 templateUrl: "templates/segnala.html",

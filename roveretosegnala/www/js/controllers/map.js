@@ -22,8 +22,8 @@ angular.module('roveretoSegnala.controllers.map', [])
                             '<div><label><strong>{{\'popup_title\' | translate}}:</strong> <i>' + $scope.mySignals.signals[i].title + '</i></label></div>' +
                             '<div><label><strong>{{\'popup_description\' | translate}}:</strong> <i>' + $scope.mySignals.signals[i].description + '</i></label></div>' +
                             '<div><label><strong>{{\'popup_address\' | translate}}:</strong> <i>' + $scope.mySignals.signals[i].address + '</i></label></div>' +
-                            '<div align="center" ><button class="button button-positive" ng-click="closeWin()" style="width:50%">Cancel</button>' +
-                            '<button class="button button-positive" ng-click="detail(\'#/app/archiviodetail/' + $scope.mySignals.signals[i].id + '\')" style="width:50%">Detail</button>' +
+                            '<div align="center" ><button class="button button-custom" ng-click="closeWin()" style="width:50%">Cancel</button>' +
+                            '<button class="button button-custom" ng-click="detail(\'#/app/archiviodetail/' + $scope.mySignals.signals[i].id + '\')" style="width:50%">Detail</button>' +
                             '</div></form>' +
                             '</div>',
 
