@@ -166,10 +166,41 @@ angular.module('roveretoSegnala.services.conf', [])
             en: 'Category 3',
             de: 'Categorien 3'
         },
+        'signal_error_send_title': {
+            it: 'Errore',
+            en: 'Error',
+            de: 'Fehler'
+        },
+        'signal_error_send_template': {
+            it: 'Errore nell\'inviare i dati',
+            en: 'Error sending data',
+            de: 'Fehler beim Senden der Daten'
+        },
+        'signal_send_confirm place_title': {
+            it: 'Confermare l\'indirizzo trovato',
+            en: 'Please, confirm the address found',
+            de: 'Bitte, bestätigen Sie die Adresse gefunden'
+        },
+        'signal_send_no_place_title': {
+            it: 'Nessun posto trovato',
+            en: 'No places found',
+            de: 'Keine Unterkünfte gefunden'
+        },
+        'signal_send_no_place_template': {
+            it: 'Selezionare una posizione diversa',
+            en: 'Please, select a different position',
+            de: 'Bitte wählen Sie eine andere Positione'
+        },
+        'segnala_input_place_suggestion': {
+            it: 'digita per ottenere suggerimenti...',
+            en: 'type for place suggestions...',
+            de: 'geben Sie den Text für Anregungen...'
+        }
 
     }
 
     return {
+
         getVersion: function () {
             return 'v ' + APP_VERSION + (APP_BUILD && APP_BUILD != '' ? '<br/>(' + APP_BUILD + ')' : '');
         },

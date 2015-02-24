@@ -170,6 +170,7 @@ angular.module('roveretoSegnala.services.conf', [])
     }
 
     return {
+
         getVersion: function () {
             return 'v ' + APP_VERSION + (APP_BUILD && APP_BUILD != '' ? '<br/>(' + APP_BUILD + ')' : '');
         },

@@ -96,3 +96,9 @@ body {
     background: #666;
     color: #fff;
 }
+
+.button.button-custom {
+    border-color: #c62828;
+    background-color: #c62828;
+    color: #e6e6e6;
+}
