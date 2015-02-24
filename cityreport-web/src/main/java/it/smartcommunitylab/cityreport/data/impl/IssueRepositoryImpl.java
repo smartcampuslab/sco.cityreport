@@ -19,6 +19,8 @@ package it.smartcommunitylab.cityreport.data.impl;
 import it.smartcommunitylab.cityreport.data.IssueCustomRepository;
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +43,16 @@ public class IssueRepositoryImpl implements IssueCustomRepository {
 
 	@Override
 	public List<ServiceIssue> search(String providerId, String serviceId, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
+		return search(providerId, Collections.singletonList(serviceId), status, from, to, userId, orgId, circle, start, count);
+	}
+
+	@Override
+	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
         Criteria criteria = new Criteria();
 		Query query = new Query();
     	criteria.and("providerId").is(providerId);
-        if (serviceId != null) {
-        	criteria.and("serviceId").is(serviceId);
+        if (serviceIds != null && !serviceIds.isEmpty()) {
+        	criteria.and("serviceId").in(serviceIds);
         }
         if (status != null) {
         	criteria.and("status").is(status);

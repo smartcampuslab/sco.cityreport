@@ -14,20 +14,47 @@
  *    limitations under the License.
  ******************************************************************************/
 
-package it.smartcommunitylab.cityreport.data;
-
-import it.smartcommunitylab.cityreport.model.ServiceIssue;
-
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.data.geo.Circle;
+package it.smartcommunitylab.cityreport.controllers.exception;
 
 /**
  * @author raman
  *
  */
-public interface IssueCustomRepository {
-	public List<ServiceIssue> search(String providerId, String serviceId, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
-	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
+public class Open311Exception extends RuntimeException {
+	private static final long serialVersionUID = 3866503600975577900L;
+
+	private int code;
+	private String descr;
+	
+	public Open311Exception(int code, String descr) {
+		super();
+		this.code = code;
+		this.descr = descr;
+	}
+	/**
+	 * @return the code
+	 */
+	public int getCode() {
+		return code;
+	}
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(int code) {
+		this.code = code;
+	}
+	/**
+	 * @return the descr
+	 */
+	public String getDescr() {
+		return descr;
+	}
+	/**
+	 * @param descr the descr to set
+	 */
+	public void setDescr(String descr) {
+		this.descr = descr;
+	}
+	
+	
 }
