@@ -1,6 +1,6 @@
 angular.module('roveretoSegnala.controllers.segnala', [])
 
-.factory('segnalaService', function ($http, $q) {
+.factory('segnalaService', function ($http, $q, Config) {
     var clientId = 'b790f7d57013adb';
     var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
     var latlong = [0, 0];
@@ -27,21 +27,37 @@ angular.module('roveretoSegnala.controllers.segnala', [])
     };
 
     segnalaService.sendSignal = function (signal) {
+        return $http({
+            method: 'POST',
+            url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/user/issues',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+
+            },
+            data: signal
+        }).
+        success(function (data, status, headers, config) {
+
+        }).
+        error(function (data, status, headers, config) {
 
 
-        return $http.post('server sent the data')
-            .then(function (response) {
-                if (typeof response.data === 'object') {
-                    return response.data;
-                } else {
-                    // invalid response
-                    return $q.reject(response.data);
-                }
+        });
 
-            }, function (response) {
-                // something went wrong
-                return $q.reject(response.data);
-            });
+        //        return $http.post(Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues')
+        //            .then(function (response) {
+        //                if (typeof response.data === 'object') {
+        //                    return response.data;
+        //                } else {
+        //                    // invalid response
+        //                    return $q.reject(response.data);
+        //                }
+        //
+        //            }, function (response) {
+        //                // something went wrong
+        //                return $q.reject(response.data);
+        //            });
 
     };
 
@@ -114,7 +130,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     segnalaService.setName(name);
                     //                    window.history.back();
                     window.location.assign('#/app/segnala/' + name);
-                } 
+                }
             });
         }
         $scope.showNoPlace = function () {
@@ -137,13 +153,33 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
     })
     .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, $stateParams, segnalaService, PlacesRetriever) {
-
-        // 1
+        $scope.categories = [
+            {
+                label: $filter('translate')("segnala_category_1"),
+                value: 1
+            },
+            {
+                label: $filter('translate')("segnala_category_2"),
+                value: 2
+            },
+            {
+                label: $filter('translate')("segnala_category_3"),
+                value: 2
+            }
+  ];
+        $scope.selectedCategory = $scope.categories[1];
         $scope.signal = {
-            title: null,
-            description: null,
-            coordinates: null,
-            gallery: null
+
+            location: {
+                coordinates: null,
+                address: null
+            },
+            media: null,
+            attribute: {
+                title: null,
+                description: null,
+                category: null
+            }
         };
         $scope.images = [];
         $scope.placesandcoordinates = {};
@@ -311,6 +347,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             // segnalaService.setPosition(position.coords.latitude, position.coords.longitude);
             //            alert($scope.placesandcoordinates[suggestion].latlong);
             segnalaService.setPosition($scope.placesandcoordinates[suggestion].latlong.split(',')[0], $scope.placesandcoordinates[suggestion].latlong.split(',')[1]);
+            $scope.signal.location.address = suggestion;
         }
 
         $scope.setAutocomplete = function () {
@@ -322,14 +359,16 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         }
 
         $scope.submit = function () {
-            $scope.signal.coordinates = segnalaService.getPosition();
-            $scope.signal.gallery = $scope.images;
+            var remoteURL = [];
+            $scope.signal.location.coordinates = segnalaService.getPosition();
+            $scope.signal.media = $scope.images;
+            $scope.signal.attribute.category = $scope.selectedCategory.value;
             if ($scope.checkForm($scope.signal)) {
                 $ionicLoading.show({
                     template: 'Loading...'
                 });
                 var uploadedimages = 0;
-                for (var i = 0; i < $scope.signal.gallery.length; i++) {
+                for (var i = 0; i < $scope.signal.media.length; i++) {
                     $http({
                         method: 'POST',
                         url: 'https://api.imgur.com/3/image',
@@ -338,7 +377,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                             Accept: 'application/json'
                         },
                         data: {
-                            image: $scope.getBase64Image($scope.signal.gallery[i]),
+                            image: $scope.getBase64Image($scope.signal.media[i]),
                             type: 'base64'
 
                         }
@@ -346,9 +385,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     success(function (data, status, headers, config) {
                         // this callback will be called asynchronously
                         // when the response is available
+                        remoteURL.push(data.data.link);
                         uploadedimages++
                         //send to ws the server
-                        if (uploadedimages == $scope.signal.gallery.length) {
+                        if (uploadedimages == $scope.signal.media.length) {
+                            $scope.signal.media = remoteURL;
                             segnalaService.sendSignal($scope.signal).then(function (data) {
                                 //chiudi pop up bella la' e esci
                                 $ionicLoading.hide();
@@ -369,7 +410,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
                     });
                 }
-                $ionicLoading.hide();
+                //                $ionicLoading.hide();
             } else {
                 //show popup 
                 var alertPopup = $ionicPopup.alert({
@@ -385,11 +426,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         $scope.checkForm = function (signal) {
             var check = true;
             //check title
-            if (!signal.title) {
+            if (!signal.attribute.title) {
                 check = false;
             }
             //check coordinates
-            if (!signal.coordinates) {
+            if (!signal.location.coordinates) {
                 check = false;
             }
             return check;
@@ -424,7 +465,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     $scope.result = name;
                     segnalaService.setPosition(lat, long);
 
-                } 
+                }
             });
         }
 

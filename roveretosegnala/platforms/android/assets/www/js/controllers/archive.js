@@ -23,7 +23,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
 })
 
 
-.factory('archiveService', function ($http, $q) {
+.factory('archiveService', function ($http, $q, Config) {
     var items = null;
     var itemsMap = null;
 
@@ -38,18 +38,36 @@ angular.module('roveretoSegnala.controllers.archive', [])
             deferred.resolve(items);
         } else {
             items = [];
-            $http.get('data/archive.json')
-                .success(function (data) {
-                    items = data;
-                    itemsMap = {};
-                    for (var i = 0; i < items.signals.length; i++) {
-                        itemsMap[items.signals[i].id] = items.signals[i];
-                    }
-                    deferred.resolve(items);
-                })
-                .error(function (err) {
-                    deferred.reject(err);
-                });
+
+            $http({
+                method: 'GET',
+                url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues'
+
+            }).
+            success(function (data, status, headers, config) {
+                items = data;
+                itemsMap = {};
+                for (var i = 0; i < items.data.length; i++) {
+                                    itemsMap[items.data[i].id] = items.data[i];
+                                }
+                                deferred.resolve(items);
+            }).
+            error(function (data, status, headers, config) {
+                console.log(data + status + headers + config);
+                deferred.reject(err);
+            });
+            //            $http.get('data/archive.json')
+            //                .success(function (data) {
+            //                    items = data;
+            //                    itemsMap = {};
+            //                    for (var i = 0; i < items.signals.length; i++) {
+            //                        itemsMap[items.signals[i].id] = items.signals[i];
+            //                    }
+            //                    deferred.resolve(items);
+            //                })
+            //                .error(function (err) {
+            //                    deferred.reject(err);
+            //                });
         }
         return deferred.promise;
     };

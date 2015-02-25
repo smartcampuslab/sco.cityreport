@@ -1,13 +1,13 @@
 <ion-modal-view>
-<!--
+    <!--
     <i class="icon ion-ios7-close close-modal" ng-click="closeModal(1)"></i>
 -->
 
     <ion-header-bar>
         <h1 class="title">Login</h1>
-<div class="buttons">
-    <button class="button button-clear" ng-click="closeModal(1)">Close</button>
-</div>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeModal(1)">Close</button>
+        </div>
     </ion-header-bar>
     <ion-content>
         <form ng-submit="doLogin()">
@@ -21,7 +21,7 @@
                     <input type="password" ng-model="loginData.password">
                 </label>
                 <label class="item">
-                    <button class="button button-block button-positive" type="submit">Log in</button>
+                    <button class="button button-block button-custom" type="submit">Log in</button>
                 </label>
             </div>
         </form>

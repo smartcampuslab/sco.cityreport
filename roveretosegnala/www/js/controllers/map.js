@@ -13,17 +13,17 @@ angular.module('roveretoSegnala.controllers.map', [])
             archiveService.list().then(function (data) {
                 $scope.mySignals = data;
                 var markers = [];
-                for (i = 0; i < $scope.mySignals.signals.length; i++) {
+                for (i = 0; i < $scope.mySignals.data.length; i++) {
                     markers.push({
-                        lat: $scope.mySignals.signals[i].lat,
-                        lng: $scope.mySignals.signals[i].long,
+                        lat: $scope.mySignals.data[i].location.coordinates[0],
+                        lng: $scope.mySignals.data[i].location.coordinates[1],
 
                         message: '<div ng-controller="MapCtrl">' +
-                            '<div><label><strong>{{\'popup_title\' | translate}}:</strong> <i>' + $scope.mySignals.signals[i].title + '</i></label></div>' +
-                            '<div><label><strong>{{\'popup_description\' | translate}}:</strong> <i>' + $scope.mySignals.signals[i].description + '</i></label></div>' +
-                            '<div><label><strong>{{\'popup_address\' | translate}}:</strong> <i>' + $scope.mySignals.signals[i].address + '</i></label></div>' +
+                            '<div><label><strong>{{\'popup_title\' | translate}}:</strong> <i>' + $scope.mySignals.data[i].attribute.title + '</i></label></div>' +
+                            '<div><label><strong>{{\'popup_description\' | translate}}:</strong> <i>' + $scope.mySignals.data[i].attribute.description + '</i></label></div>' +
+                            '<div><label><strong>{{\'popup_address\' | translate}}:</strong> <i>' + $scope.mySignals.data[i].location.address + '</i></label></div>' +
                             '<div align="center" ><button class="button button-custom" ng-click="closeWin()" style="width:50%">Cancel</button>' +
-                            '<button class="button button-custom" ng-click="detail(\'#/app/archiviodetail/' + $scope.mySignals.signals[i].id + '\')" style="width:50%">Detail</button>' +
+                            '<button class="button button-custom" ng-click="detail(\'#/app/archiviodetail/' + $scope.mySignals.data[i].id + '\')" style="width:50%">Detail</button>' +
                             '</div></form>' +
                             '</div>',
 

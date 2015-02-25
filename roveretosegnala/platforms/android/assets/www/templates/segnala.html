@@ -8,14 +8,14 @@
 
                 <div class="item item-input-inset">
                     <label class="item-input-wrapper">
-                        <input ng-model="signal.title" name="signal_title" type="text" placeholder="{{'segnala_input_title' | translate}}">
+                        <input ng-model="signal.attribute.title" name="signal_title" type="text" placeholder="{{'segnala_input_title' | translate}}">
                     </label>
 
                 </div>
 
                 <div class="item item-input-inset">
                     <label class="item-input-wrapper">
-                        <input ng-model="signal.description" type="text" placeholder="{{'segnala_input_description' | translate}}">
+                        <input ng-model="signal.attribute.description" type="text" placeholder="{{'segnala_input_description' | translate}}">
                     </label>
 
                 </div>
@@ -23,13 +23,13 @@
 
                 <div class="item item-input">
                     <!--                    <label class="item-input-wrapper">-->
-                    <placeautocomplete ng-model="result" attr-placeholder="type to search movies..." click-activation="true" data="places" on-type="doSomething" placeholder="{{'segnala_input_description' | translate}}" style="width: 100%" on-select="changeString"></placeautocomplete>
+                    <placeautocomplete ng-model="result" attr-placeholder="{{'segnala_input_place_suggestion' | translate}}" click-activation="true" data="places" on-type="doSomething" placeholder="{{'segnala_input_description' | translate}}" style="width: 100%" on-select="changeString"></placeautocomplete>
 
                     <!--</label>-->
-                    <button class="button button-positive" ng-click="locateMe()">
-                        <i class="icon ion-android-locate"></i>
+                    <button class="button button-custom" ng-click="locateMe()">
+                        <i class="icon ion-android-locate "></i>
                     </button>
-                    <button class="button button-positive" ng-click="openMap4Address()">
+                    <button class="button button-custom" ng-click="openMap4Address()">
                         <i class="icon ion-map"></i>
                     </button>
                 </div>
@@ -40,10 +40,14 @@
                     <div class="input-label">
                         {{'segnala_label_categories' | translate}}
                     </div>
-                    <select>
-                        <option>{{'segnala_category_1' | translate}}</option>
-                        <option selected>{{'segnala_category_2' | translate}}</option>
-                        <option>{{'segnala_category_3' | translate}}</option>
+                    <!--
+<select>
+    <option selected>{{'segnala_category_1' | translate}}</option>
+    <option>{{'segnala_category_2' | translate}}</option>
+    <option>{{'segnala_category_3' | translate}}</option>
+</select>
+-->
+                    <select ng-model="selectedCategory" ng-options="cat as cat.label for cat in categories">
                     </select>
                 </label>
                 <!--
@@ -58,10 +62,10 @@
                 <input type="hidden" name="long" value="{{chosenPlace.geometry.location.lng()}}">
                 <div align="center">
 
-                    <button class="button button-positive button-large" ng-click="addImage('Camera')">
+                    <button class="button button-custom button-large" ng-click="addImage('Camera')">
                         <i class=" icon ion-android-camera"></i>
                     </button>
-                    <button class="button button-positive button-large" ng-click="addImage('Gallery')">
+                    <button class="button button-custom button-large" ng-click="addImage('Gallery')">
                         <i class=" icon ion-images"></i>
                     </button>
                 </div>

@@ -4,18 +4,18 @@
             <div class="list">
 
                 <a class="item item-icon-left" href="#">
-                    <i class="icon ion-email"></i> <b>{{'archivedetail_title' | translate}}:</b> {{signal.title}}
+                    <i class="icon ion-email"></i> <b>{{'archivedetail_title' | translate}}:</b> {{signal.attribute.title}}
 
                 </a>
                 <a class="item item-icon-left" href="#">
-                    <i class="icon ion-document-text"></i> <b>{{'archivedetail_description' | translate}}:</b> {{signal.description}}
+                    <i class="icon ion-document-text"></i> <b>{{'archivedetail_description' | translate}}:</b> {{signal.attribute.description}}
                 </a>
                 <a class="item item-icon-left" href="#">
-                    <i class="icon ion-ios-location"></i> <b>{{'archivedetail_address' | translate}}:</b> {{signal.address}}
+                    <i class="icon ion-ios-location"></i> <b>{{'archivedetail_address' | translate}}:</b> {{signal.location.address}}
 
                 </a>
                 <a class="item item-icon-left" href="#">
-                    <i class="icon ion-ios-list"></i><b> {{'archivedetail_category' | translate}}:</b> {{signal.category}}
+                    <i class="icon ion-ios-list"></i><b> {{'archivedetail_category' | translate}}:</b> {{signal.attribute.category}}
 
                 </a>
 
@@ -23,8 +23,8 @@
 
 
                 <ion-slide-box active-slide="myActiveSlide" show-pager="true">
-                    <ion-slide ng-repeat="picture in signal.pictures ">
-                        <img src="{{picture.imagefull}}" />
+                    <ion-slide ng-repeat="picture in signal.media ">
+                        <img src="{{picture}}" />
                     </ion-slide>
                 </ion-slide-box>
 

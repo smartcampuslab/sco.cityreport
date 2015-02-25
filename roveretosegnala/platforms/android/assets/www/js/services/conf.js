@@ -2,6 +2,10 @@ angular.module('roveretoSegnala.services.conf', [])
 
 .factory('Config', function ($q, $http, $window, $filter, $rootScope) {
 
+    var URL = 'https://dev.smartcommunitylab.it/cityreport';
+    var provider = 'ComuneRovereto';
+    var service = 'problems';
+
     var cityName = {
         'it': 'Trento',
         'en': 'Trento',
@@ -166,6 +170,36 @@ angular.module('roveretoSegnala.services.conf', [])
             en: 'Category 3',
             de: 'Categorien 3'
         },
+        'signal_error_send_title': {
+            it: 'Errore',
+            en: 'Error',
+            de: 'Fehler'
+        },
+        'signal_error_send_template': {
+            it: 'Errore nell\'inviare i dati',
+            en: 'Error sending data',
+            de: 'Fehler beim Senden der Daten'
+        },
+        'signal_send_confirm place_title': {
+            it: 'Confermare l\'indirizzo trovato',
+            en: 'Please, confirm the address found',
+            de: 'Bitte, bestätigen Sie die Adresse gefunden'
+        },
+        'signal_send_no_place_title': {
+            it: 'Nessun posto trovato',
+            en: 'No places found',
+            de: 'Keine Unterkünfte gefunden'
+        },
+        'signal_send_no_place_template': {
+            it: 'Selezionare una posizione diversa',
+            en: 'Please, select a different position',
+            de: 'Bitte wählen Sie eine andere Positione'
+        },
+        'segnala_input_place_suggestion': {
+            it: 'digita per ottenere suggerimenti...',
+            en: 'type for place suggestions...',
+            de: 'geben Sie den Text für Anregungen...'
+        }
 
     }
 
@@ -233,9 +267,16 @@ angular.module('roveretoSegnala.services.conf', [])
         keys: function () {
             return keys;
         },
-        //    savedImagesDirName: function () {
-        //      return 'IlComuneInTasca-ImagesCache';
-        //    },
+        URL: function () {
+            return URL;
+        },
+        provider: function () {
+            return provider;
+        },
+        service: function () {
+            return service;
+        },
+
         schemaVersion: function () {
             return SCHEMA_VERSION;
         },

@@ -2,6 +2,10 @@ angular.module('roveretoSegnala.services.conf', [])
 
 .factory('Config', function ($q, $http, $window, $filter, $rootScope) {
 
+    var URL = 'https://dev.smartcommunitylab.it/cityreport';
+    var provider = 'ComuneRovereto';
+    var service = 'problems';
+
     var cityName = {
         'it': 'Trento',
         'en': 'Trento',
@@ -263,9 +267,16 @@ angular.module('roveretoSegnala.services.conf', [])
         keys: function () {
             return keys;
         },
-        //    savedImagesDirName: function () {
-        //      return 'IlComuneInTasca-ImagesCache';
-        //    },
+        URL: function () {
+            return URL;
+        },
+        provider: function () {
+            return provider;
+        },
+        service: function () {
+            return service;
+        },
+
         schemaVersion: function () {
             return SCHEMA_VERSION;
         },
