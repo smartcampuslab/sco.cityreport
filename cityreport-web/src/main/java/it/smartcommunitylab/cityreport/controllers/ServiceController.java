@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,4 +49,10 @@ public class ServiceController {
 	public @ResponseBody Response<List<Service>> getServices(@PathVariable String providerId) {
 		return new Response<List<Service>>(manager.findServices(providerId));
 	}
+	
+	@ExceptionHandler(Exception.class)
+	public @ResponseBody Response<Void> handleExceptions(Exception exception) {
+		return new Response<Void>(500, exception.getMessage());
+	}
+
 }

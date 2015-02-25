@@ -17,18 +17,22 @@
 package it.smartcommunitylab.cityreport.controllers;
 
 import it.smartcommunitylab.cityreport.model.IssueResponse;
+import it.smartcommunitylab.cityreport.model.Issuer;
 import it.smartcommunitylab.cityreport.model.Response;
 import it.smartcommunitylab.cityreport.model.Service;
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
+import it.smartcommunitylab.cityreport.security.UserAuthenticator;
 import it.smartcommunitylab.cityreport.services.IssueManager;
 import it.smartcommunitylab.cityreport.services.ServiceManager;
-import it.smartcommunitylab.cityreport.utils.UserUtils;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +50,8 @@ public class IssueController {
 	private IssueManager manager;
 	@Autowired
 	private ServiceManager serviceManager;
+	@Autowired
+	private UserAuthenticator userAuthenticator;
 	
 	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issues/{issueId}")
 	public @ResponseBody Response<ServiceIssue> getIssue(@PathVariable String providerId, @PathVariable String serviceId, String issueId) {
@@ -63,16 +69,32 @@ public class IssueController {
 	}
 
 	@RequestMapping(method=RequestMethod.POST, value = "/{providerId}/services/{serviceId}/user/issues")
-	public @ResponseBody Response<IssueResponse> reportUserIssue(@PathVariable String providerId, @PathVariable String serviceId, @RequestBody ServiceIssue issue) {
-
+	public @ResponseBody Response<IssueResponse> reportUserIssue(
+			@PathVariable String providerId, 
+			@PathVariable String serviceId, 
+			@RequestBody ServiceIssue issue,
+			HttpServletRequest req) 
+	{
+		Issuer issuer = userAuthenticator.identifyUser(req);
+		
 		Service service = serviceManager.findService(serviceId, providerId);
 		if (service == null) {
 			return new Response<IssueResponse>(HttpStatus.NOT_FOUND.value(),"Unknown service");
 		}
 		issue.setProviderId(providerId);
 		issue.setServiceId(serviceId);
-		issue.setIssuer(UserUtils.user());
+		issue.setIssuer(issuer);
 		ServiceIssue result = manager.createIssue(issue);
 		return new Response<IssueResponse>(new IssueResponse(providerId, serviceId, result.getId(), service.getAckMessage()));
 	}
+	
+	@ExceptionHandler(Exception.class)
+	public @ResponseBody Response<Void> handleExceptions(Exception exception) {
+		if (exception instanceof SecurityException) {
+			return new Response<Void>(403, exception.getMessage());
+		}
+		
+		return new Response<Void>(500, exception.getMessage());
+	}
+
 }

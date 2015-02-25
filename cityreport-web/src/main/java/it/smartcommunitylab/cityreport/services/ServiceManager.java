@@ -81,4 +81,8 @@ public class ServiceManager {
 		logger.debug("searching services for provider {}: found {}",providerId, result != null ? result.size() : 0);
 		return result;
 	}
+
+	public void deleteService(String serviceId, String providerId) {
+		repository.delete(repository.findByProviderIdAndServiceId(providerId, serviceId));
+	}
 }
