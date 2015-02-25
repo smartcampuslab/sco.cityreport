@@ -1,0 +1,12 @@
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb" version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <globalBindings>
+        <javaType name="org.joda.time.DateTime" xmlType="xs:dateTime"
+                  parseMethod="it.smartcommunitylab.cityreport.utils.JodaTimeDateAdapter.parseDate"
+                  printMethod="it.smartcommunitylab.cityreport.utils.JodaTimeDateAdapter.printDate"
+                />
+        <javaType name="org.joda.time.LocalDate" xmlType="xs:date"
+                  parseMethod="it.smartcommunitylab.cityreport.utils.JodaTimeDateAdapter.parseLocalDate"
+                  printMethod="it.smartcommunitylab.cityreport.utils.JodaTimeDateAdapter.printLocalDate"
+                />
+    </globalBindings>
+</bindings>

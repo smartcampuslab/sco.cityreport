@@ -20,6 +20,7 @@ import it.smartcommunitylab.cityreport.data.IssueRepository;
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
 import it.smartcommunitylab.cityreport.utils.Constants;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -73,6 +74,25 @@ public class IssueManager {
 		List<ServiceIssue> result = repository.search(providerId, serviceId, status, from, to, userId, orgId, circle, start, count);
 		logger.debug("issues lookup {}: found {}",providerId, result != null ? result.size() : 0);
 		return result;
+	}
+
+	public List<ServiceIssue> findIssues(String providerId, Collection<String> serviceIds, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
+		logger.debug("issues lookup {}",providerId);
+		List<ServiceIssue> result = repository.search(providerId, serviceIds, status, from, to, userId, orgId, circle, start, count);
+		logger.debug("issues lookup {}: found {}",providerId, result != null ? result.size() : 0);
+		return result;
+	}
+
+	/**
+	 * @param id
+	 * @param providerId
+	 * @return
+	 */
+	public ServiceIssue findProviderIssue(String id, String providerId) {
+		logger.debug("searching provider issue {}/{}", id, providerId);
+		ServiceIssue issue = repository.findByProviderIdAndId(providerId, id);
+		logger.debug("searching issue {}/{}/{}: found {}", id, providerId, issue);
+		return issue;
 	}
 
 }

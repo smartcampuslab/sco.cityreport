@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://wiki.open311.org/GeoReport_v2" xmlns:tns="http://wiki.open311.org/GeoReport_v2"
+	elementFormDefault="qualified">
+
+  <xs:element name="services">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="service" type="tns:Service" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="service_definition" type="tns:ServiceDefinition"/>
+
+  <xs:element name="service_requests">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="request" type="tns:Request" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="errors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="error" type="tns:Error" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+	
+	<xs:complexType name="Service">
+		<xs:sequence>
+			<xs:element name="service_code" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="service_name" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="metadata" type="xs:boolean" maxOccurs="1" />
+			<xs:element name="type" type="tns:ServiceType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="keywords" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="group" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ServiceDefinition">
+		<xs:sequence>
+			<xs:element name="service_code" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="attributes" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="attribute" type="tns:Attribute" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Attribute">
+		<xs:sequence>
+			<xs:element name="variable" type="xs:boolean" maxOccurs="1" />
+      <xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1" />
+      <xs:element name="datatype" type="tns:DataType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="required" type="xs:boolean" maxOccurs="1" />
+      <xs:element name="datatype_description" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="order" type="xs:positiveInteger" maxOccurs="1" />
+      <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="values" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="value" type="tns:Value" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+  <xs:complexType name="Value">
+    <xs:sequence>
+      <xs:element name="key" type="xs:string" minOccurs="1" maxOccurs="1" />
+      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>  
+
+  <xs:complexType name="Error">
+    <xs:sequence>
+      <xs:element name="code" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+      <xs:element name="descsription" type="xs:string" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>  
+
+  <xs:complexType name="Request">
+    <xs:sequence>
+      <xs:element name="service_request_id" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="token" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="service_notice" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="account_id" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="status" type="xs:string" minOccurs="1" maxOccurs="1" />
+      <xs:element name="status_notes" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="service_name" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="service_code" type="xs:string" minOccurs="1" maxOccurs="1" />
+      <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="agency_responsible" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="requested_datetime" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+      <xs:element name="updated_datetime" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+      <xs:element name="expected_datetime" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+      <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="address_id" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="zip_code" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="lat" type="xs:double" minOccurs="0" maxOccurs="1" />
+      <xs:element name="long" type="xs:double" minOccurs="0" maxOccurs="1" />
+      <xs:element name="media_url" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+	<xs:simpleType name="ServiceType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="realtime" />
+			<xs:enumeration value="batch" />
+			<xs:enumeration value="blackbox" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="DataType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="string" />
+			<xs:enumeration value="number" />
+			<xs:enumeration value="datetime" />
+      <xs:enumeration value="text" />
+      <xs:enumeration value="singlevaluelist" />
+      <xs:enumeration value="multivaluelist" />
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

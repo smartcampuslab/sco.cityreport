@@ -32,6 +32,7 @@ public interface IssueRepository extends MongoRepository<ServiceIssue, String>, 
 	public List<ServiceIssue> findByProviderIdAndServiceId(String providerId, String serviceId);
 	public ServiceIssue findByProviderIdAndServiceIdAndId(String providerId, String serviceId, String id);
 	public ServiceIssue findByProviderIdAndExternalId(String providerId, String externalId);
+	public ServiceIssue findByProviderIdAndId(String providerId, String id);
 	
     @Query("{'providerId':?0,'serviceId':?1, 'issuer.userId':?2}")
 	public List<ServiceIssue> findByUser(String providerId, String serviceId, String userId);
