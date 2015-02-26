@@ -24,19 +24,23 @@ import it.smartcommunitylab.cityreport.model.ServiceIssue;
 import it.smartcommunitylab.cityreport.security.UserAuthenticator;
 import it.smartcommunitylab.cityreport.services.IssueManager;
 import it.smartcommunitylab.cityreport.services.ServiceManager;
+import it.smartcommunitylab.cityreport.utils.Constants;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Circle;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -59,9 +63,39 @@ public class IssueController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issues")
-	public @ResponseBody Response<List<ServiceIssue>> getServiceIssues(@PathVariable String providerId, @PathVariable String serviceId) {
-		return new Response<List<ServiceIssue>>(manager.findServiceIssues(providerId, serviceId));
+	public @ResponseBody Response<List<ServiceIssue>> getServiceIssues(
+			@PathVariable String providerId, 
+			@PathVariable String serviceId,
+			@RequestParam(required=false) String status,
+			@RequestParam(required=false) String not_status,
+			@RequestParam(required=false) Long from,
+			@RequestParam(required=false) Long to,
+			@RequestParam(required=false) Double lat,
+			@RequestParam(required=false) Double lng,
+			@RequestParam(required=false) Double radius,
+			@RequestParam(required=false) String user_id,
+			@RequestParam(required=false) String org_id,
+			@RequestParam(required=false) Integer start,
+			@RequestParam(required=false) Integer count
+		) {
+		Circle circle = null;
+		if (lat != null && lng != null) {
+			circle = new Circle(lat, lng, radius == null ? Constants.RADIUS_DEFAULT : radius);
+		}
+		return new Response<List<ServiceIssue>>(manager.findIssues(
+				providerId, 
+				serviceId, 
+				StringUtils.hasText(status) ? StringUtils.commaDelimitedListToSet(status) : null, 
+				StringUtils.hasText(not_status) ? StringUtils.commaDelimitedListToSet(not_status) : null, 
+				from, 
+				to, 
+				user_id, 
+				org_id, 
+				circle, 
+				start, 
+				count));
 	}
+
 
 	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/user/{userId}/issues")
 	public @ResponseBody Response<List<ServiceIssue>> getServiceIssues(@PathVariable String providerId, @PathVariable String serviceId, @PathVariable String userId) {

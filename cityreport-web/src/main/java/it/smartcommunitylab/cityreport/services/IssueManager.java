@@ -69,16 +69,16 @@ public class IssueManager {
 		return result;
 	}
 
-	public List<ServiceIssue> findIssues(String providerId, String serviceId, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
+	public List<ServiceIssue> findIssues(String providerId, String serviceId, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
 		logger.debug("issues lookup {}",providerId);
-		List<ServiceIssue> result = repository.search(providerId, serviceId, status, from, to, userId, orgId, circle, start, count);
+		List<ServiceIssue> result = repository.search(providerId, serviceId, status, statusExclude, from, to, userId, orgId, circle, start, count);
 		logger.debug("issues lookup {}: found {}",providerId, result != null ? result.size() : 0);
 		return result;
 	}
 
-	public List<ServiceIssue> findIssues(String providerId, Collection<String> serviceIds, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
+	public List<ServiceIssue> findIssues(String providerId, Collection<String> serviceIds, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
 		logger.debug("issues lookup {}",providerId);
-		List<ServiceIssue> result = repository.search(providerId, serviceIds, status, from, to, userId, orgId, circle, start, count);
+		List<ServiceIssue> result = repository.search(providerId, serviceIds, status, statusExclude, from, to, userId, orgId, circle, start, count);
 		logger.debug("issues lookup {}: found {}",providerId, result != null ? result.size() : 0);
 		return result;
 	}

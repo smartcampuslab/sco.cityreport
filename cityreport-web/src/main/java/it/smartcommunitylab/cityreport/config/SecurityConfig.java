@@ -15,11 +15,12 @@
  ******************************************************************************/
 package it.smartcommunitylab.cityreport.config;
 
-import it.smartcommunitylab.cityreport.security.SCOUserAuthenticator;
+import it.smartcommunitylab.cityreport.model.Issuer;
 import it.smartcommunitylab.cityreport.security.UserAuthenticator;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -42,15 +43,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Bean
 	public UserAuthenticator getUserAuthenticator() {
-		return new SCOUserAuthenticator(env.getProperty("aacURL"));
-//		return new UserAuthenticator() {
-//			@Override
-//			public Issuer identifyUser(HttpServletRequest req) throws SecurityException {
-//				Issuer issuer = new Issuer();
-//				issuer.setUserId("1");
-//				return issuer;
-//			}
-//		};
+//		return new SCOUserAuthenticator(env.getProperty("aacURL"));
+		return new UserAuthenticator() {
+			@Override
+			public Issuer identifyUser(HttpServletRequest req) throws SecurityException {
+				Issuer issuer = new Issuer();
+				issuer.setUserId("1");
+				return issuer;
+			}
+		};
 	}
 	
 	@Autowired

@@ -14,20 +14,17 @@
  *    limitations under the License.
  ******************************************************************************/
 
-package it.smartcommunitylab.cityreport.data;
+package it.smartcommunitylab.cityreport.security;
 
-import it.smartcommunitylab.cityreport.model.ServiceIssue;
+import javax.servlet.http.HttpServletRequest;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.data.geo.Circle;
+import it.smartcommunitylab.cityreport.model.Issuer;
 
 /**
  * @author raman
  *
  */
-public interface IssueCustomRepository {
-	public List<ServiceIssue> search(String providerId, String serviceId, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
-	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
+public interface UserAuthenticator {
+
+	public Issuer identifyUser(HttpServletRequest req) throws SecurityException;
 }

@@ -26,6 +26,7 @@ import it.smartcommunitylab.cityreport.services.ServiceManager;
 import it.smartcommunitylab.cityreport.utils.Open311Converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +111,8 @@ public class Open311Controller {
 		List<ServiceIssue> issues = issueManager.findIssues(
 				jurisdiction_id, 
 				service_code != null ? StringUtils.commaDelimitedListToSet(service_code) : null, 
-				status, 
+				Collections.singletonList(status), 
+				null,
 				start, 
 				end, 
 				null, 

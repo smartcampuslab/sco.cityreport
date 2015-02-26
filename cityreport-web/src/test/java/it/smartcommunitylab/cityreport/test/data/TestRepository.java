@@ -16,15 +16,16 @@
 
 package it.smartcommunitylab.cityreport.test.data;
 
-import java.text.ParseException;
-import java.util.List;
-
 import it.smartcommunitylab.cityreport.data.IssueRepository;
 import it.smartcommunitylab.cityreport.data.ServiceRepository;
 import it.smartcommunitylab.cityreport.model.Service;
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
 import it.smartcommunitylab.cityreport.test.ObjectHelper;
 import it.smartcommunitylab.cityreport.test.TestConfig;
+
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -115,7 +116,8 @@ public class TestRepository {
 
 		// search by status
 		List<ServiceIssue> list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
-				issue.getStatus(),
+				Collections.singletonList(issue.getStatus()),
+				null,
 				null, 
 				null,
 				null,
@@ -126,7 +128,8 @@ public class TestRepository {
 		Assert.assertNotNull(list);
 		Assert.assertTrue(list.size() > 0);
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
-				"wrong status",
+				Collections.singletonList("wrong status"),
+				null,
 				null, 
 				null,
 				null,
@@ -136,9 +139,36 @@ public class TestRepository {
 				null);
 		Assert.assertNotNull(list);
 		Assert.assertEquals(0,list.size());
-		
+
+		// search by status not
+		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
+				Collections.singletonList(issue.getStatus()),
+				null, 
+				null,
+				null,
+				null,
+				null,
+				null,
+				null);
+		Assert.assertNotNull(list);
+		Assert.assertEquals(0,list.size());
+		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
+				Collections.singletonList("wrong status"),
+				null, 
+				null,
+				null,
+				null,
+				null,
+				null,
+				null);
+		Assert.assertNotNull(list);
+		Assert.assertTrue(list.size() > 0);
+
 		// search by dates
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
 				null,
 				issue.getCreated()-1000*60*60*24,
 				issue.getCreated()+1000*60*60*24,
@@ -150,6 +180,7 @@ public class TestRepository {
 		Assert.assertNotNull(list);
 		Assert.assertTrue(list.size() > 0);
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
 				null,
 				System.currentTimeMillis(), 
 				System.currentTimeMillis()+1000*60*60*24,
@@ -164,6 +195,7 @@ public class TestRepository {
 		// search by user
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
 				null,
+				null,
 				null, 
 				null,
 				issue.getIssuer().getUserId(),
@@ -174,6 +206,7 @@ public class TestRepository {
 		Assert.assertNotNull(list);
 		Assert.assertTrue(list.size() > 0);
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
 				null,
 				null, 
 				null,
@@ -191,6 +224,7 @@ public class TestRepository {
 				null, 
 				null,
 				null,
+				null,
 				issue.getIssuer().getOrganizationId(),
 				null,
 				null,
@@ -198,6 +232,7 @@ public class TestRepository {
 		Assert.assertNotNull(list);
 		Assert.assertTrue(list.size() > 0);
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
 				null,
 				null, 
 				null,
@@ -213,6 +248,7 @@ public class TestRepository {
 		// search by circle
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
 				null,
+				null,
 				null, 
 				null,
 				null,
@@ -224,6 +260,7 @@ public class TestRepository {
 		Assert.assertTrue(list.size() > 0);
 		circle = new Circle(issue.getLocation().getCoordinates()[0]+1,issue.getLocation().getCoordinates()[1]-1,1);
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
+				null,
 				null,
 				null, 
 				null,
@@ -239,15 +276,15 @@ public class TestRepository {
 			issueRepository.save(ObjectHelper.createIssue());
 		}
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
-				null, null, null, null, null, null, 0, 10);
+				null, null, null, null, null, null, null, 0, 10);
 		Assert.assertEquals(10,list.size());
 		
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
-				null, null, null, null, null, null, 0, 30);
+				null, null, null, null, null, null, null, 0, 30);
 		Assert.assertEquals(21,list.size());
 		
 		list = issueRepository.search(issue.getProviderId(), issue.getServiceId(),
-				null, null, null, null, null, null, 10, 10);
+				null, null, null, null, null, null, null, 10, 10);
 		Assert.assertEquals(10,list.size());
 
 	}
