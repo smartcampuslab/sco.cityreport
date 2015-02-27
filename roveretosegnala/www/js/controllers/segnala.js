@@ -1,70 +1,100 @@
 angular.module('roveretoSegnala.controllers.segnala', [])
 
-.factory('segnalaService', function ($http, $q, Config) {
-    var clientId = 'b790f7d57013adb';
-    var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
-    var latlong = [0, 0];
-    var segnalaService = {};
-    var name = '';
-    segnalaService.getclientId = function () {
-        return clientId;
-    };
-    segnalaService.getclientSecret = function () {
-        return clientSecret;
-    };
-    segnalaService.getName = function () {
-        return name;
-    };
-    segnalaService.setName = function (nameinput) {
-        name = nameinput;
-    };
-    segnalaService.getPosition = function () {
-        return latlong;
-    };
-    segnalaService.setPosition = function (lat, long) {
-        latlong[0] = lat;
-        latlong[1] = long;
-    };
+.factory('Toast', function ($rootScope, $timeout, $ionicPopup, $cordovaToast) {
+        return {
+            show: function (message, duration, position) {
+                message = message || "There was a problem...";
+                duration = duration || 'short';
+                position = position || 'top';
 
-    segnalaService.sendSignal = function (signal) {
-        return $http({
-            method: 'POST',
-            url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/user/issues',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                if (!!window.cordova) {
+                    // Use the Cordova Toast plugin
+                    $cordovaToast.show(message, duration, position);
+                } else {
+                    if (duration == 'short') {
+                        duration = 2000;
+                    } else {
+                        duration = 5000;
+                    }
 
-            },
-            data: signal
-        }).
-        success(function (data, status, headers, config) {
+                    var myPopup = $ionicPopup.show({
+                        template: "<div class='toast'>" + message + "</div>",
+                        scope: $rootScope,
+                        buttons: []
+                    });
 
-        }).
-        error(function (data, status, headers, config) {
+                    $timeout(function () {
+                        myPopup.close();
+                    }, duration);
+                }
+            }
+        };
+    })
+    .factory('segnalaService', function ($http, $q, Config) {
+        var clientId = 'b790f7d57013adb';
+        var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
+        var latlong = [0, 0];
+        var segnalaService = {};
+        var name = '';
+        segnalaService.getclientId = function () {
+            return clientId;
+        };
+        segnalaService.getclientSecret = function () {
+            return clientSecret;
+        };
+        segnalaService.getName = function () {
+            return name;
+        };
+        segnalaService.setName = function (nameinput) {
+            name = nameinput;
+        };
+        segnalaService.getPosition = function () {
+            return latlong;
+        };
+        segnalaService.setPosition = function (lat, long) {
+            latlong[0] = lat;
+            latlong[1] = long;
+        };
+
+        segnalaService.sendSignal = function (signal) {
+            return $http({
+                method: 'POST',
+                url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/user/issues',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+
+                },
+                data: signal
+            }).
+            success(function (data, status, headers, config) {
+
+            }).
+            error(function (data, status, headers, config) {
 
 
-        });
+            });
 
-        //        return $http.post(Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues')
-        //            .then(function (response) {
-        //                if (typeof response.data === 'object') {
-        //                    return response.data;
-        //                } else {
-        //                    // invalid response
-        //                    return $q.reject(response.data);
-        //                }
-        //
-        //            }, function (response) {
-        //                // something went wrong
-        //                return $q.reject(response.data);
-        //            });
+            //        return $http.post(Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues')
+            //            .then(function (response) {
+            //                if (typeof response.data === 'object') {
+            //                    return response.data;
+            //                } else {
+            //                    // invalid response
+            //                    return $q.reject(response.data);
+            //                }
+            //
+            //            }, function (response) {
+            //                // something went wrong
+            //                return $q.reject(response.data);
+            //            });
 
-    };
+        };
 
-    return segnalaService;
-})
+        return segnalaService;
+    })
 
-.controller('Map4AdrressCtrl', function ($scope, $location, $window, $q, $http, $ionicPopup, leafletData, archiveService, segnalaService) {
+.controller('Map4AdrressCtrl', function ($scope, $location, $window, $q, $http, $filter, $ionicPopup, leafletData, archiveService, segnalaService) {
 
         leafletData.getMap().then(function (map) {
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -152,22 +182,22 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         });
 
     })
-    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, $stateParams, segnalaService, PlacesRetriever) {
+    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, Toast, $stateParams, segnalaService, PlacesRetriever) {
+        $scope.selectedcategory = null;
         $scope.categories = [
             {
                 label: $filter('translate')("segnala_category_1"),
-                value: 1
+                value: 0
             },
             {
                 label: $filter('translate')("segnala_category_2"),
-                value: 2
+                value: 1
             },
             {
                 label: $filter('translate')("segnala_category_3"),
                 value: 2
             }
   ];
-        $scope.selectedCategory = $scope.categories[1];
         $scope.signal = {
 
             location: {
@@ -181,6 +211,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 category: null
             }
         };
+        $scope.signal.attribute.category = $scope.categories[0];
         $scope.images = [];
         $scope.placesandcoordinates = {};
         $scope.openMap4Address = function () {
@@ -362,7 +393,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             var remoteURL = [];
             $scope.signal.location.coordinates = segnalaService.getPosition();
             $scope.signal.media = $scope.images;
-            $scope.signal.attribute.category = $scope.selectedCategory.value;
+            $scope.signal.attribute.category = $scope.signal.attribute.category.value;
             if ($scope.checkForm($scope.signal)) {
                 $ionicLoading.show({
                     template: 'Loading...'
@@ -393,24 +424,50 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                             segnalaService.sendSignal($scope.signal).then(function (data) {
                                 //chiudi pop up bella la' e esci
                                 $ionicLoading.hide();
-                                alert("upload images success. No send data to server...." + segnalaService.getPosition());
+                                console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+                                //torna indietro con toast successo
+                                window.history.back();
+                                Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
                             }, function (error) {
-                                $ionicLoading.hide();
-                                alert("problems" + data + status + headers + config);
-
+                                console.log("problems" + data + status + headers + config);
                                 //chiudi pop up ed errore sul server smarcommunity
+                                //toast error
+                                Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                                $ionicLoading.hide();
+
                             });
                         }
                     }).
                     error(function (data, status, headers, config) {
                         $ionicLoading.hide();
-                        alert("problems" + data + status + headers + config);
+                        console.log("problems" + data + status + headers + config);
                         //chiudi pop up ed errore sul server immagini
+                        //toast error
+                        Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                        $ionicLoading.hide();
 
                     });
                 }
-                //                $ionicLoading.hide();
+                if ($scope.signal.media.length == 0) {
+                    //if no gallery u are here
+                    segnalaService.sendSignal($scope.signal).then(function (data) {
+                        //chiudi pop up bella la' e esci
+                        $ionicLoading.hide();
+                        console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+                        //torna indietro con toast successo
+                        window.history.back();
+                        Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+
+                    }, function (error) {
+                        console.log("problems" + data + status + headers + config);
+                        //chiudi pop up ed errore sul server smarcommunity
+                        //toast error
+                        Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                        $ionicLoading.hide();
+
+                    });
+                }
             } else {
                 //show popup 
                 var alertPopup = $ionicPopup.alert({
@@ -419,6 +476,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 });
                 alertPopup.then(function (res) {
                     console.log('error');
+                    Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+
                 });
             }
         }

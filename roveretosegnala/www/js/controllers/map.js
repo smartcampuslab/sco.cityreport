@@ -10,7 +10,7 @@ angular.module('roveretoSegnala.controllers.map', [])
                     maxZoom: 18
                 }).addTo(map);
             });
-            archiveService.list().then(function (data) {
+            archiveService.listForMap().then(function (data) {
                 $scope.mySignals = data;
                 var markers = [];
                 for (i = 0; i < $scope.mySignals.data.length; i++) {
@@ -28,7 +28,7 @@ angular.module('roveretoSegnala.controllers.map', [])
                             '</div>',
 
                         icon: {
-                            iconUrl: 'img/segnala.png',
+                            iconUrl: $scope.getIcon($scope.mySignals.data[i]),
                             iconSize: [50, 50]
                         },
                         focus: true
@@ -44,6 +44,16 @@ angular.module('roveretoSegnala.controllers.map', [])
                 leafletData.getMap().then(function (map) {
                     map.closePopup();
                 });
+            }
+            $scope.getIcon = function (signal) {
+                if (signal.status == 'open') {
+                    return 'img/ic-segnalazione.png'
+                } else if (signal.status == 'closed') {
+                    return 'img/ic-done.png'
+                } else {
+                    return 'img/ic-progressing.png'
+                }
+
             }
             angular.extend($scope, {
                 center: {

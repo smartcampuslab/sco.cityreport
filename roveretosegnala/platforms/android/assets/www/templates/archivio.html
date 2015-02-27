@@ -14,13 +14,15 @@
                 <ion-view title="Also Factual">
                     <ion-content class="padding">
                         <ion-list>
-                            <ion-item ng-repeat="signal in list.signals | filter: { state: '0' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                {{signal.title}}
+                            <ion-item ng-repeat="signal in listclosed.data | filter: { status: 'closed' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
+                                {{signal.attribute.title}}
 
-                                <p> {{signal.address}}</p>
+                                <p> {{signal.location.address}}</p>
 
                             </ion-item>
                         </ion-list>
+                        <ion-infinite-scroll ng-if="!noMoreClosedItemsAvailable" on-infinite="loadMore('closed')" distance="1%">
+                        </ion-infinite-scroll>
                     </ion-content>
                 </ion-view>
             </ion-nav-view>
@@ -31,12 +33,14 @@
                 <ion-view title="Also Factual">
                     <ion-content class="padding">
                         <ion-list>
-                            <ion-item ng-repeat="signal in list.signals | filter: { state: '1' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                {{signal.title}}
-                                <p> {{signal.address}}</p>
+                            <ion-item ng-repeat="signal in listprocessing.data | filter: { status: 'processing' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
+                                {{signal.attribute.title}}
+                                <p> {{signal.location.address}}</p>
 
                             </ion-item>
                         </ion-list>
+                        <ion-infinite-scroll ng-if="!noMoreProcessingItemsAvailable" on-infinite="loadMore('processing')" distance="1%">
+                        </ion-infinite-scroll>
                     </ion-content>
                 </ion-view>
             </ion-nav-view>
@@ -48,11 +52,13 @@
                 <ion-view title="Also Factual">
                     <ion-content class="padding">
                         <ion-list>
-                            <ion-item ng-repeat="signal in list.signals | filter: { state: '2' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                {{signal.title}}
-                                <p> {{signal.address}}</p>
+                            <ion-item ng-repeat="signal in listopen.data | filter: { status: 'open' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
+                                {{signal.attribute.title}}
+                                <p> {{signal.location.address}}</p>
                             </ion-item>
                         </ion-list>
+                        <ion-infinite-scroll ng-if="!noMoreOpenItemsAvailable" on-infinite="loadMore('open')" distance="1%">
+                        </ion-infinite-scroll>
                     </ion-content>
                 </ion-view>
             </ion-nav-view>

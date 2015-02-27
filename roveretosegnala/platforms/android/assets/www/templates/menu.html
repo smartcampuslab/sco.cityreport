@@ -19,19 +19,22 @@
         <ion-content>
             <ion-list>
                 <ion-item nav-clear menu-close href="#/app/map">
-                    Map
+                    <i class="icon ion-mic-a"></i> {{'menu_map' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/segnala/">
-                    Segnala
+                    {{'menu_segnala' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/archivio">
-                    Archivio
+                    {{'menu_archivio' | translate}}
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/mysignals">
+                    {{'menu_lemiesegnalazioni' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="openModal(1)">
-                    Login
+                    {{'menu_login' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="openModal(2)">
-                    Credits
+                    {{'menu_credits' | translate}}
                 </ion-item>
             </ion-list>
         </ion-content>

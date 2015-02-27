@@ -16,6 +16,7 @@ angular.module('roveretoSegnala', [
     'roveretoSegnala.filters',
     'roveretoSegnala.directives',
     'roveretoSegnala.services.conf',
+    'roveretoSegnala.services.login',
 
 ])
 
@@ -66,16 +67,24 @@ angular.module('roveretoSegnala', [
         }
     })
 
-
-    .state('app.archiviodetail', {
-        url: '/archiviodetail/:id',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/archiviodetail.html',
-                controller: 'ArchivioDetailCtrl'
+    .state('app.mysignals', {
+            url: "/mysignals",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/mysignals.html",
+                    controller: 'MySignalsCtrl'
+                }
             }
-        }
-    })
+        })
+        .state('app.archiviodetail', {
+            url: '/archiviodetail/:id',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/archiviodetail.html',
+                    controller: 'ArchivioDetailCtrl'
+                }
+            }
+        })
 
     /* .state('app.credits', {
      url: "/credits",

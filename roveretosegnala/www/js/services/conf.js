@@ -199,6 +199,46 @@ angular.module('roveretoSegnala.services.conf', [])
             it: 'digita per ottenere suggerimenti...',
             en: 'type for place suggestions...',
             de: 'geben Sie den Text für Anregungen...'
+        },
+        'signal_send_toast_ok': {
+            it: 'Nuova segnalazione inviata con successo',
+            en: 'New issue submitted successfuylly',
+            de: 'Neuer Bericht erfolgreich gesendet'
+        },
+        'signal_send_toast_error': {
+            it: 'Problema nell\'invio della segnalazione',
+            en: 'Error sending the issue',
+            de: 'Fehler beim Senden der Warnung'
+        },
+        'menu_map': {
+            it: 'Mappa',
+            en: 'Map',
+            de: 'Karte'
+        },
+        'menu_segnala': {
+            it: 'Segnala',
+            en: 'New Issue',
+            de: 'Neuer Bericht'
+        },
+        'menu_archivio': {
+            it: 'Archivio',
+            en: 'Archive',
+            de: 'Archivieren'
+        },
+        'menu_lemiesegnalazioni': {
+            it: 'Le mie segnalazioni',
+            en: 'My issues',
+            de: 'Meine Berichte'
+        },
+        'menu_login': {
+            it: 'Login',
+            en: 'Login',
+            de: 'Login'
+        },
+        'menu_credits': {
+            it: 'Credits',
+            en: 'Credits',
+            de: 'Credits'
         }
 
     }

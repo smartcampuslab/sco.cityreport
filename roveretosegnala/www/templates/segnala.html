@@ -36,24 +36,21 @@
 
 
 
-                <!--                <label class="item item-input item-select">-->
-                <!--
-<div class="input-label">
-    {{'segnala_label_categories' | translate}}
-</div>
--->
-                <!--
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        {{'segnala_label_categories' | translate}}
+                    </div>
+<!--
 <select>
     <option selected>{{'segnala_category_1' | translate}}</option>
     <option>{{'segnala_category_2' | translate}}</option>
     <option>{{'segnala_category_3' | translate}}</option>
 </select>
 -->
-                <div>
-                    <select ng-model="selectedCategory" ng-options="cat as cat.label for cat in categories">
-                    </select>
-                </div>
-                <!--                </label>-->
+                    <select ng-model="signal.attribute.category"
+                ng-options="cat as cat.label for cat in categories">
+            </select>
+                </label>
                 <!--
 <div>
 <autocomplete ng-model="result" attr-placeholder="type to search movies..." click-activation="true" data="places" on-type="doSomething" on-select="doSomethingElse" placeholder="{{'segnala_input_description' | translate}}"></autocomplete>

@@ -19,19 +19,23 @@
         <ion-content>
             <ion-list>
                 <ion-item nav-clear menu-close href="#/app/map">
-                    Map
+                    <img src="img/ic-mappa.png">
+                    </i> {{'menu_map' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/segnala/">
-                    Segnala
+                    <img src="img/ic-segnala.png"> {{'menu_segnala' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/archivio">
-                    Archivio
+                    <i class="icon ion-android-folder custom-icon-menu"></i> {{'menu_archivio' | translate}}
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/mysignals">
+                    <i class="icon ion-mic-a custom-icon-menu"></i> {{'menu_lemiesegnalazioni' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="openModal(1)">
-                    Login
+                    <i class="icon ion-android-contact custom-icon-menu "></i> {{'menu_login' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="openModal(2)">
-                    Credits
+                    <i class="icon ion-information-circled custom-icon-menu"></i> {{'menu_credits' | translate}}
                 </ion-item>
             </ion-list>
         </ion-content>
