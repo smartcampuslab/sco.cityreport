@@ -42,12 +42,12 @@ public class IssueRepositoryImpl implements IssueCustomRepository {
     private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<ServiceIssue> search(String providerId, String serviceId, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
-		return search(providerId, Collections.singletonList(serviceId), status, from, to, userId, orgId, circle, start, count);
+	public List<ServiceIssue> search(String providerId, String serviceId, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
+		return search(providerId, Collections.singletonList(serviceId), status, statusExclude, from, to, userId, orgId, circle, start, count);
 	}
 
 	@Override
-	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
+	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds,  Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count) {
         Criteria criteria = new Criteria();
 		Query query = new Query();
     	criteria.and("providerId").is(providerId);
@@ -55,7 +55,10 @@ public class IssueRepositoryImpl implements IssueCustomRepository {
         	criteria.and("serviceId").in(serviceIds);
         }
         if (status != null) {
-        	criteria.and("status").is(status);
+        	criteria.and("status").in(status);
+        }
+        if (statusExclude != null) {
+        	criteria.and("status").nin(statusExclude);
         }
         if (from != null && from > 0 && to != null && to > 0) {
         	criteria.andOperator(Criteria.where("created").lte(to),Criteria.where("created").gte(from));

@@ -28,6 +28,6 @@ import org.springframework.data.geo.Circle;
  *
  */
 public interface IssueCustomRepository {
-	public List<ServiceIssue> search(String providerId, String serviceId, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
-	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds, String status, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
+	public List<ServiceIssue> search(String providerId, String serviceId, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
+	public List<ServiceIssue> search(String providerId, Collection<String> serviceIds, Collection<String> status, Collection<String> statusExclude, Long from, Long to, String userId, String orgId, Circle circle, Integer start, Integer count);
 }

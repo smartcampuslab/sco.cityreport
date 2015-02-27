@@ -14,7 +14,9 @@
  *    limitations under the License.
  ******************************************************************************/
 
-package it.smartcommunitylab.cityreport.utils;
+package it.smartcommunitylab.cityreport.security;
+
+import javax.servlet.http.HttpServletRequest;
 
 import it.smartcommunitylab.cityreport.model.Issuer;
 
@@ -22,16 +24,7 @@ import it.smartcommunitylab.cityreport.model.Issuer;
  * @author raman
  *
  */
-public class UserUtils {
+public interface UserAuthenticator {
 
-	/**
-	 * @return
-	 */
-	public static Issuer user() {
-		Issuer issuer = new Issuer();
-		// TODO fill in user data
-		issuer.setUserId("1");
-		return issuer;
-	}
-
+	public Issuer identifyUser(HttpServletRequest req) throws SecurityException;
 }

@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,20 +35,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author raman
  *
  */
+@RequestMapping("/mgmt")
 @Controller
-public class ServiceController {
+public class ManagementController {
 
 	@Autowired
 	private ServiceManager manager;
+	
+	@RequestMapping(method=RequestMethod.POST, value="/{provider}/services")
+	public @ResponseBody Response<Service> createService(@RequestBody Service service, @PathVariable String provider) {
+		service.setProviderId(provider);
+		return new Response<Service>(manager.saveService(service));
+	}
+	@RequestMapping(method=RequestMethod.PUT, value="/{provider}/services/{service}")
+	public @ResponseBody Response<Service> updateService(@RequestBody Service data, @PathVariable String service, @PathVariable String provider) {
+		data.setProviderId(provider);
+		data.setServiceId(service);
+		return new Response<Service>(manager.saveService(data));
+	}
 
-	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}")
-	public @ResponseBody Response<Service> getService(@PathVariable String providerId, @PathVariable String serviceId) {
-		return new Response<Service>(manager.findService(serviceId, providerId));
+	@RequestMapping(method=RequestMethod.DELETE, value="/{provider}/services/{service}")
+	public @ResponseBody Response<Void> deleteService(@PathVariable String service, @PathVariable String provider) {
+		manager.deleteService(service, provider);
+		return new Response<Void>();
 	}
 	
-	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services")
-	public @ResponseBody Response<List<Service>> getServices(@PathVariable String providerId) {
-		return new Response<List<Service>>(manager.findServices(providerId));
+	@RequestMapping(method=RequestMethod.GET, value="/{provider}/services/{service}")
+	public @ResponseBody Response<Service> readService(@PathVariable String service, @PathVariable String provider) {
+		return new Response<Service>(manager.findService(service, provider));
+	}
+
+	@RequestMapping(method=RequestMethod.GET, value="/{provider}/services")
+	public @ResponseBody Response<List<Service>> readServices(@PathVariable String provider) {
+		return new Response<List<Service>>(manager.findServices(provider));
 	}
 	
 	@ExceptionHandler(Exception.class)

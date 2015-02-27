@@ -24,5 +24,6 @@ public class Constants {
 
 	public static final String STATUS_OPEN = "open";
 	public static final String STATUS_CLOSED = "closed";
+	public static final Double RADIUS_DEFAULT = 1D;
 
 }

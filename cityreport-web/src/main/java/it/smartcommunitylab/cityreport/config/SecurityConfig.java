@@ -15,8 +15,15 @@
  ******************************************************************************/
 package it.smartcommunitylab.cityreport.config;
 
+import it.smartcommunitylab.cityreport.model.Issuer;
+import it.smartcommunitylab.cityreport.security.UserAuthenticator;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -31,7 +38,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
 	private AuthenticationProvider customAuthenticationProvider;
+	@Autowired
+	private Environment env;
 
+	@Bean
+	public UserAuthenticator getUserAuthenticator() {
+//		return new SCOUserAuthenticator(env.getProperty("aacURL"));
+		return new UserAuthenticator() {
+			@Override
+			public Issuer identifyUser(HttpServletRequest req) throws SecurityException {
+				Issuer issuer = new Issuer();
+				issuer.setUserId("1");
+				return issuer;
+			}
+		};
+	}
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	    auth
@@ -44,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        	.csrf()
 	        	.disable()
 	            .authorizeRequests()
-	            	.antMatchers("/","/console/**","/dataapi/**")
+	            	.antMatchers("/","/console/**","/mgmt/**")
 	            		.authenticated()
 	                .anyRequest()
 	                	.permitAll();
