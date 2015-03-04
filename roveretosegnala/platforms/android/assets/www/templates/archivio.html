@@ -15,9 +15,10 @@
                     <ion-content class="padding">
                         <ion-list>
                             <ion-item ng-repeat="signal in listclosed.data | filter: { status: 'closed' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                {{signal.attribute.title}}
+                                <b>{{signal.attribute.title}}</b>
 
-                                <p> {{signal.location.address}}</p>
+
+                                <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>
 
                             </ion-item>
                         </ion-list>
@@ -34,8 +35,10 @@
                     <ion-content class="padding">
                         <ion-list>
                             <ion-item ng-repeat="signal in listprocessing.data | filter: { status: 'processing' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                {{signal.attribute.title}}
-                                <p> {{signal.location.address}}</p>
+                                <b>{{signal.attribute.title}}</b>
+
+
+                                <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>
 
                             </ion-item>
                         </ion-list>
@@ -53,8 +56,10 @@
                     <ion-content class="padding">
                         <ion-list>
                             <ion-item ng-repeat="signal in listopen.data | filter: { status: 'open' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                {{signal.attribute.title}}
-                                <p> {{signal.location.address}}</p>
+                                <b>{{signal.attribute.title}}</b>
+
+
+                                <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>
                             </ion-item>
                         </ion-list>
                         <ion-infinite-scroll ng-if="!noMoreOpenItemsAvailable" on-infinite="loadMore('open')" distance="1%">

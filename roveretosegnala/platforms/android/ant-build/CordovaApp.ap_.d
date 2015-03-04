@@ -51,6 +51,7 @@
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/js/controllers/common.js \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/js/controllers/map.js \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/templates/mysignals.html \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/templates/image-popover.html \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/templates/credits.html \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/templates/mapold.html \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/templates/map4address.html \
@@ -224,13 +225,17 @@
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/marker-shadow.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-segnala.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-done.png \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-credits.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/marker-icon.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-segnalazione.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-mappa.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic_logo.png \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-archivio.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/credits \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/segnala.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-progressing.png \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-mysignals.png \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/ic-login.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/incident.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/layers-2x.png \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/img/credits/fbk.png \

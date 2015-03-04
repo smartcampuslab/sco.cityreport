@@ -82,13 +82,33 @@ angular.module('roveretoSegnala.controllers.archive', [])
 })
 
 
-.controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, archiveService) {
+.controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, archiveService) {
     // "MovieService" is a service returning mock data (services.js)
     $scope.signal = archiveService.getItem($stateParams.id);
     $scope.myActiveSlide = 0;
     /*
         $scope.title = $filter('translate')("title_ar");
     */
+    $scope.showImages = function (index) {
+        $scope.activeSlide = index;
+        $scope.showModal('templates/image-popover.html');
+    }
+
+    $scope.showModal = function (templateUrl) {
+        $ionicModal.fromTemplateUrl(templateUrl, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $scope.modal = modal;
+            $scope.modal.show();
+        });
+    }
+
+    // Close the modal
+    $scope.closeModal = function () {
+        $scope.modal.hide();
+        $scope.modal.remove()
+    };
 })
 
 .controller('MySignalsCtrl', function ($scope, $stateParams, $filter, archiveService) {

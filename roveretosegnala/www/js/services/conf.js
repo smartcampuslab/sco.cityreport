@@ -75,6 +75,11 @@ angular.module('roveretoSegnala.services.conf', [])
             en: 'Report',
             de: 'Berichte'
         },
+        'my_signals_title': {
+            it: 'Le mie segnalazioni',
+            en: 'My issues',
+            de: 'Meine Berichte'
+        },
         'segnala_input_title': {
             it: 'Titolo',
             en: 'Title',
@@ -134,6 +139,11 @@ angular.module('roveretoSegnala.services.conf', [])
             it: 'Dettagli',
             en: 'Details',
             de: 'Adresse'
+        },
+        'archivedetail_images': {
+            it: 'Immagini',
+            en: 'Images',
+            de: 'Bilder'
         },
         'archivedetail_description': {
             it: 'Descrizione',

@@ -135,6 +135,11 @@ angular.module('roveretoSegnala.services.conf', [])
             en: 'Details',
             de: 'Adresse'
         },
+        'archivedetail_images': {
+            it: 'Immagini',
+            en: 'Images',
+            de: 'Bilder'
+        },
         'archivedetail_description': {
             it: 'Descrizione',
             en: 'Description',

@@ -18,6 +18,7 @@
         <param name="android-package" value="org.apache.cordova.file.FileUtils" />
         <param name="onload" value="true" />
     </feature>
+    <icon src="www/img/ic_logo.png" />
     <name>roveretosegnala-ionic</name>
     <description>
         An Ionic Framework and Cordova project.

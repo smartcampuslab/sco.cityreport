@@ -1,35 +1,48 @@
 <ion-view title="{{'archivedetail_title' | translate}}">
     <ion-nav-page title="title">
         <ion-content has-header="true" has-footer="true" padding="true">
-            <div class="list">
+            <!--            <div class="list">-->
 
-                <a class="item item-icon-left" href="#">
-                    <i class="icon ion-email"></i> <b>{{'archivedetail_title' | translate}}:</b> {{signal.attribute.title}}
-
-                </a>
-                <a class="item item-icon-left" href="#">
-                    <i class="icon ion-document-text"></i> <b>{{'archivedetail_description' | translate}}:</b> {{signal.attribute.description}}
-                </a>
-                <a class="item item-icon-left" href="#">
-                    <i class="icon ion-ios-location"></i> <b>{{'archivedetail_address' | translate}}:</b> {{signal.location.address}}
-
-                </a>
-                <a class="item item-icon-left" href="#">
-                    <i class="icon ion-ios-list"></i><b> {{'archivedetail_category' | translate}}:</b> {{signal.attribute.category}}
-
-                </a>
-
-
-
-
-                <ion-slide-box active-slide="myActiveSlide" show-pager="true">
-                    <ion-slide ng-repeat="picture in signal.media ">
-                        <img src="{{picture}}" />
-                    </ion-slide>
-                </ion-slide-box>
-
-
+            <!--                <a class="item item-icon-left" href="#">-->
+            <div class="signal-detail-element"><b> {{signal.attribute.title}}</b>
             </div>
+            <!--                </a>-->
+            <!--                <a class="item item-icon-left" href="#">-->
+            <div class="signal-detail-element">
+                {{signal.attribute.description}}
+            </div>
+            <!--                </a>-->
+            <!--                <a class="item item-icon-left" href="#">-->
+            <div class="signal-detail-element">
+                <i class="icon ion-ios-location" style="font-size:25px; margin-right:8px"></i> {{signal.location.address}}
+            </div>
+
+            <!--                </a>-->
+            <!--                <a class="item item-icon-left" href="#">-->
+            <div class="signal-detail-element">
+                <i class="icon ion-pricetag" style="font-size:25px; margin-right:8px"></i>{{signal.attribute.category.label}}
+            </div>
+            <!--</a>-->
+
+
+
+<!--
+<ion-slide-box active-slide="myActiveSlide" show-pager="true">
+    <ion-slide ng-repeat="picture in signal.media ">
+        <img src="{{picture}}" />
+    </ion-slide>
+</ion-slide-box>-->
+
+            <div class="item item-divider">
+                <i class="ion-images"></i> {{'archivedetail_images' | translate}}
+            </div>
+            <a class="item item-list-detail">
+                <ion-scroll direction="x">
+                    <img ng-repeat="picture in signal.media" ng-src="{{picture}}" ng-click="showImages($index)" class="image-list-thumb" />
+                </ion-scroll>
+            </a>
+
+            <!--</div>-->
             <!--
            <a class="item item-icon-left" href="#">
     <i class="icon ion-images"></i>

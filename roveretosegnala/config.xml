@@ -18,5 +18,7 @@
     </feature>
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
-
+    <platform name="android">
+        <icon src="www/img/ic_logo.png" />
+    </platform>
 </widget>

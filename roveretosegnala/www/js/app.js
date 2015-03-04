@@ -46,6 +46,7 @@ angular.module('roveretoSegnala', [
 
 
     .state('app.segnala', {
+        cache: false,
         url: "/segnala/:place",
         views: {
             'menuContent': {
@@ -58,6 +59,7 @@ angular.module('roveretoSegnala', [
 
 
     .state('app.archivio', {
+        cache: false,
         url: "/archivio",
         views: {
             'menuContent': {
@@ -68,6 +70,7 @@ angular.module('roveretoSegnala', [
     })
 
     .state('app.mysignals', {
+            cache: false,
             url: "/mysignals",
             views: {
                 'menuContent': {
@@ -77,6 +80,7 @@ angular.module('roveretoSegnala', [
             }
         })
         .state('app.archiviodetail', {
+            cache: true,
             url: '/archiviodetail/:id',
             views: {
                 'menuContent': {
@@ -86,15 +90,9 @@ angular.module('roveretoSegnala', [
             }
         })
 
-    /* .state('app.credits', {
-     url: "/credits",
-     views: {
-         'menuContent': {
-             templateUrl: "templates/credits.html",
-         }
-     }
- })*/
     .state('app.map4address', {
+            cache: true,
+
             url: "/map4address",
             views: {
                 'menuContent': {
@@ -104,6 +102,7 @@ angular.module('roveretoSegnala', [
             }
         })
         .state('app.map', {
+            cache: false,
             url: "/map",
             views: {
                 'menuContent': {

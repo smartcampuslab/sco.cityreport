@@ -21,17 +21,21 @@
                 </div>
 
 
-                <div class="item item-input">
+                <div class="item item-input   item-button-right">
                     <!--                    <label class="item-input-wrapper">-->
                     <placeautocomplete ng-model="result" attr-placeholder="{{'segnala_input_place_suggestion' | translate}}" click-activation="true" data="places" on-type="doSomething" placeholder="{{'segnala_input_description' | translate}}" style="width: 100%" on-select="changeString"></placeautocomplete>
 
                     <!--</label>-->
-                    <button class="button button-custom" ng-click="locateMe()">
-                        <i class="icon ion-android-locate "></i>
-                    </button>
-                    <button class="button button-custom" ng-click="openMap4Address()">
-                        <i class="icon ion-map"></i>
-                    </button>
+                    <div class="buttons">
+                        <button class="button button-custom signal-place {
+    position: fixed;" ng-click="locateMe()">
+                            <i class="icon ion-android-locate "></i>
+                        </button>
+                        <button class="button button-custom signal-place {
+    position: fixed;" ng-click="openMap4Address()">
+                            <i class="icon ion-map"></i>
+                        </button>
+                    </div>
                 </div>
 
 
@@ -40,23 +44,11 @@
                     <div class="input-label">
                         {{'segnala_label_categories' | translate}}
                     </div>
-<!--
-<select>
-    <option selected>{{'segnala_category_1' | translate}}</option>
-    <option>{{'segnala_category_2' | translate}}</option>
-    <option>{{'segnala_category_3' | translate}}</option>
-</select>
--->
-                    <select ng-model="signal.attribute.category"
-                ng-options="cat as cat.label for cat in categories">
-            </select>
+
+                    <select ng-model="signal.attribute.category" ng-options="cat as cat.label for cat in categories">
+                    </select>
                 </label>
-                <!--
-<div>
-<autocomplete ng-model="result" attr-placeholder="type to search movies..." click-activation="true" data="places" on-type="doSomething" on-select="doSomethingElse" placeholder="{{'segnala_input_description' | translate}}"></autocomplete>
-    <br>
-</div>
--->
+
 
 
                 <input type="hidden" name="lat" value="{{chosenPlace.geometry.location.lat()}}">
@@ -71,19 +63,12 @@
                     </button>
                 </div>
                 <ion-scroll>
-                    <!--
-<img id="immagine" ng-src="http://vignette4.wikia.nocookie.net/robber-penguin-agency/images/6/6e/Small-mario.png" height="200px" />
-<canvas id="myCanvas" />
--->
+
 
                     <img ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="removeImage(image)" height="200px" />
                 </ion-scroll>
 
-                <!--
-<button class="button button-block button-positive" ng-click="submit()">
-    {{'segnala_button_send' | translate}}
-</button>
--->
+
             </div>
         </form>
     </ion-content>

@@ -40,16 +40,15 @@
                     <div class="input-label">
                         {{'segnala_label_categories' | translate}}
                     </div>
-<!--
+                    <!--
 <select>
     <option selected>{{'segnala_category_1' | translate}}</option>
     <option>{{'segnala_category_2' | translate}}</option>
     <option>{{'segnala_category_3' | translate}}</option>
 </select>
 -->
-                    <select ng-model="signal.attribute.category"
-                ng-options="cat as cat.label for cat in categories">
-            </select>
+                    <select ng-model="signal.attribute.category" ng-options="cat as cat.label for cat in categories">
+                    </select>
                 </label>
                 <!--
 <div>

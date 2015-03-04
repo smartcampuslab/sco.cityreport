@@ -33,9 +33,19 @@ angular.module('roveretoSegnala.controllers.segnala', [])
     .factory('segnalaService', function ($http, $q, Config) {
         var clientId = 'b790f7d57013adb';
         var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
+        var title = null;
+        var description = null;
+        var category = null;
         var latlong = [0, 0];
         var segnalaService = {};
+        var signal = null;
         var name = '';
+        segnalaService.setSignal = function (signalinput) {
+            signal = signalinput;
+        }
+        segnalaService.getSignal = function () {
+            return signal;
+        };
         segnalaService.getclientId = function () {
             return clientId;
         };
@@ -45,6 +55,24 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         segnalaService.getName = function () {
             return name;
         };
+        //        segnalaService.setTitle = function (titleinput) {
+        //            title = titleinput;
+        //        };
+        //        segnalaService.setDescription = function (descriptioninput) {
+        //            description = descriptioninput;
+        //        };
+        //        segnalaService.setCategory = function (categoryinput) {
+        //            category = categoryinput;
+        //        };
+        //        segnalaService.getTitle = function () {
+        //            return title;
+        //        };
+        //        segnalaService.setDescription = function () {
+        //            return description;
+        //        };
+        //        segnalaService.setCategory = function () {
+        //            return category;
+        //        };
         segnalaService.setName = function (nameinput) {
             name = nameinput;
         };
@@ -94,7 +122,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         return segnalaService;
     })
 
-.controller('Map4AdrressCtrl', function ($scope, $location, $window, $q, $http, $filter, $ionicPopup, leafletData, archiveService, segnalaService) {
+.controller('Map4AdrressCtrl', function ($scope, $location, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, leafletData, archiveService, segnalaService) {
 
         leafletData.getMap().then(function (map) {
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -104,7 +132,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         });
         $scope.$on("leafletDirectiveMap.click", function (event, args) {
             segnalaService.setPosition(args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
-            alert(args.leafletEvent.latlng.lat + ' ' + args.leafletEvent.latlng.lng);
+            //            alert(args.leafletEvent.latlng.lat + ' ' + args.leafletEvent.latlng.lng);
             var placedata = $q.defer();
             var places = {};
             var url = "https://os.smartcommunitylab.it/core.geocoder/spring/location?latlng=" + args.leafletEvent.latlng.lat + ',' + args.leafletEvent.latlng.lng;
@@ -160,6 +188,10 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     segnalaService.setName(name);
                     //                    window.history.back();
                     window.location.assign('#/app/segnala/' + name);
+                    $ionicHistory.nextViewOptions({
+                        disableAnimate: true,
+                        disableBack: true
+                    });
                 }
             });
         }
@@ -182,8 +214,9 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         });
 
     })
-    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, Toast, $stateParams, segnalaService, PlacesRetriever) {
+    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, Toast, $stateParams, segnalaService, PlacesRetriever) {
         $scope.selectedcategory = null;
+        $scope.signal = null;
         $scope.categories = [
             {
                 label: $filter('translate')("segnala_category_1"),
@@ -198,23 +231,28 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 value: 2
             }
   ];
-        $scope.signal = {
+        if (!segnalaService.getSignal()) {
+            $scope.signal = {
 
-            location: {
-                coordinates: null,
-                address: null
-            },
-            media: null,
-            attribute: {
-                title: null,
-                description: null,
-                category: null
-            }
-        };
+                location: {
+                    coordinates: null,
+                    address: null
+                },
+                media: null,
+                attribute: {
+                    title: null,
+                    description: null,
+                    category: null
+                }
+            };
+        } else {
+            $scope.signal = segnalaService.getSignal();
+        }
         $scope.signal.attribute.category = $scope.categories[0];
         $scope.images = [];
         $scope.placesandcoordinates = {};
         $scope.openMap4Address = function () {
+            segnalaService.setSignal($scope.signal);
             window.location.assign('#/app/map4address');
         }
 
@@ -336,7 +374,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             $window.navigator.geolocation.getCurrentPosition(function (position) {
                     $scope.$apply(function () {
                         $scope.position = position;
-                        alert(position.coords.latitude + ' ' + position.coords.longitude);
+                        //                        alert(position.coords.latitude + ' ' + position.coords.longitude);
                         var placedata = $q.defer();
                         var places = {};
                         var url = "https://os.smartcommunitylab.it/core.geocoder/spring/location?latlng=" + position.coords.latitude + ',' + position.coords.longitude;
@@ -371,7 +409,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     });
                 },
                 function (error) {
-                    alert(error);
+                    //                    alert(error);
                 });
         };
         $scope.changeString = function (suggestion) {
@@ -426,7 +464,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                                 $ionicLoading.hide();
                                 console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
                                 //torna indietro con toast successo
-                                window.history.back();
+                                window.location.assign('#/app/map');
+                                $ionicHistory.nextViewOptions({
+                                    disableAnimate: true,
+                                    disableBack: true
+                                });
                                 Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
                             }, function (error) {
@@ -456,7 +498,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                         $ionicLoading.hide();
                         console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
                         //torna indietro con toast successo
-                        window.history.back();
+                        window.location.assign('#/app/map');
+                        $ionicHistory.nextViewOptions({
+                            disableAnimate: true,
+                            disableBack: true
+                        });
                         Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
                     }, function (error) {
