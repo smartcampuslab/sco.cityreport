@@ -204,25 +204,42 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         $scope.showConfirm = function (name) {
             var confirmPopup = $ionicPopup.confirm({
                 title: $filter('translate')("signal_send_confirm place_title"),
-                template: name
+                template: name,
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_popup_cancel"),
+                        type: 'button-custom'
+                            },
+                    {
+                        text: $filter('translate')("signal_send_popup_ok"),
+                        type: 'button-custom',
+                        onTap: function (res) {
+                            if (res) {
+                                segnalaService.setPosition(segnalaService.getPosition()[0], segnalaService.getPosition()[1]);
+                                segnalaService.setName(name);
+                                //                    window.history.back();
+                                window.location.assign('#/app/segnala/' + name);
+                                $ionicHistory.nextViewOptions({
+                                    disableAnimate: true,
+                                    disableBack: true
+                                });
+                            }
+                        }
+                    }
+            ]
             });
-            confirmPopup.then(function (res) {
-                if (res) {
-                    segnalaService.setPosition(segnalaService.getPosition()[0], segnalaService.getPosition()[1]);
-                    segnalaService.setName(name);
-                    //                    window.history.back();
-                    window.location.assign('#/app/segnala/' + name);
-                    $ionicHistory.nextViewOptions({
-                        disableAnimate: true,
-                        disableBack: true
-                    });
-                }
-            });
+
         }
         $scope.showNoPlace = function () {
             var alertPopup = $ionicPopup.alert({
                 title: $filter('translate')("signal_send_no_place_title"),
-                template: $filter('translate')("signal_send_no_place_template")
+                template: $filter('translate')("signal_send_no_place_template"),
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom'
+                            }
+            ]
             });
             alertPopup.then(function (res) {
                 console.log('no place');
@@ -238,23 +255,10 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         });
 
     })
-    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, Toast, $stateParams, segnalaService, PlacesRetriever) {
+    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, Toast, $stateParams, segnalaService, PlacesRetriever, Config) {
         $scope.selectedcategory = null;
         $scope.signal = null;
-        $scope.categories = [
-            {
-                label: $filter('translate')("segnala_category_1"),
-                value: 0
-            },
-            {
-                label: $filter('translate')("segnala_category_2"),
-                value: 1
-            },
-            {
-                label: $filter('translate')("segnala_category_3"),
-                value: 2
-            }
-  ];
+        $scope.categories = Config.getCategories();
         if (!segnalaService.getSignal()) {
             $scope.signal = {
 
@@ -269,12 +273,25 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     category: null
                 }
             };
+            $scope.signal.attribute.category = $scope.categories[0];
+            $scope.images = [];
+
+
+
         } else {
             $scope.signal = segnalaService.getSignal();
+            $scope.signal.attribute.category = $scope.categories[$scope.signal.attribute.category.value];
+
+            $scope.images = $scope.signal.media;
+            if (!$scope.signal.media) {
+                $scope.signal.media = [];
+            }
+            //            $scope.signal.attribute.category = $scope.categories[0];
+
+
         }
-        $scope.signal.attribute.category = $scope.categories[0];
-        $scope.images = [];
         $scope.placesandcoordinates = {};
+
         $scope.openMap4Address = function () {
             segnalaService.setSignal($scope.signal);
             window.location.assign('#/app/map4address');
@@ -440,6 +457,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             // segnalaService.setPosition(position.coords.latitude, position.coords.longitude);
             //            alert($scope.placesandcoordinates[suggestion].latlong);
             segnalaService.setPosition($scope.placesandcoordinates[suggestion].latlong.split(',')[0], $scope.placesandcoordinates[suggestion].latlong.split(',')[1]);
+            segnalaService.setName(suggestion);
+
             $scope.signal.location.address = suggestion;
         }
 
@@ -454,8 +473,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         $scope.submit = function () {
             var remoteURL = [];
             $scope.signal.location.coordinates = segnalaService.getPosition();
-            $scope.signal.media = $scope.images;
-            $scope.signal.attribute.category = $scope.signal.attribute.category.value;
+            $scope.signal.location.address = segnalaService.getName();
+            if ($scope.images) {
+                $scope.signal.media = $scope.images;
+            }
+            //            $scope.signal.attribute.category = $scope.selectedcategory.value;
             if ($scope.checkForm($scope.signal)) {
                 $ionicLoading.show({
                     template: 'Loading...'
@@ -542,7 +564,13 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 //show popup 
                 var alertPopup = $ionicPopup.alert({
                     title: $filter('translate')("signal_error_send_title"),
-                    template: $filter('translate')("signal_error_send_template")
+                    template: $filter('translate')("signal_error_send_template"),
+                    buttons: [
+                        {
+                            text: $filter('translate')("signal_send_toast_alarm"),
+                            type: 'button-custom',
+                            }
+            ]
                 });
                 alertPopup.then(function (res) {
                     console.log('error');
@@ -587,15 +615,26 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         $scope.showConfirm = function (name, lat, long) {
             var confirmPopup = $ionicPopup.confirm({
                 title: $filter('translate')("signal_send_confirm place_title"),
-                template: name
-            });
-            confirmPopup.then(function (res) {
-                if (res) {
-                    $scope.result = name;
-                    segnalaService.setPosition(lat, long);
+                template: name,
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_popup_cancel"),
+                        type: 'button-custom'
+                            },
+                    {
+                        text: $filter('translate')("signal_send_popup_ok"),
+                        type: 'button-custom',
+                        onTap: function (res) {
+                            if (res) {
+                                $scope.result = name;
+                                segnalaService.setPosition(lat, long);
 
-                }
+                            }
+                        }
+                    }
+            ]
             });
+
         }
 
 

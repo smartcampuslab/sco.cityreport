@@ -7,21 +7,21 @@
             <div class="list list-inset">
 
                 <div class="item item-input-inset">
-                    <label class="item-input-wrapper">
+                    <label class="item-input">
                         <input ng-model="signal.attribute.title" name="signal_title" type="text" placeholder="{{'segnala_input_title' | translate}}">
                     </label>
 
                 </div>
 
                 <div class="item item-input-inset">
-                    <label class="item-input-wrapper">
+                    <label class="item-input">
                         <input ng-model="signal.attribute.description" type="text" placeholder="{{'segnala_input_description' | translate}}">
                     </label>
 
                 </div>
 
 
-                <div class="item item-input   item-button-right">
+                <div class="item item-input item-button-right">
                     <!--                    <label class="item-input-wrapper">-->
                     <placeautocomplete ng-model="result" attr-placeholder="{{'segnala_input_place_suggestion' | translate}}" click-activation="true" data="places" on-type="doSomething" placeholder="{{'segnala_input_description' | translate}}" style="width: 100%" on-select="changeString"></placeautocomplete>
 
@@ -53,7 +53,7 @@
 
                 <input type="hidden" name="lat" value="{{chosenPlace.geometry.location.lat()}}">
                 <input type="hidden" name="long" value="{{chosenPlace.geometry.location.lng()}}">
-                <div align="center">
+                <div align="center" style="margin:5px">
 
                     <button class="button button-custom button-large" ng-click="addImage('Camera')">
                         <i class=" icon ion-android-camera"></i>

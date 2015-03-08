@@ -31,6 +31,7 @@ angular.module('roveretoSegnala', [
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
+
     });
 })
 
@@ -46,17 +47,58 @@ angular.module('roveretoSegnala', [
 
 
     .state('app.segnala', {
-        cache: false,
-        url: "/segnala/:place",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/segnala.html",
-                controller: 'SegnalaCtrl'
+            cache: false,
+            url: "/segnala/:place",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/segnala.html",
+                    controller: 'SegnalaCtrl'
 
+                }
+            }
+        })
+        .state('app.tab', {
+            url: '/tab',
+            abstract: false,
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/tabs.html",
+                    controller: 'ArchiveCtrl'
+
+                }
+            }
+        })
+
+    // Each tab has its own nav history stack:
+
+    .state('app.tab.closed', {
+        url: '/closed',
+        views: {
+            'app-tab-closed': {
+                templateUrl: 'templates/tab-closed.html',
+                controller: 'ArchiveCtrl'
             }
         }
     })
 
+    .state('app.tab.processing', {
+            url: '/processing',
+            views: {
+                'app-tab-processing': {
+                    templateUrl: 'templates/tab-processing.html',
+                    controller: 'ArchiveCtrl'
+                }
+            }
+        })
+        .state('app.tab.open', {
+            url: '/open',
+            views: {
+                'app-tab-open': {
+                    templateUrl: 'templates/tab-open.html',
+                    controller: 'ArchiveCtrl'
+                }
+            }
+        })
 
     .state('app.archivio', {
         cache: false,
@@ -80,7 +122,7 @@ angular.module('roveretoSegnala', [
             }
         })
         .state('app.archiviodetail', {
-            cache: true,
+            cache: false,
             url: '/archiviodetail/:id',
             views: {
                 'menuContent': {

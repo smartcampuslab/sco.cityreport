@@ -1,4 +1,14 @@
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes.dex : \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$6.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$5$1.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$5.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$4.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$3.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$1.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$7.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$6$1.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen$2.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/device/Device.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/camera/CameraLauncher.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/camera/FileHelper.class \

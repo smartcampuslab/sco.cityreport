@@ -82,10 +82,11 @@ angular.module('roveretoSegnala.controllers.archive', [])
 })
 
 
-.controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, archiveService) {
+.controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, archiveService, Config) {
     // "MovieService" is a service returning mock data (services.js)
     $scope.signal = archiveService.getItem($stateParams.id);
     $scope.myActiveSlide = 0;
+    $scope.categories = Config.getCategories();
     /*
         $scope.title = $filter('translate')("title_ar");
     */
@@ -183,7 +184,9 @@ angular.module('roveretoSegnala.controllers.archive', [])
 
                 }).success(function (data) {
                     items = data;
-                    itemsMap = {};
+                    if (!itemsMap) {
+                        itemsMap = {};
+                    }
                     for (var i = 0; i < items.data.length; i++) {
                         itemsMap[items.data[i].id] = items.data[i];
                     }
@@ -265,8 +268,8 @@ angular.module('roveretoSegnala.controllers.archive', [])
             success(function (data, status, headers, config) {
 
                 items = data;
-                for (var i = 0; i < data.length; i++) {
-                    itemsMap[data.data[i].id] = data[i];
+                for (var i = 0; i < data.data.length; i++) {
+                    itemsMap[data.data[i].id] = data.data[i];
                 }
                 deferred.resolve(items);
             }).error(function (data, status, headers, config) {
@@ -297,8 +300,8 @@ angular.module('roveretoSegnala.controllers.archive', [])
             success(function (data, status, headers, config) {
 
                 items = data;
-                for (var i = 0; i < data.length; i++) {
-                    itemsMap[data.data[i].id] = data[i];
+                for (var i = 0; i < data.data.length; i++) {
+                    itemsMap[data.data[i].id] = data.data[i];
                 }
                 deferred.resolve(items);
             }).error(function (data, status, headers, config) {

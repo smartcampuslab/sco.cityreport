@@ -75,6 +75,11 @@ angular.module('roveretoSegnala.services.conf', [])
             en: 'Report',
             de: 'Berichte'
         },
+        'my_signals_title': {
+            it: 'Le mie segnalazioni',
+            en: 'My issues',
+            de: 'Meine Berichte'
+        },
         'segnala_input_title': {
             it: 'Titolo',
             en: 'Title',
@@ -201,9 +206,9 @@ angular.module('roveretoSegnala.services.conf', [])
             de: 'Bitte wählen Sie eine andere Positione'
         },
         'segnala_input_place_suggestion': {
-            it: 'digita per ottenere suggerimenti...',
-            en: 'type for place suggestions...',
-            de: 'geben Sie den Text für Anregungen...'
+            it: 'Indirizzo...',
+            en: 'Place...',
+            de: 'Straße...'
         },
         'signal_send_toast_ok': {
             it: 'Nuova segnalazione inviata con successo',
@@ -214,6 +219,21 @@ angular.module('roveretoSegnala.services.conf', [])
             it: 'Problema nell\'invio della segnalazione',
             en: 'Error sending the issue',
             de: 'Fehler beim Senden der Warnung'
+        },
+        'signal_send_popup_ok': {
+            it: 'OK',
+            en: 'OK',
+            de: 'OK'
+        },
+        'signal_send_popup_cancel': {
+            it: 'Chiudi',
+            en: 'Close ',
+            de: 'schließen'
+        },
+        'signal_send_toast_alarm': {
+            it: 'Chiudi',
+            en: 'Close ',
+            de: 'schließen'
         },
         'menu_map': {
             it: 'Mappa',
@@ -369,7 +389,22 @@ angular.module('roveretoSegnala.services.conf', [])
         textTypesList: function () {
             return textTypes;
         },
-
+        getCategories: function () {
+            return [
+                {
+                    label: $filter('translate')("segnala_category_1"),
+                    value: 0
+            },
+                {
+                    label: $filter('translate')("segnala_category_2"),
+                    value: 1
+            },
+                {
+                    label: $filter('translate')("segnala_category_3"),
+                    value: 2
+            }
+  ];
+        },
 
 
         cityName: function () {

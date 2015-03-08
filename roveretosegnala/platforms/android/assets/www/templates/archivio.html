@@ -1,72 +1,58 @@
-<!--<ion-nav-bar class="nav-title-slide-ios7 bar-positive">
-    <ion-nav-back-button class="button-icon ion-arrow-left-c">
-    </ion-nav-back-button>
-</ion-nav-bar>-->
-
-<!--
-<ion-nav-view animation="slide-left-right" title="{{'archive_title' | translate}}"></ion-nav-view>-->
-
 <ion-view title="{{'archive_title' | translate}}">
-    <ion-tabs class="tabs-positive has-tabs-top tabs-top">
-
+    <ion-tabs class="tabs-positive  tabs-top">
         <ion-tab title="{{'archive_closed' | translate}}">
-            <ion-nav-view name="home-tab">
-                <ion-view title="Also Factual">
-                    <ion-content class="padding">
-                        <ion-list>
-                            <ion-item ng-repeat="signal in listclosed.data | filter: { status: 'closed' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                <b>{{signal.attribute.title}}</b>
+<div>               <ion-content>
+
+                    <ion-list padding="true">
+                        <ion-item ng-repeat=" signal in listclosed.data | filter: { status: 'closed' } " href="#/app/archiviodetail/{{signal.id}} " type="item-link ">
+
+                            <b>{{signal.attribute.title}} </b> <span class="alignright ">{{signal.created | date:' HH:mm dd-MM-yyyy'}}</span>
 
 
-                                <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>
+                            <p><i class="icon ion-ios-location " style="font-size:25px; "></i> {{signal.location.address}}</p>
 
-                            </ion-item>
-                        </ion-list>
-                        <ion-infinite-scroll ng-if="!noMoreClosedItemsAvailable" on-infinite="loadMore('closed')" distance="1%">
-                        </ion-infinite-scroll>
-                    </ion-content>
-                </ion-view>
-            </ion-nav-view>
+                        </ion-item>
+                    </ion-list>
+                    <ion-infinite-scroll ng-if="!noMoreClosedItemsAvailable " on-infinite="loadMore( 'closed') " distance="1% ">
+                    </ion-infinite-scroll>
+                </ion-content>
+            </div>
+
         </ion-tab>
 
-        <ion-tab title="{{'archive_running' | translate}}">
-            <ion-nav-view name="about-tab">
-                <ion-view title="Also Factual">
-                    <ion-content class="padding">
-                        <ion-list>
-                            <ion-item ng-repeat="signal in listprocessing.data | filter: { status: 'processing' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                <b>{{signal.attribute.title}}</b>
+        <ion-tab title="{{ 'archive_running' | translate}} ">
+            <div>
+                <ion-content>
+                    <ion-list>
+                        <ion-item ng-repeat="signal in listprocessing.data | filter: { status: 'processing' } " href="#/app/archiviodetail/{{signal.id}} " type="item-link ">
+                            <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' HH:mm dd-MM-yyyy'}}</span>
 
 
-                                <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>
+                            <p><i class="icon ion-ios-location " style="font-size:25px; "></i> {{signal.location.address}}</p>
 
-                            </ion-item>
-                        </ion-list>
-                        <ion-infinite-scroll ng-if="!noMoreProcessingItemsAvailable" on-infinite="loadMore('processing')" distance="1%">
-                        </ion-infinite-scroll>
-                    </ion-content>
-                </ion-view>
-            </ion-nav-view>
+                        </ion-item>
+                    </ion-list>
+                    <ion-infinite-scroll ng-if="!noMoreProcessingItemsAvailable " on-infinite="loadMore( 'processing') " distance="1% ">
+                    </ion-infinite-scroll>
+                </ion-content>
+            </div>
         </ion-tab>
 
-        <ion-tab title="{{'archive_waiting' | translate}}">
-            <ion-nav-view name="contact-tab">
-
-                <ion-view title="Also Factual">
-                    <ion-content class="padding">
-                        <ion-list>
-                            <ion-item ng-repeat="signal in listopen.data | filter: { status: 'open' }" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
-                                <b>{{signal.attribute.title}}</b>
+        <ion-tab title="{{ 'archive_waiting' | translate}} ">
+            <div>
+                <ion-content>
+                    <ion-list>
+                        <ion-item ng-repeat="signal in listopen.data | filter: { status: 'open' } " href="#/app/archiviodetail/{{signal.id}}">
+                            <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' HH:mm dd-MM-yyyy'}}</span>
 
 
-                                <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>
-                            </ion-item>
-                        </ion-list>
-                        <ion-infinite-scroll ng-if="!noMoreOpenItemsAvailable" on-infinite="loadMore('open')" distance="1%">
-                        </ion-infinite-scroll>
-                    </ion-content>
-                </ion-view>
-            </ion-nav-view>
+                            <p><i class="icon ion-ios-location " style="font-size:25px; "></i> {{signal.location.address}}</p>
+                        </ion-item>
+                    </ion-list>
+                    <ion-infinite-scroll ng-if="!noMoreOpenItemsAvailable " on-infinite="loadMore( 'open') " distance="1% ">
+                    </ion-infinite-scroll>
+                </ion-content>
+            </div>
         </ion-tab>
 
     </ion-tabs>

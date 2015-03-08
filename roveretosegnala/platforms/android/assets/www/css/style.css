@@ -78,6 +78,19 @@ body {
     color: #e6e6e6;
 }
 
+.button.button-custom.signal-place {
+    border-color: #c62828;
+    background-color: #c62828;
+    margin: 1px;
+    color: #e6e6e6;
+}
+
+.button.button-custom.activated {
+    border-color: #c62828;
+    background-color: #b22424;
+    color: #e6e6e6;
+}
+
 .button.button-custom:hover {
     border-color: #c62828;
     background-color: #b22424;
@@ -93,8 +106,8 @@ body {
 }
 
 .menu-entry img {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     vertical-align: middle;
 }
 
@@ -111,6 +124,10 @@ body {
     background-color: #c62828;
     color: #c62828;
 }*/
+
+.alignright {
+    float: right;
+}
 
 .bar.custom-bar {
     border-color: #c62828;
@@ -151,9 +168,11 @@ body {
     max-height: 100%;
     bottom: 0;
     left: 0;
+/*
     margin: auto;
     overflow: auto;
     position: fixed;
+*/
     right: 0;
     top: 0;
 }

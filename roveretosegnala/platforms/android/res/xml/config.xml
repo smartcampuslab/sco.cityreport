@@ -18,6 +18,11 @@
         <param name="android-package" value="org.apache.cordova.file.FileUtils" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <splash src="www/img/splash.png" />
     <icon src="www/img/ic_logo.png" />
     <name>roveretosegnala-ionic</name>
     <description>
@@ -32,5 +37,7 @@
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="none" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="4000" />
     <icon src="icon.png" />
 </widget>

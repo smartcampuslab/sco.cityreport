@@ -198,6 +198,13 @@ module.exports = [
             "cordova"
         ],
         "runs": true
+    },
+    {
+        "file": "plugins/org.apache.cordova.splashscreen/www/splashscreen.js",
+        "id": "org.apache.cordova.splashscreen.SplashScreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -209,7 +216,8 @@ module.exports.metadata =
     "org.apache.cordova.device": "0.2.13",
     "org.apache.cordova.geolocation": "0.3.11",
     "org.apache.cordova.camera": "0.3.5",
-    "org.apache.cordova.file": "1.3.3"
+    "org.apache.cordova.file": "1.3.3",
+    "org.apache.cordova.splashscreen": "1.0.0"
 }
 // BOTTOM OF METADATA
 });
