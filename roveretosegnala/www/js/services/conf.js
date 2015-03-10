@@ -42,22 +42,22 @@ angular.module('roveretoSegnala.services.conf', [])
         },
         'archive_title': {
             it: 'Archivio',
-            en: 'Archivieren',
-            de: 'Archive'
+            en: 'Archive',
+            de: 'Archivieren'
         },
         'archive_closed': {
-            it: 'Risolto',
-            en: 'Solved',
+            it: 'Chiusi',
+            en: 'Closed',
             de: 'Entschlossen'
         },
         'archive_waiting': {
-            it: 'In attesa',
-            en: 'Waiting',
+            it: 'Aperti',
+            en: 'Open',
             de: 'Wartestellung'
         },
         'archive_running': {
             it: 'In corso',
-            en: 'Running',
+            en: 'Processing',
             de: 'Im Gange'
         },
         'map_title': {
@@ -156,7 +156,7 @@ angular.module('roveretoSegnala.services.conf', [])
             de: 'Adresse'
         },
         'archivedetail_category': {
-            it: 'Cateoria',
+            it: 'Categoria',
             en: 'Category',
             de: 'Adresse'
         },
@@ -166,19 +166,34 @@ angular.module('roveretoSegnala.services.conf', [])
             de: 'Adresse'
         },
         'segnala_category_1': {
-            it: 'Categoria 1',
-            en: 'Category 1',
-            de: 'Categorien 1'
+            it: 'Ambiente e territorio',
+            en: 'Environment and territory',
+            de: 'Umfeld und Gebiet'
         },
         'segnala_category_2': {
-            it: 'Categoria 2',
-            en: 'Category 2',
-            de: 'Categorien 2'
+            it: 'Commercio e negozi',
+            en: 'Market and shops',
+            de: 'Handel und Geschäfte'
         },
         'segnala_category_3': {
-            it: 'Categoria 3',
-            en: 'Category 3',
-            de: 'Categorien 3'
+            it: 'Cultura, turismo e tempo libero',
+            en: 'Culture, leisure and tourism',
+            de: 'Kultur, Freizeit und Tourismus'
+        },
+        'segnala_category_4': {
+            it: 'Lavori pubblici',
+            en: 'Public works',
+            de: 'Öffentliche Arbeiten'
+        },
+        'segnala_category_5': {
+            it: 'Lavoro',
+            en: 'Work',
+            de: 'Arbeit'
+        },
+        'segnala_category_6': {
+            it: 'Trasporti',
+            en: 'Transportation',
+            de: 'Transport'
         },
         'signal_error_send_title': {
             it: 'Errore',
@@ -264,6 +279,21 @@ angular.module('roveretoSegnala.services.conf', [])
             it: 'Credits',
             en: 'Credits',
             de: 'Credits'
+        },
+        'status_open': {
+            it: 'Aperto',
+            en: 'Open',
+            de: 'Geöffnet'
+        },
+        'status_closed': {
+            it: 'Chiuso',
+            en: 'Closed',
+            de: 'Geschlossen'
+        },
+        'status_processing': {
+            it: 'In corso',
+            en: 'Processing',
+            de: 'Wird bearbeitet'
         }
 
     }
@@ -307,7 +337,18 @@ angular.module('roveretoSegnala.services.conf', [])
             }
             return profileLoaded.promise;
         },
+        getLanguage: function () {
 
+            navigator.globalization.getLocaleName(
+                function (locale) {
+                    alert('locale: ' + locale.value + '\n');
+                },
+                function () {
+                    alert('Error getting locale\n');
+                }
+            );
+
+        },
         highlights: function () {
             return this.getProfile().then(function (data) {
                 //console.log(data.highlights[0].image);
@@ -402,6 +443,18 @@ angular.module('roveretoSegnala.services.conf', [])
                 {
                     label: $filter('translate')("segnala_category_3"),
                     value: 2
+            },
+                {
+                    label: $filter('translate')("segnala_category_4"),
+                    value: 3
+            },
+                {
+                    label: $filter('translate')("segnala_category_5"),
+                    value: 4
+            },
+                {
+                    label: $filter('translate')("segnala_category_6"),
+                    value: 5
             }
   ];
         },

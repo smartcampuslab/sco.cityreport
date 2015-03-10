@@ -1,12 +1,13 @@
 <ion-view title="{{'archive_title' | translate}}">
     <ion-tabs class="tabs-positive  tabs-top">
         <ion-tab title="{{'archive_closed' | translate}}">
-<div>               <ion-content>
+            <div>
+                <ion-content>
 
                     <ion-list padding="true">
                         <ion-item ng-repeat=" signal in listclosed.data | filter: { status: 'closed' } " href="#/app/archiviodetail/{{signal.id}} " type="item-link ">
 
-                            <b>{{signal.attribute.title}} </b> <span class="alignright ">{{signal.created | date:' HH:mm dd-MM-yyyy'}}</span>
+                            <b>{{signal.attribute.title}} </b> <span class="alignright ">{{signal.created | date:' dd-MM-yyyy'}}</span>
 
 
                             <p><i class="icon ion-ios-location " style="font-size:25px; "></i> {{signal.location.address}}</p>
@@ -25,7 +26,7 @@
                 <ion-content>
                     <ion-list>
                         <ion-item ng-repeat="signal in listprocessing.data | filter: { status: 'processing' } " href="#/app/archiviodetail/{{signal.id}} " type="item-link ">
-                            <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' HH:mm dd-MM-yyyy'}}</span>
+                            <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' dd-MM-yyyy'}}</span>
 
 
                             <p><i class="icon ion-ios-location " style="font-size:25px; "></i> {{signal.location.address}}</p>
@@ -43,7 +44,7 @@
                 <ion-content>
                     <ion-list>
                         <ion-item ng-repeat="signal in listopen.data | filter: { status: 'open' } " href="#/app/archiviodetail/{{signal.id}}">
-                            <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' HH:mm dd-MM-yyyy'}}</span>
+                            <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' dd-MM-yyyy'}}</span>
 
 
                             <p><i class="icon ion-ios-location " style="font-size:25px; "></i> {{signal.location.address}}</p>

@@ -6,6 +6,8 @@ angular.module('roveretoSegnala.controllers.map', [])
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
             $scope.init = function () {
+
+
                 $rootScope.$viewHistory = {
                     histories: {
                         root: {
@@ -90,6 +92,7 @@ angular.module('roveretoSegnala.controllers.map', [])
 
             }
             angular.extend($scope, {
+                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
                 center: {
                     lat: 45.890931,
                     lng: 11.041126,

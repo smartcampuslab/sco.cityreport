@@ -2,115 +2,126 @@ angular.module('roveretoSegnala.controllers.archive', [])
 
 .controller('ArchiveCtrl', function ($scope, archiveService) {
 
-    $scope.listForMap = {};
-    $scope.listopen = {};
-    $scope.listclosed = {};
-    $scope.listprocessing = {};
-    $scope.noMoreClosedItemsAvailable = false;
-    $scope.noMoreOpenItemsAvailable = false;
-    $scope.noMoreProcessingItemsAvailable = false;
+        $scope.listForMap = {};
+        $scope.listopen = {};
+        $scope.listclosed = {};
+        $scope.listprocessing = {};
+        $scope.noMoreClosedItemsAvailable = false;
+        $scope.noMoreOpenItemsAvailable = false;
+        $scope.noMoreProcessingItemsAvailable = false;
 
-    $scope.loadMore = function (state) {
-            var length = 0;
-            if (state == 'open') {
-                if ($scope.listopen.data) {
-                    length = $scope.listopen.data.length;
-                }
-            } else if (state == 'closed') {
-                if ($scope.listclosed.data) {
-                    length = $scope.listclosed.data.length;
-                }
-            } else {
-                if ($scope.listprocessing.data) {
-                    length = $scope.listprocessing.data.length;
-                }
-            }
-            archiveService.getItemsOnStateArchive(state, length).then(function (items) {
-                //check state for array
+        $scope.loadMore = function (state) {
+                var length = 0;
                 if (state == 'open') {
                     if ($scope.listopen.data) {
-                        $scope.listopen.data.push.apply($scope.listopen.data, items.data);
-                        if (items.data.length < archiveService.getMaxCounter()) {
-                            $scope.noMoreOpenItemsAvailable = true;
-                        }
-                    } else {
-                        $scope.listopen = items;
+                        length = $scope.listopen.data.length;
                     }
-
                 } else if (state == 'closed') {
                     if ($scope.listclosed.data) {
-
-                        $scope.listclosed.data.push.apply($scope.listclosed.data, items.data);
-                        if (items.data.length < archiveService.getMaxCounter()) {
-
-                            $scope.noMoreClosedItemsAvailable = true;
-                        }
-                    } else {
-                        $scope.listclosed = items;
+                        length = $scope.listclosed.data.length;
                     }
-
                 } else {
                     if ($scope.listprocessing.data) {
-                        $scope.listprocessing.data.push.apply($scope.listprocessing.data, items.data);
-                        if (items.data.length < archiveService.getMaxCounter()) {
-
-                            $scope.noMoreProcessingItemsAvailable = true;
-                        }
-                    } else {
-                        $scope.listprocessing = items;
+                        length = $scope.listprocessing.data.length;
                     }
-
                 }
-                $scope.$broadcast('scroll.infiniteScrollComplete');
+                archiveService.getItemsOnStateArchive(state, length).then(function (items) {
+                    //check state for array
+                    if (state == 'open') {
+                        if ($scope.listopen.data) {
+                            $scope.listopen.data.push.apply($scope.listopen.data, items.data);
+                            if (items.data.length < archiveService.getMaxCounter()) {
+                                $scope.noMoreOpenItemsAvailable = true;
+                            }
+                        } else {
+                            $scope.listopen = items;
+                        }
+
+                    } else if (state == 'closed') {
+                        if ($scope.listclosed.data) {
+
+                            $scope.listclosed.data.push.apply($scope.listclosed.data, items.data);
+                            if (items.data.length < archiveService.getMaxCounter()) {
+
+                                $scope.noMoreClosedItemsAvailable = true;
+                            }
+                        } else {
+                            $scope.listclosed = items;
+                        }
+
+                    } else {
+                        if ($scope.listprocessing.data) {
+                            $scope.listprocessing.data.push.apply($scope.listprocessing.data, items.data);
+                            if (items.data.length < archiveService.getMaxCounter()) {
+
+                                $scope.noMoreProcessingItemsAvailable = true;
+                            }
+                        } else {
+                            $scope.listprocessing = items;
+                        }
+
+                    }
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            }
+            //    archiveService.getItemsOnStateArchive('open', 0).then(function (items) {
+            //        $scope.listopen = items;
+            //    });
+            //    archiveService.getItemsOnStateArchive('closed', 0).then(function (items) {
+            //        $scope.listclosed = items;
+            //    });
+            //    archiveService.getItemsOnStateArchive('processing', 0).then(function (items) {
+            //        $scope.listprocessing = items;
+            //    });
+            //    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+        //    angular.extend($scope, {
+        //        listForMap: $scope.listForMap
+        //    });
+
+    })
+    .filter('statusstring', function ($filter) {
+        return function (string) {
+            if (string == 'open') {
+                return $filter('translate')('status_open');
+            }
+            if (string == 'closed') {
+                return $filter('translate')('status_open');
+            }
+            if (string == 'processing') {
+                return $filter('translate')('status_processing');
+            }
+        };
+    })
+    .controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, archiveService, Config) {
+        // "MovieService" is a service returning mock data (services.js)
+        $scope.signal = archiveService.getItem($stateParams.id);
+        $scope.myActiveSlide = 0;
+        $scope.categories = Config.getCategories();
+        /*
+            $scope.title = $filter('translate')("title_ar");
+        */
+        $scope.showImages = function (index) {
+            $scope.activeSlide = index;
+            $scope.showModal('templates/image-popover.html');
+        }
+
+        $scope.showModal = function (templateUrl) {
+            $ionicModal.fromTemplateUrl(templateUrl, {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                $scope.modal = modal;
+                $scope.modal.show();
             });
         }
-        //    archiveService.getItemsOnStateArchive('open', 0).then(function (items) {
-        //        $scope.listopen = items;
-        //    });
-        //    archiveService.getItemsOnStateArchive('closed', 0).then(function (items) {
-        //        $scope.listclosed = items;
-        //    });
-        //    archiveService.getItemsOnStateArchive('processing', 0).then(function (items) {
-        //        $scope.listprocessing = items;
-        //    });
-        //    $scope.$broadcast('scroll.infiniteScrollComplete');
 
-    //    angular.extend($scope, {
-    //        listForMap: $scope.listForMap
-    //    });
-
-})
-
-
-.controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, archiveService, Config) {
-    // "MovieService" is a service returning mock data (services.js)
-    $scope.signal = archiveService.getItem($stateParams.id);
-    $scope.myActiveSlide = 0;
-    $scope.categories = Config.getCategories();
-    /*
-        $scope.title = $filter('translate')("title_ar");
-    */
-    $scope.showImages = function (index) {
-        $scope.activeSlide = index;
-        $scope.showModal('templates/image-popover.html');
-    }
-
-    $scope.showModal = function (templateUrl) {
-        $ionicModal.fromTemplateUrl(templateUrl, {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function (modal) {
-            $scope.modal = modal;
-            $scope.modal.show();
-        });
-    }
-
-    // Close the modal
-    $scope.closeModal = function () {
-        $scope.modal.hide();
-        $scope.modal.remove()
-    };
-})
+        // Close the modal
+        $scope.closeModal = function () {
+            $scope.modal.hide();
+            $scope.modal.remove()
+        };
+    })
 
 .controller('MySignalsCtrl', function ($scope, $stateParams, $filter, archiveService) {
 

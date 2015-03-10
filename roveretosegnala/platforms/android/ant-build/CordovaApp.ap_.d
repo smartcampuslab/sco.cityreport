@@ -65,6 +65,7 @@
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.camera \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.file \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/nl.x-services.plugins.toast \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.globalization \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/com.ionic.keyboard \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen/www \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen/www/splashscreen.js \
@@ -102,6 +103,9 @@
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/nl.x-services.plugins.toast/test \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/nl.x-services.plugins.toast/www/Toast.js \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/nl.x-services.plugins.toast/test/tests.js \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.globalization/www \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.globalization/www/GlobalizationError.js \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/org.apache.cordova.globalization/www/globalization.js \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/com.ionic.keyboard/www \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/plugins/com.ionic.keyboard/www/keyboard.js \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/assets/www/lib/angular-ui-router \

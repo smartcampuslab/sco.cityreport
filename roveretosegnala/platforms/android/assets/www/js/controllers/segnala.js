@@ -283,6 +283,9 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             $scope.signal.attribute.category = $scope.categories[$scope.signal.attribute.category.value];
 
             $scope.images = $scope.signal.media;
+            if ($scope.images == null) {
+                $scope.images = [];
+            }
             if (!$scope.signal.media) {
                 $scope.signal.media = [];
             }
@@ -472,112 +475,114 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $scope.submit = function () {
             var remoteURL = [];
-            $scope.signal.location.coordinates = segnalaService.getPosition();
-            $scope.signal.location.address = segnalaService.getName();
-            if ($scope.images) {
-                $scope.signal.media = $scope.images;
-            }
-            //            $scope.signal.attribute.category = $scope.selectedcategory.value;
-            if ($scope.checkForm($scope.signal)) {
-                $ionicLoading.show({
-                    template: 'Loading...'
-                });
-                var uploadedimages = 0;
-                for (var i = 0; i < $scope.signal.media.length; i++) {
-                    $http({
-                        method: 'POST',
-                        url: 'https://api.imgur.com/3/image',
-                        headers: {
-                            Authorization: 'Client-ID b790f7d57013adb',
-                            Accept: 'application/json'
-                        },
-                        data: {
-                            image: $scope.getBase64Image($scope.signal.media[i]),
-                            type: 'base64'
+  $scope.signal.location.coordinates = segnalaService.getPosition();
+  $scope.signal.location.address = segnalaService.getName();
+  if ($scope.images) {
+      $scope.signal.media = $scope.images;
+  }
+  //            $scope.signal.attribute.category = $scope.selectedcategory.value;
+  if ($scope.checkForm($scope.signal)) {
+      $ionicLoading.show({
+          template: 'Loading...'
+      });
+      var uploadedimages = 0;
+      for (var i = 0; i < $scope.signal.media.length; i++) {
+          $http({
+              method: 'POST',
+              url: 'https://api.imgur.com/3/image',
+              headers: {
+                  Authorization: 'Client-ID b790f7d57013adb',
+                  Accept: 'application/json'
+              },
+              data: {
+                  image: $scope.getBase64Image($scope.signal.media[i]),
+                  type: 'base64'
 
-                        }
-                    }).
-                    success(function (data, status, headers, config) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        remoteURL.push(data.data.link);
-                        uploadedimages++
-                        //send to ws the server
-                        if (uploadedimages == $scope.signal.media.length) {
-                            $scope.signal.media = remoteURL;
-                            segnalaService.sendSignal($scope.signal).then(function (data) {
-                                //chiudi pop up bella la' e esci
-                                $ionicLoading.hide();
-                                console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
-                                //torna indietro con toast successo
-                                window.location.assign('#/app/map');
-                                $ionicHistory.nextViewOptions({
-                                    disableAnimate: true,
-                                    disableBack: true
-                                });
-                                Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+              }
+          }).
+          success(function (data, status, headers, config) {
+              // this callback will be called asynchronously
+              // when the response is available
+              remoteURL.push(data.data.link);
+              uploadedimages++
+              //send to ws the server
+              if (uploadedimages == $scope.signal.media.length) {
+                  $scope.signal.media = remoteURL;
+                  segnalaService.sendSignal($scope.signal).then(function (data) {
+                      //chiudi pop up bella la' e esci
+                      $ionicLoading.hide();
+                      console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+                      //torna indietro con toast successo
+                      //                                window.location.assign('#/app/map');
+                      window.location.assign('#/app/mysignals');
+                      $ionicHistory.nextViewOptions({
+                          disableAnimate: true,
+                          disableBack: true
+                      });
+                      Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
-                            }, function (error) {
-                                console.log("problems" + data + status + headers + config);
-                                //chiudi pop up ed errore sul server smarcommunity
-                                //toast error
-                                Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
-                                $ionicLoading.hide();
+                  }, function (error) {
+                      console.log("problems" + data + status + headers + config);
+                      //chiudi pop up ed errore sul server smarcommunity
+                      //toast error
+                      Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                      $ionicLoading.hide();
 
-                            });
-                        }
-                    }).
-                    error(function (data, status, headers, config) {
-                        $ionicLoading.hide();
-                        console.log("problems" + data + status + headers + config);
-                        //chiudi pop up ed errore sul server immagini
-                        //toast error
-                        Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
-                        $ionicLoading.hide();
+                  });
+              }
+          }).
+          error(function (data, status, headers, config) {
+              $ionicLoading.hide();
+              console.log("problems" + data + status + headers + config);
+              //chiudi pop up ed errore sul server immagini
+              //toast error
+              Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+              $ionicLoading.hide();
 
-                    });
-                }
-                if ($scope.signal.media.length == 0) {
-                    //if no gallery u are here
-                    segnalaService.sendSignal($scope.signal).then(function (data) {
-                        //chiudi pop up bella la' e esci
-                        $ionicLoading.hide();
-                        console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
-                        //torna indietro con toast successo
-                        window.location.assign('#/app/map');
-                        $ionicHistory.nextViewOptions({
-                            disableAnimate: true,
-                            disableBack: true
-                        });
-                        Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+          });
+      }
+      if ($scope.signal.media.length == 0) {
+          //if no gallery u are here
+          segnalaService.sendSignal($scope.signal).then(function (data) {
+              //chiudi pop up bella la' e esci
+              $ionicLoading.hide();
+              console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+              //torna indietro con toast successo
+              //                                window.location.assign('#/app / map');
+              window.location.assign('#/app/mysignals');
+              $ionicHistory.nextViewOptions({
+                  disableAnimate: true,
+                  disableBack: true
+              });
+              Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
-                    }, function (error) {
-                        console.log("problems" + data + status + headers + config);
-                        //chiudi pop up ed errore sul server smarcommunity
-                        //toast error
-                        Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
-                        $ionicLoading.hide();
+          }, function (error) {
+              console.log("problems" + data + status + headers + config);
+              //chiudi pop up ed errore sul server smarcommunity
+              //toast error
+              Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+              $ionicLoading.hide();
 
-                    });
-                }
-            } else {
-                //show popup 
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')("signal_error_send_title"),
-                    template: $filter('translate')("signal_error_send_template"),
-                    buttons: [
-                        {
-                            text: $filter('translate')("signal_send_toast_alarm"),
-                            type: 'button-custom',
+          });
+      }
+  } else {
+      //show popup 
+      var alertPopup = $ionicPopup.alert({
+          title: $filter('translate')("signal_error_send_title"),
+          template: $filter('translate')("signal_error_send_template"),
+          buttons: [
+              {
+                  text: $filter('translate')("signal_send_toast_alarm"),
+                  type: 'button-custom',
                             }
             ]
-                });
-                alertPopup.then(function (res) {
-                    console.log('error');
-                    Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+      });
+      alertPopup.then(function (res) {
+          console.log('error');
+          Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
 
-                });
-            }
+      });
+  }
         }
 
         $scope.checkForm = function (signal) {

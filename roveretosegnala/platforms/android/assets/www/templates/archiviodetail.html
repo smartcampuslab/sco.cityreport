@@ -1,7 +1,7 @@
 <ion-view title="{{'archivedetail_title' | translate}}">
     <ion-content has-header="true" has-footer="true" padding="true">
 
-        <div class="signal-detail-element"><b> {{signal.attribute.title}}</b>
+        <div class="signal-detail-element"><b> {{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:'dd-MM-yyyy'}}</span>
         </div>
 
         <div class="signal-detail-element">
@@ -15,7 +15,9 @@
         <div class="signal-detail-element">
             <i class="icon ion-pricetag" style="font-size:25px; margin-right:8px"></i>{{signal.attribute.category.label}}
         </div>
-
+        <div class="signal-detail-element">
+            <i class="icon ion-speedometer" style="font-size:25px; margin-right:8px"></i>{{signal.status|statusstring}}
+        </div>
         <div class="item item-divider">
             <i class="ion-images"></i> {{'archivedetail_images' | translate}}
         </div>

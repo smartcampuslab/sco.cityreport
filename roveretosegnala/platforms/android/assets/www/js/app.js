@@ -20,7 +20,7 @@ angular.module('roveretoSegnala', [
 
 ])
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, $rootScope, $state) {
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -31,8 +31,20 @@ angular.module('roveretoSegnala', [
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-
+        if (typeof navigator.globalization !== "undefined") {
+            navigator.globalization.getPreferredLanguage(function (language) {
+                if ((language.value).split("-")[0] == "it") {
+                    $rootScope.lang = "it";
+                } else if ((language.value).split("-")[0] == "de") {
+                    $rootScope.lang = "de";
+                } else {
+                    $rootScope.lang = "en";
+                }
+            }, null);
+        }
     });
+
+
 })
 
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -58,6 +70,8 @@ angular.module('roveretoSegnala', [
             }
         })
         .state('app.tab', {
+            cache: false,
+
             url: '/tab',
             abstract: false,
             views: {
@@ -72,6 +86,8 @@ angular.module('roveretoSegnala', [
     // Each tab has its own nav history stack:
 
     .state('app.tab.closed', {
+        cache: false,
+
         url: '/closed',
         views: {
             'app-tab-closed': {
@@ -82,6 +98,8 @@ angular.module('roveretoSegnala', [
     })
 
     .state('app.tab.processing', {
+            cache: false,
+
             url: '/processing',
             views: {
                 'app-tab-processing': {
@@ -91,6 +109,8 @@ angular.module('roveretoSegnala', [
             }
         })
         .state('app.tab.open', {
+            cache: false,
+
             url: '/open',
             views: {
                 'app-tab-open': {
@@ -133,7 +153,7 @@ angular.module('roveretoSegnala', [
         })
 
     .state('app.map4address', {
-            cache: true,
+            cache: false,
 
             url: "/map4address",
             views: {

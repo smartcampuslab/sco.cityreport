@@ -55,6 +55,9 @@
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$25.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystemURL.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/globalization/Globalization$1.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/globalization/Globalization.class \
+/home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/org/apache/cordova/globalization/GlobalizationError.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard$1.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard.class \
 /home/chin8/Documents/work/eclipse-workspace/ies-cities/roveretosegnala-cordova/sco.cityreport/sco.cityreport/roveretosegnala/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard$2.class \
