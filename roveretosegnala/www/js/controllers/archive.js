@@ -86,14 +86,14 @@ angular.module('roveretoSegnala.controllers.archive', [])
                 return $filter('translate')('status_open');
             }
             if (string == 'closed') {
-                return $filter('translate')('status_open');
+                return $filter('translate')('status_closed');
             }
             if (string == 'processing') {
                 return $filter('translate')('status_processing');
             }
         };
     })
-    .controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, archiveService, Config) {
+    .controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, $ionicHistory, archiveService, Config) {
         // "MovieService" is a service returning mock data (services.js)
         $scope.signal = archiveService.getItem($stateParams.id);
         $scope.myActiveSlide = 0;
@@ -115,7 +115,9 @@ angular.module('roveretoSegnala.controllers.archive', [])
                 $scope.modal.show();
             });
         }
-
+        $scope.myGoBack = function () {
+            $ionicHistory.goBack();
+        };
         // Close the modal
         $scope.closeModal = function () {
             $scope.modal.hide();
