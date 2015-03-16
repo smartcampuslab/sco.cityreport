@@ -16,9 +16,9 @@
 
 package it.smartcommunitylab.cityreport.controllers;
 
-import java.io.IOException;
-
 import it.smartcommunitylab.cityreport.security.ReportUserDetails;
+
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import eu.trentorise.smartcampus.aac.AACException;
 import eu.trentorise.smartcampus.aac.AACService;
 import eu.trentorise.smartcampus.aac.model.TokenData;
-import eu.trentorise.smartcampus.network.JsonUtils;
 import eu.trentorise.smartcampus.profileservice.BasicProfileService;
-import eu.trentorise.smartcampus.profileservice.ProfileServiceException;
 import eu.trentorise.smartcampus.profileservice.model.BasicProfile;
 
 /**
@@ -83,9 +81,9 @@ public class UserAuthController {
 	 * @throws IOException 
 	 */
 	@RequestMapping("/ext_callback")
-	public void callback(HttpServletRequest request, HttpServletResponse response) throws SecurityException, AACException, IOException {
-		TokenData tokenData = service.exchngeCodeForToken(request.getParameter("code"), env.getProperty("ext.redirect"));
+	public void callback(HttpServletRequest request, HttpServletResponse response) {
 		try {
+			TokenData tokenData = service.exchngeCodeForToken(request.getParameter("code"), env.getProperty("ext.redirect"));
 			BasicProfile basicProfile = profileService.getBasicProfile(tokenData.getAccess_token());
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(basicProfile.getUserId(),basicProfile.getUserId(), ReportUserDetails.REPORTER_AUTHORITIES);
 			token.setDetails(new WebAuthenticationDetails(request));                        
@@ -93,10 +91,23 @@ public class UserAuthController {
 			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 			
 			rememberMeServices.loginSuccess(request, response, authenticatedUser);
-			response.getWriter().println(JsonUtils.toJSON(basicProfile));
-		} catch (ProfileServiceException e) {
-			throw new SecurityException(e.getMessage());
+			response.sendRedirect("userloginsuccess");
+		} catch (Exception e) {
+			try {
+				response.sendRedirect("userloginerror?error="+e.getMessage());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
+	@RequestMapping("/userloginsuccess")
+	public String success(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		return "userloginsuccess";
+	}
+	
+	@RequestMapping("/userloginerror")
+	public String error(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		return "userloginerror";
+	}
 }
