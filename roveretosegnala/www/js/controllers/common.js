@@ -1,6 +1,6 @@
 angular.module('roveretoSegnala.controllers.common', [])
 
-.controller('AppCtrl', function ($scope, $ionicModal, $ionicHistory, segnalaService, $timeout) {
+.controller('AppCtrl', function ($scope, $ionicModal, $ionicHistory, segnalaService, $timeout, Toast, $filter) {
     /*    // Form data for the login modal
         $scope.loginData = {};
 
@@ -73,7 +73,11 @@ angular.module('roveretoSegnala.controllers.common', [])
             });
         }
         /* Listen for broadcasted messages */
+    $scope.openLoginPopUp = function () {
+        Toast.show($filter('translate')("toast_must_login"), "short", "bottom");
 
+
+    }
     $scope.$on('modal.shown', function (event, modal) {
         console.log('Modal ' + modal.id + ' is shown!');
     });

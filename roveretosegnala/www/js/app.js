@@ -20,7 +20,9 @@ angular.module('roveretoSegnala', [
 
 ])
 
-.run(function ($ionicPlatform, $rootScope, $state) {
+.run(function ($ionicPlatform, $rootScope, $state, Login) {
+    $rootScope.userIsLogged = (localStorage.userId != null);
+
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -43,7 +45,14 @@ angular.module('roveretoSegnala', [
             }, null);
         }
     });
+    $rootScope.login = function () {
+        Login.login();
+    };
 
+    $rootScope.logout = function () {
+        Login.logout();
+
+    };
 
 })
 

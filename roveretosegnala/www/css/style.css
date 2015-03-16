@@ -114,6 +114,21 @@ body {
 .menu-entry span {
     vertical-align: middle;
 }
+
+.menu-entry-disabled {
+    text-align: left;
+    color: lightgrey;
+}
+
+.menu-entry-disabled img {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+}
+
+.menu-entry-disabled span {
+    vertical-align: middle;
+}
 /*
 .bar.bar-stable {
     background-color: #c62828;

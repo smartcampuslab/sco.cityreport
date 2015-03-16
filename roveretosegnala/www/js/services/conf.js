@@ -294,6 +294,16 @@ angular.module('roveretoSegnala.services.conf', [])
             it: 'In corso',
             en: 'Processing',
             de: 'Wird bearbeitet'
+        },
+        'toast_must_login': {
+            it: 'Funzione disabilitata. Devi accedere al sistema',
+            en: 'Function disabled. You must login',
+            de: 'Wird bearbeitet'
+        },
+        'menu_logout': {
+            it: 'Esci',
+            en: 'Logout',
+            de: 'Logout'
         }
 
     }

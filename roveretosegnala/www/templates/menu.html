@@ -24,8 +24,16 @@
                         <span>{{'menu_map' | translate}}</span>
                     </div>
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="openSignal()">
+                <ion-item nav-clear menu-close ng-click="openSignal()" ng-hide="!userIsLogged">
                     <div class="menu-entry">
+
+                        <img src="img/ic-segnala.png">
+                        <span>{{'menu_segnala' | translate}}
+                         </span>
+                    </div>
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="openLoginPopUp()" ng-hide="userIsLogged">
+                    <div class="menu-entry-disabled">
 
                         <img src="img/ic-segnala.png">
                         <span>{{'menu_segnala' | translate}}
@@ -39,13 +47,35 @@
                         <span>{{'menu_archivio' | translate}}</span>
                     </div>
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/mysignals">
+                <ion-item nav-clear menu-close href="#/app/mysignals" ng-hide="!userIsLogged">
                     <div class="menu-entry">
                         <img src="img/ic-mysignals.png">
                         <span>{{'menu_lemiesegnalazioni' | translate}}</span>
                     </div>
                 </ion-item>
+                <ion-item nav-clear menu-close ng-click="openLoginPopUp()" ng-hide="userIsLogged">
+                    <div class="menu-entry-disabled">
+                        <img src="img/ic-mysignals.png">
+                        <span>{{'menu_lemiesegnalazioni' | translate}}</span>
+                    </div>
+                </ion-item>
+                <!--
                 <ion-item nav-clear menu-close ng-click="openModal(1)">
+                    <div class="menu-entry">
+
+                        <img src="img/ic-login.png">
+                        <span>{{'menu_login' | translate}}</span>
+                    </div>
+                </ion-item>
+-->
+                <ion-item nav-clear menu-close ng-click="logout()" ng-hide="!userIsLogged">
+                    <div class="menu-entry">
+
+                        <img src="img/ic-login.png">
+                        <span>{{'menu_logout' | translate}}</span>
+                    </div>
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()" ng-hide="userIsLogged">
                     <div class="menu-entry">
 
                         <img src="img/ic-login.png">
