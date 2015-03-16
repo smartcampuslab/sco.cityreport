@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -36,6 +37,7 @@ import com.mongodb.MongoException;
 @Configuration
 @EnableWebMvc
 @ComponentScan("it.smartcommunitylab.cityreport")
+@PropertySource("classpath:cityreport.properties")
 @EnableMongoRepositories(basePackages = "it.smartcommunitylab.cityreport.data")
 public class BaseConfig extends WebMvcConfigurerAdapter {
 

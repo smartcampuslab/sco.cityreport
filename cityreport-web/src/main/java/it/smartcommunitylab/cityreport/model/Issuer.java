@@ -16,12 +16,19 @@
 
 package it.smartcommunitylab.cityreport.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import eu.trentorise.smartcampus.profileservice.model.BasicProfile;
+
 /**
  * @author raman
  *
  */
+@Document
 public class Issuer {
 
+	@Id
 	private String userId;
 	private String organizationId;
 	private String name;
@@ -159,5 +166,16 @@ public class Issuer {
 		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
+	}
+	/**
+	 * @param basicProfile
+	 * @return
+	 */
+	public static Issuer fromUserProfile(BasicProfile basicProfile) {
+		Issuer issuer = new Issuer();
+		issuer.setName(basicProfile.getName());
+		issuer.setSurname(basicProfile.getSurname());
+		issuer.setUserId(basicProfile.getUserId());
+		return issuer;
 	}
 }
