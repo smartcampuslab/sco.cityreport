@@ -16,15 +16,17 @@
 
 package it.smartcommunitylab.cityreport.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author raman
  *
  */
-public class ProviderSettings {
+public class ProviderSettings implements Serializable {
+	private static final long serialVersionUID = -7078032185171275572L;
 
-    private String id;
+	private String id;
     private String password;
     
     private List<Service> services;

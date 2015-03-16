@@ -44,6 +44,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	
 	@Override
 	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+		// bypass check for reporter role: authentication has already been done
+		if (ReportUserDetails.isReporter(authentication)) {
+			return new ReportUserDetails(username);
+		}
 		ProviderSettings app = appSetup.findProviderById(username);
 		if (app == null) {
 			throw new UsernameNotFoundException(username);

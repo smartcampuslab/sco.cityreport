@@ -24,12 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -37,7 +42,10 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
-	private AuthenticationProvider customAuthenticationProvider;
+	private UserDetailsService userDetailsServiceImpl;
+	
+	@Autowired
+	private AuthenticationProvider consoleAuthenticationProvider;
 	@Autowired
 	private Environment env;
 
@@ -57,19 +65,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	    auth
-	    .authenticationProvider(customAuthenticationProvider);
+	    .authenticationProvider(consoleAuthenticationProvider);
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO authenticated for user issue submission
 	        http
-	        	.csrf()
-	        	.disable()
-	            .authorizeRequests()
-	            	.antMatchers("/","/console/**","/mgmt/**")
-	            		.authenticated()
-	                .anyRequest()
-	                	.permitAll();
+        	.csrf()
+        		.disable()
+            .authorizeRequests()
+            	.antMatchers("/","/console/**","/mgmt/**")
+            		.authenticated()
+                .anyRequest()
+                	.permitAll();
 	        http
             .formLogin()
                 .loginPage("/login")
@@ -77,5 +85,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 	.and()
                 .logout()
                 	.permitAll();
+	        
+	        http
+	        .rememberMe();
 	 }
+	
+	@Bean 
+	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
+		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());
+	}
+	
+	@Bean 
+	public RememberMeServices tokenBasedRememberMeService(){
+		 TokenBasedRememberMeServices service = new TokenBasedRememberMeServices(env.getProperty("rememberme.key"), userDetailsServiceImpl);
+		 service.setAlwaysRemember(true);
+		 service.setCookieName("rememberme");
+		 service.setTokenValiditySeconds(Integer.MAX_VALUE);
+		 return service;
+	}
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 }
