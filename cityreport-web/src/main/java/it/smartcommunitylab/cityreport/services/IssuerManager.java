@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2015 Smart Community Lab
+ * Copyright 2015 Fondazione Bruno Kessler
  * 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,17 +14,29 @@
  *    limitations under the License.
  ******************************************************************************/
 
-package it.smartcommunitylab.cityreport.security;
+package it.smartcommunitylab.cityreport.services;
 
-import javax.servlet.http.HttpServletRequest;
-
+import it.smartcommunitylab.cityreport.data.IssuerRepository;
 import it.smartcommunitylab.cityreport.model.Issuer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author raman
  *
  */
-public interface UserAuthenticator {
+@Component
+public class IssuerManager {
 
-	public Issuer identifyUser(HttpServletRequest req) throws SecurityException;
+	@Autowired
+	private IssuerRepository issuerRepository;
+	
+	public void saveIssuer(Issuer issuer) {
+		issuerRepository.save(issuer);
+	}
+	
+	public Issuer getIssuer(String userId) {
+		return issuerRepository.findByUserId(userId);
+	}
 }

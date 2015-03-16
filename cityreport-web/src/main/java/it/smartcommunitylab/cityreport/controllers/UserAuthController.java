@@ -16,9 +16,12 @@
 
 package it.smartcommunitylab.cityreport.controllers;
 
+import it.smartcommunitylab.cityreport.model.Issuer;
 import it.smartcommunitylab.cityreport.security.ReportUserDetails;
+import it.smartcommunitylab.cityreport.services.IssuerManager;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import eu.trentorise.smartcampus.aac.AACException;
 import eu.trentorise.smartcampus.aac.AACService;
 import eu.trentorise.smartcampus.aac.model.TokenData;
+import eu.trentorise.smartcampus.network.JsonUtils;
 import eu.trentorise.smartcampus.profileservice.BasicProfileService;
 import eu.trentorise.smartcampus.profileservice.model.BasicProfile;
 
@@ -54,7 +58,9 @@ public class UserAuthController {
 	private RememberMeServices rememberMeServices;
 	@Autowired
 	private Environment env;
-	
+	@Autowired
+	private IssuerManager issuerManager;
+
 	private AACService service;
 	private BasicProfileService profileService;
 	
@@ -90,8 +96,11 @@ public class UserAuthController {
 			Authentication authenticatedUser = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 			
+			Issuer issuer = Issuer.fromUserProfile(basicProfile);
+			issuerManager.saveIssuer(issuer);
+			
 			rememberMeServices.loginSuccess(request, response, authenticatedUser);
-			response.sendRedirect("userloginsuccess");
+			response.sendRedirect("userloginsuccess?profile="+URLEncoder.encode(JsonUtils.toJSON(basicProfile),"UTF-8"));
 		} catch (Exception e) {
 			try {
 				response.sendRedirect("userloginerror?error="+e.getMessage());

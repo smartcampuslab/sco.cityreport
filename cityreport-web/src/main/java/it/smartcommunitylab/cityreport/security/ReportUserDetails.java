@@ -31,7 +31,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class ReportUserDetails implements UserDetails {
 	private static final long serialVersionUID = -3816034554562297265L;
 
-	private static final String REPORTER = "REPORTER";
+	public static final String REPORTER = "REPORTER";
 	public static final Collection<? extends GrantedAuthority> REPORTER_AUTHORITIES = Collections.singletonList(new SimpleGrantedAuthority(REPORTER));
 	
 	private String user;

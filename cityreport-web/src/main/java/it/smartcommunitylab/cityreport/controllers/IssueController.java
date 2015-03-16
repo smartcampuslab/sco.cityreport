@@ -21,8 +21,8 @@ import it.smartcommunitylab.cityreport.model.Issuer;
 import it.smartcommunitylab.cityreport.model.Response;
 import it.smartcommunitylab.cityreport.model.Service;
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
-import it.smartcommunitylab.cityreport.security.UserAuthenticator;
 import it.smartcommunitylab.cityreport.services.IssueManager;
+import it.smartcommunitylab.cityreport.services.IssuerManager;
 import it.smartcommunitylab.cityreport.services.ServiceManager;
 import it.smartcommunitylab.cityreport.utils.Constants;
 
@@ -33,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,7 +57,7 @@ public class IssueController {
 	@Autowired
 	private ServiceManager serviceManager;
 	@Autowired
-	private UserAuthenticator userAuthenticator;
+	private IssuerManager issuerManager;
 	
 	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issues/{issueId}")
 	public @ResponseBody Response<ServiceIssue> getIssue(@PathVariable String providerId, @PathVariable String serviceId, String issueId) {
@@ -109,7 +111,7 @@ public class IssueController {
 			@RequestBody ServiceIssue issue,
 			HttpServletRequest req) 
 	{
-		Issuer issuer = userAuthenticator.identifyUser(req);
+		Issuer issuer = issuerManager.getIssuer(getUserId());
 		
 		Service service = serviceManager.findService(serviceId, providerId);
 		if (service == null) {
@@ -131,4 +133,7 @@ public class IssueController {
 		return new Response<Void>(500, exception.getMessage());
 	}
 
+	private String getUserId() {
+		return ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+	}
 }
