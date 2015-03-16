@@ -1,72 +1,154 @@
 angular.module('roveretoSegnala.controllers.segnala', [])
 
-.factory('segnalaService', function ($http, $q, Config) {
-    var clientId = 'b790f7d57013adb';
-    var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
-    var latlong = [0, 0];
-    var segnalaService = {};
-    var name = '';
-    segnalaService.getclientId = function () {
-        return clientId;
-    };
-    segnalaService.getclientSecret = function () {
-        return clientSecret;
-    };
-    segnalaService.getName = function () {
-        return name;
-    };
-    segnalaService.setName = function (nameinput) {
-        name = nameinput;
-    };
-    segnalaService.getPosition = function () {
-        return latlong;
-    };
-    segnalaService.setPosition = function (lat, long) {
-        latlong[0] = lat;
-        latlong[1] = long;
-    };
+.factory('Toast', function ($rootScope, $timeout, $ionicPopup, $cordovaToast) {
+        return {
+            show: function (message, duration, position) {
+                message = message || "There was a problem...";
+                duration = duration || 'short';
+                position = position || 'top';
 
-    segnalaService.sendSignal = function (signal) {
-        return $http({
-            method: 'POST',
-            url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/user/issues',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                if (!!window.cordova) {
+                    // Use the Cordova Toast plugin
+                    $cordovaToast.show(message, duration, position);
+                } else {
+                    if (duration == 'short') {
+                        duration = 2000;
+                    } else {
+                        duration = 5000;
+                    }
 
-            },
-            data: signal
-        }).
-        success(function (data, status, headers, config) {
+                    var myPopup = $ionicPopup.show({
+                        template: "<div class='toast'>" + message + "</div>",
+                        scope: $rootScope,
+                        buttons: []
+                    });
 
-        }).
-        error(function (data, status, headers, config) {
+                    $timeout(function () {
+                        myPopup.close();
+                    }, duration);
+                }
+            }
+        };
+    })
+    .factory('segnalaService', function ($http, $q, Config) {
+        var clientId = 'b790f7d57013adb';
+        var clientSecret = '55b0409e29c9461564ddaacc7fd10b23a6ffd507';
+        var title = null;
+        var description = null;
+        var category = null;
+        var latlong = [0, 0];
+        var segnalaService = {};
+        var signal = null;
+        var name = '';
+        segnalaService.setSignal = function (signalinput) {
+            signal = signalinput;
+        }
+        segnalaService.getSignal = function () {
+            return signal;
+        };
+        segnalaService.getclientId = function () {
+            return clientId;
+        };
+        segnalaService.getclientSecret = function () {
+            return clientSecret;
+        };
+        segnalaService.getName = function () {
+            return name;
+        };
+        //        segnalaService.setTitle = function (titleinput) {
+        //            title = titleinput;
+        //        };
+        //        segnalaService.setDescription = function (descriptioninput) {
+        //            description = descriptioninput;
+        //        };
+        //        segnalaService.setCategory = function (categoryinput) {
+        //            category = categoryinput;
+        //        };
+        //        segnalaService.getTitle = function () {
+        //            return title;
+        //        };
+        //        segnalaService.setDescription = function () {
+        //            return description;
+        //        };
+        //        segnalaService.setCategory = function () {
+        //            return category;
+        //        };
+        segnalaService.setName = function (nameinput) {
+            name = nameinput;
+        };
+        segnalaService.getPosition = function () {
+            return latlong;
+        };
+        segnalaService.setPosition = function (lat, long) {
+            latlong[0] = lat;
+            latlong[1] = long;
+        };
+
+        segnalaService.sendSignal = function (signal) {
+            return $http({
+                method: 'POST',
+                url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/user/issues',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+
+                },
+                data: signal
+            }).
+            success(function (data, status, headers, config) {
+
+            }).
+            error(function (data, status, headers, config) {
 
 
-        });
+            });
 
-        //        return $http.post(Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues')
-        //            .then(function (response) {
-        //                if (typeof response.data === 'object') {
-        //                    return response.data;
-        //                } else {
-        //                    // invalid response
-        //                    return $q.reject(response.data);
-        //                }
-        //
-        //            }, function (response) {
-        //                // something went wrong
-        //                return $q.reject(response.data);
-        //            });
+            //        return $http.post(Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues')
+            //            .then(function (response) {
+            //                if (typeof response.data === 'object') {
+            //                    return response.data;
+            //                } else {
+            //                    // invalid response
+            //                    return $q.reject(response.data);
+            //                }
+            //
+            //            }, function (response) {
+            //                // something went wrong
+            //                return $q.reject(response.data);
+            //            });
 
-    };
+        };
 
-    return segnalaService;
-})
+        return segnalaService;
+    })
 
-.controller('Map4AdrressCtrl', function ($scope, $location, $window, $q, $http, $ionicPopup, leafletData, archiveService, segnalaService) {
+.controller('Map4AdrressCtrl', function ($scope, $location, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, leafletData, archiveService, segnalaService) {
 
         leafletData.getMap().then(function (map) {
+
+
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18
+            }).addTo(map);
+            map.locate({
+                setView: false,
+                maxZoom: 8,
+                watch: false,
+                enableHighAccuracy: true
+            });
+            map.on('locationfound', onLocationFound);
+
+            function onLocationFound(e) {
+                $scope.myloc = e;
+                var radius = e.accuracy / 2;
+
+                L.marker(e.latlng).addTo(map);
+                //                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+                L.circle(e.latlng, radius).addTo(map);
+
+            }
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 maxZoom: 18
@@ -74,7 +156,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         });
         $scope.$on("leafletDirectiveMap.click", function (event, args) {
             segnalaService.setPosition(args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
-            alert(args.leafletEvent.latlng.lat + ' ' + args.leafletEvent.latlng.lng);
+            //            alert(args.leafletEvent.latlng.lat + ' ' + args.leafletEvent.latlng.lng);
             var placedata = $q.defer();
             var places = {};
             var url = "https://os.smartcommunitylab.it/core.geocoder/spring/location?latlng=" + args.leafletEvent.latlng.lat + ',' + args.leafletEvent.latlng.lng;
@@ -122,21 +204,42 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         $scope.showConfirm = function (name) {
             var confirmPopup = $ionicPopup.confirm({
                 title: $filter('translate')("signal_send_confirm place_title"),
-                template: name
+                template: name,
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_popup_cancel"),
+                        type: 'button-custom'
+                            },
+                    {
+                        text: $filter('translate')("signal_send_popup_ok"),
+                        type: 'button-custom',
+                        onTap: function (res) {
+                            if (res) {
+                                segnalaService.setPosition(segnalaService.getPosition()[0], segnalaService.getPosition()[1]);
+                                segnalaService.setName(name);
+                                //                    window.history.back();
+                                window.location.assign('#/app/segnala/' + name);
+                                $ionicHistory.nextViewOptions({
+                                    disableAnimate: true,
+                                    disableBack: true
+                                });
+                            }
+                        }
+                    }
+            ]
             });
-            confirmPopup.then(function (res) {
-                if (res) {
-                    segnalaService.setPosition(segnalaService.getPosition()[0], segnalaService.getPosition()[1]);
-                    segnalaService.setName(name);
-                    //                    window.history.back();
-                    window.location.assign('#/app/segnala/' + name);
-                }
-            });
+
         }
         $scope.showNoPlace = function () {
             var alertPopup = $ionicPopup.alert({
                 title: $filter('translate')("signal_send_no_place_title"),
-                template: $filter('translate')("signal_send_no_place_template")
+                template: $filter('translate')("signal_send_no_place_template"),
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom'
+                            }
+            ]
             });
             alertPopup.then(function (res) {
                 console.log('no place');
@@ -144,46 +247,56 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         };
         angular.extend($scope, {
             center: {
-                lat: 45.849036,
-                lng: 11.233380,
-                zoom: 8
+                lat: 45.890931,
+                lng: 11.041126,
+                zoom: 12
             },
             events: {}
         });
 
     })
-    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, $stateParams, segnalaService, PlacesRetriever) {
-        $scope.categories = [
-            {
-                label: $filter('translate')("segnala_category_1"),
-                value: 1
-            },
-            {
-                label: $filter('translate')("segnala_category_2"),
-                value: 2
-            },
-            {
-                label: $filter('translate')("segnala_category_3"),
-                value: 2
-            }
-  ];
-        $scope.selectedCategory = $scope.categories[1];
-        $scope.signal = {
+    .controller('SegnalaCtrl', function ($scope, $cordovaCamera, $cordovaFile, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, $ionicLoading, Toast, $stateParams, segnalaService, PlacesRetriever, Config) {
+        $scope.selectedcategory = null;
+        $scope.signal = null;
+        $scope.categories = Config.getCategories();
+        if (!segnalaService.getSignal()) {
+            $scope.signal = {
 
-            location: {
-                coordinates: null,
-                address: null
-            },
-            media: null,
-            attribute: {
-                title: null,
-                description: null,
-                category: null
+                location: {
+                    coordinates: null,
+                    address: null
+                },
+                media: null,
+                attribute: {
+                    title: null,
+                    description: null,
+                    category: null
+                }
+            };
+            $scope.signal.attribute.category = $scope.categories[0];
+            $scope.images = [];
+
+
+
+        } else {
+            $scope.signal = segnalaService.getSignal();
+            $scope.signal.attribute.category = $scope.categories[$scope.signal.attribute.category.value];
+
+            $scope.images = $scope.signal.media;
+            if ($scope.images == null) {
+                $scope.images = [];
             }
-        };
-        $scope.images = [];
+            if (!$scope.signal.media) {
+                $scope.signal.media = [];
+            }
+            //            $scope.signal.attribute.category = $scope.categories[0];
+
+
+        }
         $scope.placesandcoordinates = {};
+
         $scope.openMap4Address = function () {
+            segnalaService.setSignal($scope.signal);
             window.location.assign('#/app/map4address');
         }
 
@@ -305,7 +418,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             $window.navigator.geolocation.getCurrentPosition(function (position) {
                     $scope.$apply(function () {
                         $scope.position = position;
-                        alert(position.coords.latitude + ' ' + position.coords.longitude);
+                        //                        alert(position.coords.latitude + ' ' + position.coords.longitude);
                         var placedata = $q.defer();
                         var places = {};
                         var url = "https://os.smartcommunitylab.it/core.geocoder/spring/location?latlng=" + position.coords.latitude + ',' + position.coords.longitude;
@@ -340,13 +453,15 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     });
                 },
                 function (error) {
-                    alert(error);
+                    //                    alert(error);
                 });
         };
         $scope.changeString = function (suggestion) {
             // segnalaService.setPosition(position.coords.latitude, position.coords.longitude);
             //            alert($scope.placesandcoordinates[suggestion].latlong);
             segnalaService.setPosition($scope.placesandcoordinates[suggestion].latlong.split(',')[0], $scope.placesandcoordinates[suggestion].latlong.split(',')[1]);
+            segnalaService.setName(suggestion);
+
             $scope.signal.location.address = suggestion;
         }
 
@@ -360,67 +475,114 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $scope.submit = function () {
             var remoteURL = [];
-            $scope.signal.location.coordinates = segnalaService.getPosition();
-            $scope.signal.media = $scope.images;
-            $scope.signal.attribute.category = $scope.selectedCategory.value;
-            if ($scope.checkForm($scope.signal)) {
-                $ionicLoading.show({
-                    template: 'Loading...'
-                });
-                var uploadedimages = 0;
-                for (var i = 0; i < $scope.signal.media.length; i++) {
-                    $http({
-                        method: 'POST',
-                        url: 'https://api.imgur.com/3/image',
-                        headers: {
-                            Authorization: 'Client-ID b790f7d57013adb',
-                            Accept: 'application/json'
-                        },
-                        data: {
-                            image: $scope.getBase64Image($scope.signal.media[i]),
-                            type: 'base64'
+  $scope.signal.location.coordinates = segnalaService.getPosition();
+  $scope.signal.location.address = segnalaService.getName();
+  if ($scope.images) {
+      $scope.signal.media = $scope.images;
+  }
+  //            $scope.signal.attribute.category = $scope.selectedcategory.value;
+  if ($scope.checkForm($scope.signal)) {
+      $ionicLoading.show({
+          template: 'Loading...'
+      });
+      var uploadedimages = 0;
+      for (var i = 0; i < $scope.signal.media.length; i++) {
+          $http({
+              method: 'POST',
+              url: 'https://api.imgur.com/3/image',
+              headers: {
+                  Authorization: 'Client-ID b790f7d57013adb',
+                  Accept: 'application/json'
+              },
+              data: {
+                  image: $scope.getBase64Image($scope.signal.media[i]),
+                  type: 'base64'
 
-                        }
-                    }).
-                    success(function (data, status, headers, config) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        remoteURL.push(data.data.link);
-                        uploadedimages++
-                        //send to ws the server
-                        if (uploadedimages == $scope.signal.media.length) {
-                            $scope.signal.media = remoteURL;
-                            segnalaService.sendSignal($scope.signal).then(function (data) {
-                                //chiudi pop up bella la' e esci
-                                $ionicLoading.hide();
-                                alert("upload images success. No send data to server...." + segnalaService.getPosition());
+              }
+          }).
+          success(function (data, status, headers, config) {
+              // this callback will be called asynchronously
+              // when the response is available
+              remoteURL.push(data.data.link);
+              uploadedimages++
+              //send to ws the server
+              if (uploadedimages == $scope.signal.media.length) {
+                  $scope.signal.media = remoteURL;
+                  segnalaService.sendSignal($scope.signal).then(function (data) {
+                      //chiudi pop up bella la' e esci
+                      $ionicLoading.hide();
+                      console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+                      //torna indietro con toast successo
+                      //                                window.location.assign('#/app/map');
+                      window.location.assign('#/app/mysignals');
+                      $ionicHistory.nextViewOptions({
+                          disableAnimate: true,
+                          disableBack: true
+                      });
+                      Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
-                            }, function (error) {
-                                $ionicLoading.hide();
-                                alert("problems" + data + status + headers + config);
+                  }, function (error) {
+                      console.log("problems" + data + status + headers + config);
+                      //chiudi pop up ed errore sul server smarcommunity
+                      //toast error
+                      Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                      $ionicLoading.hide();
 
-                                //chiudi pop up ed errore sul server smarcommunity
-                            });
-                        }
-                    }).
-                    error(function (data, status, headers, config) {
-                        $ionicLoading.hide();
-                        alert("problems" + data + status + headers + config);
-                        //chiudi pop up ed errore sul server immagini
+                  });
+              }
+          }).
+          error(function (data, status, headers, config) {
+              $ionicLoading.hide();
+              console.log("problems" + data + status + headers + config);
+              //chiudi pop up ed errore sul server immagini
+              //toast error
+              Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+              $ionicLoading.hide();
 
-                    });
-                }
-                //                $ionicLoading.hide();
-            } else {
-                //show popup 
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')("signal_error_send_title"),
-                    template: $filter('translate')("signal_error_send_template")
-                });
-                alertPopup.then(function (res) {
-                    console.log('error');
-                });
-            }
+          });
+      }
+      if ($scope.signal.media.length == 0) {
+          //if no gallery u are here
+          segnalaService.sendSignal($scope.signal).then(function (data) {
+              //chiudi pop up bella la' e esci
+              $ionicLoading.hide();
+              console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+              //torna indietro con toast successo
+              //                                window.location.assign('#/app / map');
+              window.location.assign('#/app/mysignals');
+              $ionicHistory.nextViewOptions({
+                  disableAnimate: true,
+                  disableBack: true
+              });
+              Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+
+          }, function (error) {
+              console.log("problems" + data + status + headers + config);
+              //chiudi pop up ed errore sul server smarcommunity
+              //toast error
+              Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+              $ionicLoading.hide();
+
+          });
+      }
+  } else {
+      //show popup 
+      var alertPopup = $ionicPopup.alert({
+          title: $filter('translate')("signal_error_send_title"),
+          template: $filter('translate')("signal_error_send_template"),
+          buttons: [
+              {
+                  text: $filter('translate')("signal_send_toast_alarm"),
+                  type: 'button-custom',
+                            }
+            ]
+      });
+      alertPopup.then(function (res) {
+          console.log('error');
+          Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+
+      });
+  }
         }
 
         $scope.checkForm = function (signal) {
@@ -458,15 +620,26 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         $scope.showConfirm = function (name, lat, long) {
             var confirmPopup = $ionicPopup.confirm({
                 title: $filter('translate')("signal_send_confirm place_title"),
-                template: name
-            });
-            confirmPopup.then(function (res) {
-                if (res) {
-                    $scope.result = name;
-                    segnalaService.setPosition(lat, long);
+                template: name,
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_popup_cancel"),
+                        type: 'button-custom'
+                            },
+                    {
+                        text: $filter('translate')("signal_send_popup_ok"),
+                        type: 'button-custom',
+                        onTap: function (res) {
+                            if (res) {
+                                $scope.result = name;
+                                segnalaService.setPosition(lat, long);
 
-                }
+                            }
+                        }
+                    }
+            ]
             });
+
         }
 
 
@@ -495,8 +668,14 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             k = 0;
             for (var i = 0; i < data.response.docs.length; i++) {
                 temp = '';
-                if (data.response.docs[i].street)
-                    temp = temp + data.response.docs[i].street;
+                if (data.response.docs[i].name)
+                    temp = temp + data.response.docs[i].name;
+                if (data.response.docs[i].street != data.response.docs[i].name)
+                    if (data.response.docs[i].street) {
+                        if (temp)
+                            temp = temp + ', ';
+                        temp = temp + data.response.docs[i].street;
+                    }
                 if (data.response.docs[i].housenumber) {
                     if (temp)
                         temp = temp + ', ';

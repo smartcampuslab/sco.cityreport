@@ -16,10 +16,11 @@ angular.module('roveretoSegnala', [
     'roveretoSegnala.filters',
     'roveretoSegnala.directives',
     'roveretoSegnala.services.conf',
+    'roveretoSegnala.services.login',
 
 ])
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, $rootScope, $state) {
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -30,7 +31,20 @@ angular.module('roveretoSegnala', [
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
+        if (typeof navigator.globalization !== "undefined") {
+            navigator.globalization.getPreferredLanguage(function (language) {
+                if ((language.value).split("-")[0] == "it") {
+                    $rootScope.lang = "it";
+                } else if ((language.value).split("-")[0] == "de") {
+                    $rootScope.lang = "de";
+                } else {
+                    $rootScope.lang = "en";
+                }
+            }, null);
+        }
     });
+
+
 })
 
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -45,18 +59,69 @@ angular.module('roveretoSegnala', [
 
 
     .state('app.segnala', {
-        url: "/segnala/:place",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/segnala.html",
-                controller: 'SegnalaCtrl'
+            cache: false,
+            url: "/segnala/:place",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/segnala.html",
+                    controller: 'SegnalaCtrl'
 
+                }
+            }
+        })
+        .state('app.tab', {
+            cache: false,
+
+            url: '/tab',
+            abstract: false,
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/tabs.html",
+                    controller: 'ArchiveCtrl'
+
+                }
+            }
+        })
+
+    // Each tab has its own nav history stack:
+
+    .state('app.tab.closed', {
+        cache: false,
+
+        url: '/closed',
+        views: {
+            'app-tab-closed': {
+                templateUrl: 'templates/tab-closed.html',
+                controller: 'ArchiveCtrl'
             }
         }
     })
 
+    .state('app.tab.processing', {
+            cache: false,
+
+            url: '/processing',
+            views: {
+                'app-tab-processing': {
+                    templateUrl: 'templates/tab-processing.html',
+                    controller: 'ArchiveCtrl'
+                }
+            }
+        })
+        .state('app.tab.open', {
+            cache: false,
+
+            url: '/open',
+            views: {
+                'app-tab-open': {
+                    templateUrl: 'templates/tab-open.html',
+                    controller: 'ArchiveCtrl'
+                }
+            }
+        })
 
     .state('app.archivio', {
+        cache: false,
         url: "/archivio",
         views: {
             'menuContent': {
@@ -66,26 +131,30 @@ angular.module('roveretoSegnala', [
         }
     })
 
-
-    .state('app.archiviodetail', {
-        url: '/archiviodetail/:id',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/archiviodetail.html',
-                controller: 'ArchivioDetailCtrl'
+    .state('app.mysignals', {
+            cache: false,
+            url: "/mysignals",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/mysignals.html",
+                    controller: 'MySignalsCtrl'
+                }
             }
-        }
-    })
+        })
+        .state('app.archiviodetail', {
+            cache: false,
+            url: '/archiviodetail/:id',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/archiviodetail.html',
+                    controller: 'ArchivioDetailCtrl'
+                }
+            }
+        })
 
-    /* .state('app.credits', {
-     url: "/credits",
-     views: {
-         'menuContent': {
-             templateUrl: "templates/credits.html",
-         }
-     }
- })*/
     .state('app.map4address', {
+            cache: false,
+
             url: "/map4address",
             views: {
                 'menuContent': {
@@ -95,6 +164,7 @@ angular.module('roveretoSegnala', [
             }
         })
         .state('app.map', {
+            cache: false,
             url: "/map",
             views: {
                 'menuContent': {

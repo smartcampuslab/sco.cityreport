@@ -13,10 +13,17 @@
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="none" />
+    <platform name="android">
+        <splash src="www/img/splash.png" />
+    </platform>
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="4000" />
     <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
-
+    <platform name="android">
+        <icon src="www/img/ic_logo.png" />
+    </platform>
 </widget>

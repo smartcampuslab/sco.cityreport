@@ -1,53 +1,3 @@
-<!--
-<div class="modal" id="credits">
-  <ion-header-bar>
-    <h1 class="title">{{'credits_title' | translate}}</h1>
-    <button class="button button-icon icon ion-ios7-close-empty" ng-click="credits.hide()"></button>
-  </ion-header-bar>
-  <ion-content>
-    <div class="row">
-      <div class="col">
-        <span class="h2 h2-credits">Rovereto</span><br/>
-        <span class="h2 h2-credits">{{'credits_app' | translate | nl2br}}</span><br/>
-      </div>
-    </div>
-
-    <div class="row version">
-      <div class="col" ng-bind-html="version"></div>
-    </div>
-    
-    <div class="row title">
-      <div class="col"><span class="h4 credits-title">{{'credits_project' | translate}}</span></div>
-    </div>
-
-    <div class="row">
-        <div class="col col-50">
-          <a href="http://www.fbk.eu" target="_system"><img src="img/credits/fbk.png" width="40%"/></a>
-        </div>
-        <div class="col col-50 col-center">
-          <a href="http://www.smartcampuslab.it" target="_system"><img src="img/credits/smart_campus_credits.png" width="60%" /></a>
-        </div>  
-    </div>
-    <div class="row">
-      <div class="col col-center"><a href="http://www.comune.rovereto.tn.it/" target="_system"><img src="img/credits/logo_comune_rovereto.png" width="50%" /></a></div>
-    </div>
-    
-    <div class="row title">
-      <div class="col"><span class="h4 credits-title">{{'credits_sponsored' | translate}}</span></div>
-    </div>
-    <div class="row">
-      <div class="col col-center"><a href="http://iescities.eu/" target="_system"><img src="img/credits/logo_ies_cities.png" width="60%" /></a></div>
-    </div>
-
-    <div class="row title last">
-      <div class="col"><span class="h4 credits-title">{{'credits_info' | translate}}</span>
-      <br/><a class="h5" href="mailto:roveretoexplorer@smartcampuslab.it">roveretoexplorer@smartcampuslab.it</a></div>
-    </div>
-  </ion-content>
-</div>
--->
-
-
 <ion-modal-view>
     <ion-header-bar>
         <h1 class="title">Credits</h1>
@@ -56,10 +6,31 @@
         </div>
     </ion-header-bar>
     <ion-content>
+        <div>
+            <div style="text-align: center">{{'credits_app' | translate | nl2br}}</div>
+            <div style="text-align: center">{{'credits_project' | translate}}</div>
+            <div>
+                <a href="http://www.fbk.eu" target="_blank"><img class="image center" src="img/credits/fbk.png" width="50%" />
+                </a>
+            </div>
+            <div>
+                <a href="http://www.smartcommunitylab.it/" target="_blank"><img class="image center" src="img/credits/logo-SCO.png" width="60%" />
+                </a>
+            </div>
+            <div>
+                <a href="http://www.comune.rovereto.tn.it/" target="_blank"><img class="image center" src="img/credits/logo_comune_rovereto.png" width="60%" />
+                </a>
+            </div>
+            <div>
+                <a href="http://iescities.eu/" target="_blank"><img class="image center" src="img/credits/logo_ies_cities.png" />
+                </a>
+            </div>
+
+        </div>
+        <!--
         <div class="row">
-            <div class="col">
-                <span class="h2 h2-credits">Rovereto</span>
-                <br/>
+            <div class="col-75 col-offset-25">
+
                 <span class="h2 h2-credits">{{'credits_app' | translate | nl2br}}</span>
                 <br/>
             </div>
@@ -70,42 +41,45 @@
         </div>
 
         <div class="row title">
-            <div class="col"><span class="h4 credits-title">{{'credits_project' | translate}}</span>
+            <div class="col-75 col-offset-25"><span class="h4 credits-title">{{'credits_project' | translate}}</span>
             </div>
         </div>
 
         <div class="row">
-            <div class="col col-50">
-                <a href="http://www.fbk.eu" target="_system"><img src="img/credits/fbk.png" width="40%" />
-                </a>
-            </div>
-            <div class="col col-50 col-center">
-                <a href="http://www.smartcampuslab.it" target="_system"><img src="img/credits/smart_campus_credits.png" width="60%" />
+            <div class="col-75 col-offset-25">
+                <a href="http://www.fbk.eu" target="_system"><img src="img/credits/fbk.png" width="60%" align="center" />
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col col-center">
-                <a href="http://www.comune.rovereto.tn.it/" target="_system"><img src="img/credits/logo_comune_rovereto.png" width="50%" />
+            <div class="col-75 col-offset-25">
+                <a href="http://www.smartcommunitylab.it/" target="_system"><img src="img/credits/logo-SCO.png" width="60%" />
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-75 col-offset-25">
+                <a href="http://www.comune.rovereto.tn.it/" target="_system"><img src="img/credits/logo_comune_rovereto.png" width="60%" />
                 </a>
             </div>
         </div>
 
         <div class="row title">
-            <div class="col"><span class="h4 credits-title">{{'credits_sponsored' | translate}}</span>
+            <div class="col-75 col-offset-25"><span class="h4 credits-title">{{'credits_sponsored' | translate}}</span>
             </div>
         </div>
         <div class="row">
-            <div class="col col-center">
-                <a href="http://iescities.eu/" target="_system"><img src="img/credits/logo_ies_cities.png" width="60%" />
+            <div class="col">
+                <a href="http://iescities.eu/" target="_system"><img src="img/credits/logo_ies_cities.png" />
                 </a>
             </div>
         </div>
 
         <div class="row title last">
-            <div class="col"><span class="h4 credits-title">{{'credits_info' | translate}}</span>
+            <div class="col-75 col-offset-25"><span class="h4 credits-title">{{'credits_info' | translate}}</span>
                 <br/><a class="h5" href="mailto:roveretoexplorer@smartcampuslab.it">roveretoexplorer@smartcampuslab.it</a>
             </div>
         </div>
+-->
     </ion-content>
 </ion-modal-view>

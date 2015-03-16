@@ -42,22 +42,22 @@ angular.module('roveretoSegnala.services.conf', [])
         },
         'archive_title': {
             it: 'Archivio',
-            en: 'Archivieren',
-            de: 'Archive'
+            en: 'Archive',
+            de: 'Archivieren'
         },
         'archive_closed': {
-            it: 'Risolto',
-            en: 'Solved',
+            it: 'Chiusi',
+            en: 'Closed',
             de: 'Entschlossen'
         },
         'archive_waiting': {
-            it: 'In attesa',
-            en: 'Waiting',
+            it: 'Aperti',
+            en: 'Open',
             de: 'Wartestellung'
         },
         'archive_running': {
             it: 'In corso',
-            en: 'Running',
+            en: 'Processing',
             de: 'Im Gange'
         },
         'map_title': {
@@ -74,6 +74,11 @@ angular.module('roveretoSegnala.services.conf', [])
             it: 'Segnala',
             en: 'Report',
             de: 'Berichte'
+        },
+        'my_signals_title': {
+            it: 'Le mie segnalazioni',
+            en: 'My issues',
+            de: 'Meine Berichte'
         },
         'segnala_input_title': {
             it: 'Titolo',
@@ -135,6 +140,11 @@ angular.module('roveretoSegnala.services.conf', [])
             en: 'Details',
             de: 'Adresse'
         },
+        'archivedetail_images': {
+            it: 'Immagini',
+            en: 'Images',
+            de: 'Bilder'
+        },
         'archivedetail_description': {
             it: 'Descrizione',
             en: 'Description',
@@ -146,7 +156,7 @@ angular.module('roveretoSegnala.services.conf', [])
             de: 'Adresse'
         },
         'archivedetail_category': {
-            it: 'Cateoria',
+            it: 'Categoria',
             en: 'Category',
             de: 'Adresse'
         },
@@ -156,19 +166,34 @@ angular.module('roveretoSegnala.services.conf', [])
             de: 'Adresse'
         },
         'segnala_category_1': {
-            it: 'Categoria 1',
-            en: 'Category 1',
-            de: 'Categorien 1'
+            it: 'Ambiente e territorio',
+            en: 'Environment and territory',
+            de: 'Umfeld und Gebiet'
         },
         'segnala_category_2': {
-            it: 'Categoria 2',
-            en: 'Category 2',
-            de: 'Categorien 2'
+            it: 'Commercio e negozi',
+            en: 'Market and shops',
+            de: 'Handel und Geschäfte'
         },
         'segnala_category_3': {
-            it: 'Categoria 3',
-            en: 'Category 3',
-            de: 'Categorien 3'
+            it: 'Cultura, turismo e tempo libero',
+            en: 'Culture, leisure and tourism',
+            de: 'Kultur, Freizeit und Tourismus'
+        },
+        'segnala_category_4': {
+            it: 'Lavori pubblici',
+            en: 'Public works',
+            de: 'Öffentliche Arbeiten'
+        },
+        'segnala_category_5': {
+            it: 'Lavoro',
+            en: 'Work',
+            de: 'Arbeit'
+        },
+        'segnala_category_6': {
+            it: 'Trasporti',
+            en: 'Transportation',
+            de: 'Transport'
         },
         'signal_error_send_title': {
             it: 'Errore',
@@ -196,9 +221,79 @@ angular.module('roveretoSegnala.services.conf', [])
             de: 'Bitte wählen Sie eine andere Positione'
         },
         'segnala_input_place_suggestion': {
-            it: 'digita per ottenere suggerimenti...',
-            en: 'type for place suggestions...',
-            de: 'geben Sie den Text für Anregungen...'
+            it: 'Indirizzo...',
+            en: 'Place...',
+            de: 'Straße...'
+        },
+        'signal_send_toast_ok': {
+            it: 'Nuova segnalazione inviata con successo',
+            en: 'New issue submitted successfuylly',
+            de: 'Neuer Bericht erfolgreich gesendet'
+        },
+        'signal_send_toast_error': {
+            it: 'Problema nell\'invio della segnalazione',
+            en: 'Error sending the issue',
+            de: 'Fehler beim Senden der Warnung'
+        },
+        'signal_send_popup_ok': {
+            it: 'OK',
+            en: 'OK',
+            de: 'OK'
+        },
+        'signal_send_popup_cancel': {
+            it: 'Chiudi',
+            en: 'Close ',
+            de: 'schließen'
+        },
+        'signal_send_toast_alarm': {
+            it: 'Chiudi',
+            en: 'Close ',
+            de: 'schließen'
+        },
+        'menu_map': {
+            it: 'Mappa',
+            en: 'Map',
+            de: 'Karte'
+        },
+        'menu_segnala': {
+            it: 'Segnala',
+            en: 'New Issue',
+            de: 'Neuer Bericht'
+        },
+        'menu_archivio': {
+            it: 'Archivio',
+            en: 'Archive',
+            de: 'Archivieren'
+        },
+        'menu_lemiesegnalazioni': {
+            it: 'Le mie segnalazioni',
+            en: 'My issues',
+            de: 'Meine Berichte'
+        },
+        'menu_login': {
+            it: 'Login',
+            en: 'Login',
+            de: 'Login'
+        },
+        'menu_credits': {
+            it: 'Credits',
+            en: 'Credits',
+            de: 'Credits'
+        },
+        'status_open': {
+            it: 'Aperto',
+            en: 'Open',
+            de: 'Geöffnet'
+        },
+        'status_closed': {
+            it: 'Chiuso',
+            en: 'Closed',
+            de: 'Geschlossen'
+        },
+        'status_processing': {
+            it: 'In corso',
+            en: 'Processing',
+            de: 'Wird bearbeitet'
         }
 
     }
@@ -242,7 +337,18 @@ angular.module('roveretoSegnala.services.conf', [])
             }
             return profileLoaded.promise;
         },
+        getLanguage: function () {
 
+            navigator.globalization.getLocaleName(
+                function (locale) {
+                    alert('locale: ' + locale.value + '\n');
+                },
+                function () {
+                    alert('Error getting locale\n');
+                }
+            );
+
+        },
         highlights: function () {
             return this.getProfile().then(function (data) {
                 //console.log(data.highlights[0].image);
@@ -324,7 +430,34 @@ angular.module('roveretoSegnala.services.conf', [])
         textTypesList: function () {
             return textTypes;
         },
-
+        getCategories: function () {
+            return [
+                {
+                    label: $filter('translate')("segnala_category_1"),
+                    value: 0
+            },
+                {
+                    label: $filter('translate')("segnala_category_2"),
+                    value: 1
+            },
+                {
+                    label: $filter('translate')("segnala_category_3"),
+                    value: 2
+            },
+                {
+                    label: $filter('translate')("segnala_category_4"),
+                    value: 3
+            },
+                {
+                    label: $filter('translate')("segnala_category_5"),
+                    value: 4
+            },
+                {
+                    label: $filter('translate')("segnala_category_6"),
+                    value: 5
+            }
+  ];
+        },
 
 
         cityName: function () {
