@@ -39,31 +39,31 @@ angular.module('roveretoSegnala.filters', [])
     }
 })
 
-.filter('translate', function ($rootScope, Config) {
-    return function (input, debug) {
-        lang = $rootScope.lang;
-        if (debug) console.log('translate: lang=' + lang);
-        if (!input) {
-            return '';
-        } else {
-            if (debug) console.log('input.0: ' + input);
-            if (debug) console.log('input var type: ' + typeof input);
-            if (typeof input == 'string') input = Config.keys()[input] || input;
-            if (input[lang] && input[lang] != '') {
-                if (debug) console.log('input.1: ' + JSON.stringify(input));
-                return input[lang];
-            } else {
-                if (debug) console.log('input it: ' + (input.it || 'FALSY'));
-                if (debug) console.log('input.2: ' + JSON.stringify(input));
-                if (input.hasOwnProperty('en')) {
-                    return input.en || '';
-                } else {
-                    return (typeof input == 'string' ? input : '') || '';
-                }
-            }
-        }
-    };
-})
+//.filter('translate', function ($rootScope, Config) {
+//    return function (input, debug) {
+//        lang = $rootScope.lang;
+//        if (debug) console.log('translate: lang=' + lang);
+//        if (!input) {
+//            return '';
+//        } else {
+//            if (debug) console.log('input.0: ' + input);
+//            if (debug) console.log('input var type: ' + typeof input);
+//            if (typeof input == 'string') input = Config.keys()[input] || input;
+//            if (input[lang] && input[lang] != '') {
+//                if (debug) console.log('input.1: ' + JSON.stringify(input));
+//                return input[lang];
+//            } else {
+//                if (debug) console.log('input it: ' + (input.it || 'FALSY'));
+//                if (debug) console.log('input.2: ' + JSON.stringify(input));
+//                if (input.hasOwnProperty('en')) {
+//                    return input.en || '';
+//                } else {
+//                    return (typeof input == 'string' ? input : '') || '';
+//                }
+//            }
+//        }
+//    };
+//})
 
 .filter('translate_plur', function ($filter) {
     return function (input, count) {

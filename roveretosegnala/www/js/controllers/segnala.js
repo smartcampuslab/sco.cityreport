@@ -203,7 +203,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $scope.showConfirm = function (name) {
             var confirmPopup = $ionicPopup.confirm({
-                title: $filter('translate')("signal_send_confirm place_title"),
+                title: $filter('translate')("signal_send_confirm_place_title"),
                 template: name,
                 buttons: [
                     {
@@ -619,7 +619,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         }
         $scope.showConfirm = function (name, lat, long) {
             var confirmPopup = $ionicPopup.confirm({
-                title: $filter('translate')("signal_send_confirm place_title"),
+                title: $filter('translate')("signal_send_confirm_place_title"),
                 template: name,
                 buttons: [
                     {
