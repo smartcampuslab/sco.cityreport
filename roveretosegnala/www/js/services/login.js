@@ -48,13 +48,13 @@ angular.module('roveretoSegnala.services.login', [])
                 alert('Failed: ' + reason);
                 //reset data
                 $rootScope.userIsLogged = false;
-                localStorage.userId = null;
+                localStorage.userId = "null";
             });
         },
         logout: function () {
             //return UserID
             $rootScope.userIsLogged = false;
-            localStorage.userId = null;
+            localStorage.userId = "null";
         },
         getUserId: function () {
             //return UserID

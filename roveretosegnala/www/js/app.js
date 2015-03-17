@@ -21,7 +21,7 @@ angular.module('roveretoSegnala', [
 ])
 
 .run(function ($ionicPlatform, $rootScope, $state, Login) {
-    $rootScope.userIsLogged = (localStorage.userId != null);
+    $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
