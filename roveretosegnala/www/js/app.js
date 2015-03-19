@@ -18,10 +18,11 @@ angular.module('roveretoSegnala', [
     'roveretoSegnala.directives',
     'roveretoSegnala.services.conf',
     'roveretoSegnala.services.login',
+	'services.geo'
 
 ])
 
-.run(function ($ionicPlatform, $rootScope, $state, $translate, Login) {
+.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate) {
     $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
     $ionicPlatform.ready(function () {
@@ -54,6 +55,41 @@ angular.module('roveretoSegnala', [
         Login.logout();
 
     };
+	
+	// for BlackBerry 10, WP8, iOS
+    setTimeout(function () {
+        $cordovaSplashscreen.hide();
+        //navigator.splashscreen.hide();
+    }, 3000);
+
+    $rootScope.locationWatchID = undefined;
+    //  ionic.Platform.fullScreen(false,true);
+    if (typeof (Number.prototype.toRad) === "undefined") {
+        Number.prototype.toRad = function () {
+            return this * Math.PI / 180;
+        }
+    }
+    document.addEventListener("pause", function () {
+        console.log('app paused');
+        if (typeof $rootScope.locationWatchID != 'undefined') {
+            navigator.geolocation.clearWatch($rootScope.locationWatchID);
+            $rootScope.locationWatchID = undefined;
+            GeoLocate.reset();
+            console.log('geolocation reset');
+        }
+    }, false);
+    document.addEventListener("resume", function () {
+        console.log('app resumed');
+        GeoLocate.locate();
+    }, false);
+    GeoLocate.locate().then(function (position) {
+        $rootScope.myPosition = position;
+        //console.log('first geolocation: ' + position);
+    }, function () {
+        console.log('CANNOT LOCATE!');
+    });
+
+
 
 })
 
