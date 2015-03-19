@@ -1,7 +1,7 @@
 ////https: //github.com/tombatossals/angular-leaflet-directive
 angular.module('roveretoSegnala.controllers.map', [])
     .controller('MapCtrl',
-        function ($scope, $location, $rootScope, leafletData, archiveService, $ionicHistory, $ionicPlatform, $templateCache, $state) {
+        function ($ionicPlatform, $scope, $location, $rootScope, leafletData, archiveService, $ionicHistory, $ionicPlatform, $templateCache, $state) {
             $scope.comefromarchivio = false;
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
@@ -102,7 +102,9 @@ angular.module('roveretoSegnala.controllers.map', [])
                 events: {}
             });
             //for refresh
-            $scope.init();
+            $ionicPlatform.ready(function(){
+                $scope.init();
+            });
 
 //            $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
                 //                //                            //se vengo da detail e ho salvato archivio-> metto in archivio
