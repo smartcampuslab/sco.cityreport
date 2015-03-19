@@ -1,6 +1,11 @@
 <ion-view title="{{'archive_title' | translate}}">
     <ion-content class="has-header padding">
-        <ion-list>
+        <div class="card" ng-hide="{{!emptylist}}">
+            <div class="item item-text-wrap">
+                {{'archive_empty_list' | translate}}
+            </div>
+        </div>
+        <ion-list ng-hide="{{emptylist}}">
             <ion-item ng-repeat="signal in listopen.data | filter: { status: 'open' } " href="#/app/archiviodetail/{{signal.id}}">
                 <b>{{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:' dd-MM-yyyy'}}</span>
 

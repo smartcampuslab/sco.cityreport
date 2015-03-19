@@ -245,7 +245,8 @@ angular.module('roveretoSegnala', [
         status_closed: 'Chiuso',
         status_processing: 'In corso',
         toast_must_login: 'Funzione disabilitata. Devi accedere al sistema',
-        menu_logout: 'Esci'
+        menu_logout: 'Esci',
+        archive_empty_list: 'Nessuna segnalazione presente'
 
     });
     $translateProvider.translations('en', {
@@ -307,7 +308,9 @@ angular.module('roveretoSegnala', [
         status_closed: 'Closed',
         status_processing: 'Processing',
         toast_must_login: 'Function disabled. You must login',
-        menu_logout: 'Logout'
+        menu_logout: 'Logout',
+        archive_empty_list: 'No issues'
+
 
     });
     $translateProvider.translations('de', {
@@ -369,7 +372,8 @@ angular.module('roveretoSegnala', [
         status_closed: 'Geschlossen',
         status_processing: 'Wird bearbeitet',
         toast_must_login: 'Wird bearbeitet',
-        menu_logout: 'Logout'
+        menu_logout: 'Logout',
+        archive_empty_list: 'kein Bericht'
 
     });
 

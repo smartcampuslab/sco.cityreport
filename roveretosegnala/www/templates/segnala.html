@@ -8,7 +8,7 @@
 
                 <div class="item item-input-inset">
                     <label class="item-input">
-                        <input ng-model="signal.attribute.title" name="signal_title" type="text" placeholder="{{'segnala_input_title' | translate}}">
+                        <input ng-model="signal.attribute.title" type="text" placeholder="{{'segnala_input_title' | translate}}">
                     </label>
 
                 </div>
@@ -65,7 +65,7 @@
                 <ion-scroll>
 
 
-                    <img ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="removeImage(image)" height="200px" />
+                    <img ng-repeat="image in images" data-ng-src="{{image}}" ng-click="removeImage(image)" height="200px" />
                 </ion-scroll>
 
 

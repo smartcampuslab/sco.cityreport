@@ -40,11 +40,23 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         var segnalaService = {};
         var signal = null;
         var name = '';
+        var images = [];
+        var imagesBase64 = [];
         segnalaService.setSignal = function (signalinput) {
             signal = signalinput;
         }
+        segnalaService.setImages = function (imagesinput, imagesBase64input) {
+            images = imagesinput;
+            imagesBase64 = imagesBase64input;
+        }
         segnalaService.getSignal = function () {
             return signal;
+        };
+        segnalaService.getImages = function () {
+            return images;
+        };
+        segnalaService.getImagesBase64 = function () {
+            return imagesBase64;
         };
         segnalaService.getclientId = function () {
             return clientId;
@@ -275,16 +287,19 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             };
             $scope.signal.attribute.category = $scope.categories[0];
             $scope.images = [];
-
+            $scope.imagesBase64 = [];
 
 
         } else {
             $scope.signal = segnalaService.getSignal();
+            $scope.images = segnalaService.getImages();
+            $scope.imagesBase64 = segnalaService.getImagesBase64();
             $scope.signal.attribute.category = $scope.categories[$scope.signal.attribute.category.value];
 
-            $scope.images = $scope.signal.media;
+            //$scope.images = $scope.signal.media;
             if ($scope.images == null) {
                 $scope.images = [];
+                $scope.imagesBase64 = [];
             }
             if (!$scope.signal.media) {
                 $scope.signal.media = [];
@@ -297,6 +312,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $scope.openMap4Address = function () {
             segnalaService.setSignal($scope.signal);
+            segnalaService.setImages($scope.images, $scope.imagesBase64);
             window.location.assign('#/app/map4address');
         }
 
@@ -306,7 +322,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             // 2
             if (wherePic == 'Camera') {
                 options = {
-                    destinationType: Camera.DestinationType.FILE_URI,
+                    destinationType: Camera.DestinationType.DATA_URL,
                     sourceType: Camera.PictureSourceType.CAMERA, // Camera.PictureSourceType.PHOTOLIBRARY
                     allowEdit: false,
                     encodingType: Camera.EncodingType.JPEG,
@@ -314,7 +330,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 };
             } else {
                 options = {
-                    destinationType: Camera.DestinationType.FILE_URI,
+                    destinationType: Camera.DestinationType.DATA_URL,
                     sourceType: Camera.PictureSourceType.PHOTOLIBRARY, // Camera.PictureSourceType.PHOTOLIBRARY
                     allowEdit: false,
                     encodingType: Camera.EncodingType.JPEG,
@@ -324,8 +340,12 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             // 3
             $cordovaCamera.getPicture(options).then(function (imageData) {
 
+                //I have to add to file array imageData and visualize
                 // 4
-                onImageSuccess(imageData);
+                image = "data:image/jpeg;base64," + imageData;
+                $scope.images.push(image);
+                $scope.imagesBase64.push(imageData);
+                //onImageSuccess(imageData);
 
                 function onImageSuccess(fileURI) {
                     createFileEntry(fileURI);
@@ -475,114 +495,114 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         $scope.submit = function () {
             var remoteURL = [];
-  $scope.signal.location.coordinates = segnalaService.getPosition();
-  $scope.signal.location.address = segnalaService.getName();
-  if ($scope.images) {
-      $scope.signal.media = $scope.images;
-  }
-  //            $scope.signal.attribute.category = $scope.selectedcategory.value;
-  if ($scope.checkForm($scope.signal)) {
-      $ionicLoading.show({
-          template: 'Loading...'
-      });
-      var uploadedimages = 0;
-      for (var i = 0; i < $scope.signal.media.length; i++) {
-          $http({
-              method: 'POST',
-              url: 'https://api.imgur.com/3/image',
-              headers: {
-                  Authorization: 'Client-ID b790f7d57013adb',
-                  Accept: 'application/json'
-              },
-              data: {
-                  image: $scope.getBase64Image($scope.signal.media[i]),
-                  type: 'base64'
+            $scope.signal.location.coordinates = segnalaService.getPosition();
+            $scope.signal.location.address = segnalaService.getName();
+            if ($scope.images) {
+                $scope.signal.media = $scope.images;
+            }
+            //            $scope.signal.attribute.category = $scope.selectedcategory.value;
+            if ($scope.checkForm($scope.signal)) {
+                $ionicLoading.show({
+                    template: 'Loading...'
+                });
+                var uploadedimages = 0;
+                for (var i = 0; i < $scope.images.length; i++) {
+                    $http({
+                        method: 'POST',
+                        url: 'https://api.imgur.com/3/image',
+                        headers: {
+                            Authorization: 'Client-ID b790f7d57013adb',
+                            Accept: 'application/json'
+                        },
+                        data: {
+                            image: $scope.imagesBase64[i],
+                            type: 'base64'
 
-              }
-          }).
-          success(function (data, status, headers, config) {
-              // this callback will be called asynchronously
-              // when the response is available
-              remoteURL.push(data.data.link);
-              uploadedimages++
-              //send to ws the server
-              if (uploadedimages == $scope.signal.media.length) {
-                  $scope.signal.media = remoteURL;
-                  segnalaService.sendSignal($scope.signal).then(function (data) {
-                      //chiudi pop up bella la' e esci
-                      $ionicLoading.hide();
-                      console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
-                      //torna indietro con toast successo
-                      //                                window.location.assign('#/app/map');
-                      window.location.assign('#/app/mysignals');
-                      $ionicHistory.nextViewOptions({
-                          disableAnimate: true,
-                          disableBack: true
-                      });
-                      Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+                        }
+                    }).
+                    success(function (data, status, headers, config) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        remoteURL.push(data.data.link);
+                        uploadedimages++
+                        //send to ws the server
+                        if (uploadedimages == $scope.images.length) {
+                            $scope.signal.media = remoteURL;
+                            segnalaService.sendSignal($scope.signal).then(function (data) {
+                                //chiudi pop up bella la' e esci
+                                $ionicLoading.hide();
+                                console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+                                //torna indietro con toast successo
+                                //                                window.location.assign('#/app/map');
+                                window.location.assign('#/app/mysignals');
+                                $ionicHistory.nextViewOptions({
+                                    disableAnimate: true,
+                                    disableBack: true
+                                });
+                                Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
-                  }, function (error) {
-                      console.log("problems" + data + status + headers + config);
-                      //chiudi pop up ed errore sul server smarcommunity
-                      //toast error
-                      Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
-                      $ionicLoading.hide();
+                            }, function (error) {
+                                console.log("problems" + data + status + headers + config);
+                                //chiudi pop up ed errore sul server smarcommunity
+                                //toast error
+                                Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                                $ionicLoading.hide();
 
-                  });
-              }
-          }).
-          error(function (data, status, headers, config) {
-              $ionicLoading.hide();
-              console.log("problems" + data + status + headers + config);
-              //chiudi pop up ed errore sul server immagini
-              //toast error
-              Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
-              $ionicLoading.hide();
+                            });
+                        }
+                    }).
+                    error(function (data, status, headers, config) {
+                        $ionicLoading.hide();
+                        console.log("problems" + "data:" + JSON.stringify(data, null, 4) + "status:" + status + "headers:" + headers + "config:" + config);
+                        //chiudi pop up ed errore sul server immagini
+                        //toast error
+                        Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                        $ionicLoading.hide();
 
-          });
-      }
-      if ($scope.signal.media.length == 0) {
-          //if no gallery u are here
-          segnalaService.sendSignal($scope.signal).then(function (data) {
-              //chiudi pop up bella la' e esci
-              $ionicLoading.hide();
-              console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
-              //torna indietro con toast successo
-              //                                window.location.assign('#/app / map');
-              window.location.assign('#/app/mysignals');
-              $ionicHistory.nextViewOptions({
-                  disableAnimate: true,
-                  disableBack: true
-              });
-              Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+                    });
+                }
+                if ($scope.images.length == 0) {
+                    //if no gallery u are here
+                    segnalaService.sendSignal($scope.signal).then(function (data) {
+                        //chiudi pop up bella la' e esci
+                        $ionicLoading.hide();
+                        console.log("upload images success. Now send data to server...." + segnalaService.getPosition());
+                        //torna indietro con toast successo
+                        //                                window.location.assign('#/app / map');
+                        window.location.assign('#/app/mysignals');
+                        $ionicHistory.nextViewOptions({
+                            disableAnimate: true,
+                            disableBack: true
+                        });
+                        Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
 
-          }, function (error) {
-              console.log("problems" + data + status + headers + config);
-              //chiudi pop up ed errore sul server smarcommunity
-              //toast error
-              Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
-              $ionicLoading.hide();
+                    }, function (error) {
+                        console.log("problems" + "data:" + data + "status:" + status + "headers:" + headers + "config:" + config);
+                        //chiudi pop up ed errore sul server smarcommunity
+                        //toast error
+                        Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                        $ionicLoading.hide();
 
-          });
-      }
-  } else {
-      //show popup 
-      var alertPopup = $ionicPopup.alert({
-          title: $filter('translate')("signal_error_send_title"),
-          template: $filter('translate')("signal_error_send_template"),
-          buttons: [
-              {
-                  text: $filter('translate')("signal_send_toast_alarm"),
-                  type: 'button-custom',
+                    });
+                }
+            } else {
+                //show popup
+                var alertPopup = $ionicPopup.alert({
+                    title: $filter('translate')("signal_error_send_title"),
+                    template: $filter('translate')("signal_error_send_template"),
+                    buttons: [
+                        {
+                            text: $filter('translate')("signal_send_toast_alarm"),
+                            type: 'button-custom',
                             }
             ]
-      });
-      alertPopup.then(function (res) {
-          console.log('error');
-          Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
+                });
+                alertPopup.then(function (res) {
+                    console.log('error');
+                    Toast.show($filter('translate')("signal_send_toast_error"), "short", "bottom");
 
-      });
-  }
+                });
+            }
         }
 
         $scope.checkForm = function (signal) {
@@ -598,25 +618,50 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             return check;
         }
         $scope.getBase64Image = function (img) {
-            var image = new Image();
-            image.src = img;
-            // Create an empty canvas element
-            var canvas = document.createElement("canvas");
-            canvas.width = image.width;
-            canvas.height = image.height;
 
-            // Copy the image contents to the canvas
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0);
+                //                var base64_data = new Buffer(fs.readFileSync(img)).toString('base64');
+                //                return base64_data;
+                //                //                var image = new Image();
+                //                //                image.src = img;
+                //                //                Base64.getBase64ImageFromInput(image, function (imageData) {
+                //                //                    //Process the image string.
+                //                //                    console.log(imageData);
+                //                //                    return imageData;
+                //                //                });
+                Base64.encode(img.src);
+                Base64.getBase64ImageFromInput(img.src, function (imageData) {
+                    //Process the image string.
+                    console.log(imageData);
+                });
+            }
+            //        $scope.getBase64Image = function (img) {
+            //            console.log("starting conversion");
+            //            var image = new Image();
+            //            image.src = img;
+            //            // Create an empty canvas element
+            //            console.log(" Create an empty canvas element");
+            //
+            //            var canvas = document.createElement("canvas");
+            //            canvas.width = image.width;
+            //            canvas.height = image.height;
+            //
+            //            // Copy the image contents to the canvas
+            //            console.log("Copy the image contents to the canvas");
+            //
+            //            var ctx = canvas.getContext("2d");
+            //            ctx.drawImage(image, 0, 0);
+            //
+            //            // Get the data-URL formatted image
+            //            // Firefox supports PNG and JPEG. You could check img.src to
+            //            // guess the original format, but be aware the using "image/jpg"
+            //            // will re-encode the image.
+            //            var dataURL = canvas.toDataURL("image/png");
+            //            //            var dataURL = ToDataURL(canvas);
+            //            console.log("stepbefore exit");
+            //
+            //            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+            //        }
 
-            // Get the data-URL formatted image
-            // Firefox supports PNG and JPEG. You could check img.src to
-            // guess the original format, but be aware the using "image/jpg"
-            // will re-encode the image.
-            var dataURL = canvas.toDataURL("image/png");
-
-            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        }
         $scope.showConfirm = function (name, lat, long) {
             var confirmPopup = $ionicPopup.confirm({
                 title: $filter('translate')("signal_send_confirm_place_title"),

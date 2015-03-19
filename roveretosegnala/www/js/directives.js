@@ -422,6 +422,7 @@ angular.module('roveretoSegnala.directives', [])
             placeholder="{{ attrs.placeholder }}"\
             class="{{ attrs.inputclass }}"\
             id="{{ attrs.inputid }}"\
+            style="width:75%;"\
             ng-required="{{ placeautocompleteRequired }}" />\
           <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
             <li\
