@@ -18,7 +18,7 @@ angular.module('roveretoSegnala', [
     'roveretoSegnala.directives',
     'roveretoSegnala.services.conf',
     'roveretoSegnala.services.login',
-	'services.geo'
+ 'services.geo'
 
 ])
 
@@ -55,8 +55,8 @@ angular.module('roveretoSegnala', [
         Login.logout();
 
     };
-	
-	// for BlackBerry 10, WP8, iOS
+
+    // for BlackBerry 10, WP8, iOS
     setTimeout(function () {
         $cordovaSplashscreen.hide();
         //navigator.splashscreen.hide();
@@ -282,7 +282,9 @@ angular.module('roveretoSegnala', [
         status_processing: 'In corso',
         toast_must_login: 'Funzione disabilitata. Devi accedere al sistema',
         menu_logout: 'Esci',
-        archive_empty_list: 'Nessuna segnalazione presente'
+        archive_empty_list: 'Nessuna segnalazione presente',
+        signal_send_no_connection_title: 'Errore',
+        signal_send_no_connection_template: 'Problemi di connessione'
 
     });
     $translateProvider.translations('en', {
@@ -345,7 +347,9 @@ angular.module('roveretoSegnala', [
         status_processing: 'Processing',
         toast_must_login: 'Function disabled. You must login',
         menu_logout: 'Logout',
-        archive_empty_list: 'No issues'
+        archive_empty_list: 'No issues',
+        signal_send_no_connection_title: 'Error',
+        signal_send_no_connection_template: 'Connection problem'
 
 
     });
@@ -409,7 +413,9 @@ angular.module('roveretoSegnala', [
         status_processing: 'Wird bearbeitet',
         toast_must_login: 'Wird bearbeitet',
         menu_logout: 'Logout',
-        archive_empty_list: 'kein Bericht'
+        archive_empty_list: 'kein Bericht',
+        signal_send_no_connection_title: 'Fehler',
+        signal_send_no_connection_template: 'Verbindungsprobleme'
 
     });
 

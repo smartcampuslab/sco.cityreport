@@ -194,11 +194,12 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
                     $scope.showConfirm(name);
                 } else {
-                    $scope.showNoPlace();
+                    showNoPlace();
                 }
             }).
             error(function (data, status, headers, config) {
-                //            $scope.error = true;
+                showNoConnection();
+
             });
 
             //$scope.showConfirm(name);
@@ -242,10 +243,26 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             });
 
         }
-        $scope.showNoPlace = function () {
+        showNoPlace = function () {
             var alertPopup = $ionicPopup.alert({
                 title: $filter('translate')("signal_send_no_place_title"),
                 template: $filter('translate')("signal_send_no_place_template"),
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom'
+                            }
+            ]
+            });
+            alertPopup.then(function (res) {
+                console.log('no place');
+            });
+        };
+
+        showNoConnection = function () {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')("signal_send_no_connection_title"),
+                template: $filter('translate')("signal_send_no_connection_template"),
                 buttons: [
                     {
                         text: $filter('translate')("signal_send_toast_alarm"),
@@ -345,52 +362,6 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 image = "data:image/jpeg;base64," + imageData;
                 $scope.images.push(image);
                 $scope.imagesBase64.push(imageData);
-                //onImageSuccess(imageData);
-
-                //                function onImageSuccess(fileURI) {
-                //                    createFileEntry(fileURI);
-                //                }
-                //
-                //                function createFileEntry(fileURI) {
-                //                    window.resolveLocalFileSystemURL(fileURI, copyFile, fail);
-                //                }
-                //
-                //                // 5
-                //                function copyFile(fileEntry) {
-                //                    var name = fileEntry.fullPath.substr(fileEntry.fullPath.lastIndexOf('/') + 1);
-                //                    var newName = makeid() + name;
-                //
-                //                    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (fileSystem2) {
-                //                            fileEntry.copyTo(
-                //                                fileSystem2,
-                //                                newName,
-                //                                onCopySuccess,
-                //                                fail
-                //                            );
-                //                        },
-                //                        fail);
-                //                }
-                //
-                //                // 6
-                //                function onCopySuccess(entry) {
-                //                    $scope.$apply(function () {
-                //                        $scope.images.push(entry.nativeURL);
-                //                    });
-                //                }
-                //
-                //                function fail(error) {
-                //                    console.log("fail: " + error.code);
-                //                }
-                //
-                //                function makeid() {
-                //                    var text = "";
-                //                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                //
-                //                    for (var i = 0; i < 5; i++) {
-                //                        text += possible.charAt(Math.floor(Math.random() * possible.length));
-                //                    }
-                //                    return text;
-                //                }
 
             }, function (err) {
                 console.log(err);
@@ -449,31 +420,49 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                             //show a pop up where u can choose if address is correct and set up in the bar
                             // A confirm dialog
                             name = '';
-                            if (data.response.docs[0].street)
-                                name = name + data.response.docs[0].street;
-                            if (data.response.docs[0].housenumber) {
-                                if (name)
-                                    name = name + ', ';
-                                name = name + data.response.docs[0].housenumber;
-                            }
-                            if (data.response.docs[0].city) {
-                                if (name)
-                                    name = name + ', ';
-                                name = name + data.response.docs[0].city;
-                            }
+                            if (data.response.docs[0]) {
+                                if (data.response.docs[0].street)
+                                    name = name + data.response.docs[0].street;
+                                if (data.response.docs[0].housenumber) {
+                                    if (name)
+                                        name = name + ', ';
+                                    name = name + data.response.docs[0].housenumber;
+                                }
+                                if (data.response.docs[0].city) {
+                                    if (name)
+                                        name = name + ', ';
+                                    name = name + data.response.docs[0].city;
+                                }
 
 
-                            $scope.showConfirm(name, position.coords.latitude, position.coords.longitude);
+                                $scope.showConfirm(name, position.coords.latitude, position.coords.longitude);
+                            } else {
+                                showNoPlace();
+
+                            }
                         }).
                         error(function (data, status, headers, config) {
-                            //            $scope.error = true;
+                            //temporary
+                            var alertPopup = $ionicPopup.alert({
+                                title: $filter('translate')("signal_send_no_connection_title"),
+                                template: $filter('translate')("signal_send_no_connection_template"),
+                                buttons: [
+                                    {
+                                        text: $filter('translate')("signal_send_toast_alarm"),
+                                        type: 'button-custom'
+                            }
+            ]
+                            });
+                            alertPopup.then(function (res) {
+                                console.log('no place');
+                            });
                         });
 
 
                     });
                 },
                 function (error) {
-                    //                    alert(error);
+                    showNoConnection();
                 });
         };
         $scope.changeString = function (suggestion) {
