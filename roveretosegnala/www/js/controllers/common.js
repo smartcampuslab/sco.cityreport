@@ -97,7 +97,37 @@ angular.module('roveretoSegnala.controllers.common', [])
 })
 
 
+function showNoPlace() {
+    var alertPopup = $ionicPopup.alert({
+        title: $filter('translate')("signal_send_no_place_title"),
+        template: $filter('translate')("signal_send_no_place_template"),
+        buttons: [
+            {
+                text: $filter('translate')("signal_send_toast_alarm"),
+                type: 'button-custom'
+                            }
+            ]
+    });
+    alertPopup.then(function (res) {
+        console.log('no place');
+    });
+};
 
+function showNoConnection() {
+    var alertPopup = $ionicPopup.alert({
+        title: $filter('translate')("signal_send_no_connection_title"),
+        template: $filter('translate')("signal_send_no_connection_template"),
+        buttons: [
+            {
+                text: $filter('translate')("signal_send_toast_alarm"),
+                type: 'button-custom'
+                            }
+            ]
+    });
+    alertPopup.then(function (res) {
+        console.log('no place');
+    });
+};
 
 
 

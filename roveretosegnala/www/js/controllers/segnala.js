@@ -67,24 +67,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         segnalaService.getName = function () {
             return name;
         };
-        //        segnalaService.setTitle = function (titleinput) {
-        //            title = titleinput;
-        //        };
-        //        segnalaService.setDescription = function (descriptioninput) {
-        //            description = descriptioninput;
-        //        };
-        //        segnalaService.setCategory = function (categoryinput) {
-        //            category = categoryinput;
-        //        };
-        //        segnalaService.getTitle = function () {
-        //            return title;
-        //        };
-        //        segnalaService.setDescription = function () {
-        //            return description;
-        //        };
-        //        segnalaService.setCategory = function () {
-        //            return category;
-        //        };
+
         segnalaService.setName = function (nameinput) {
             name = nameinput;
         };
@@ -115,19 +98,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
             });
 
-            //        return $http.post(Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues')
-            //            .then(function (response) {
-            //                if (typeof response.data === 'object') {
-            //                    return response.data;
-            //                } else {
-            //                    // invalid response
-            //                    return $q.reject(response.data);
-            //                }
-            //
-            //            }, function (response) {
-            //                // something went wrong
-            //                return $q.reject(response.data);
-            //            });
+
 
         };
 
@@ -243,37 +214,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             });
 
         }
-        showNoPlace = function () {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')("signal_send_no_place_title"),
-                template: $filter('translate')("signal_send_no_place_template"),
-                buttons: [
-                    {
-                        text: $filter('translate')("signal_send_toast_alarm"),
-                        type: 'button-custom'
-                            }
-            ]
-            });
-            alertPopup.then(function (res) {
-                console.log('no place');
-            });
-        };
 
-        showNoConnection = function () {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')("signal_send_no_connection_title"),
-                template: $filter('translate')("signal_send_no_connection_template"),
-                buttons: [
-                    {
-                        text: $filter('translate')("signal_send_toast_alarm"),
-                        type: 'button-custom'
-                            }
-            ]
-            });
-            alertPopup.then(function (res) {
-                console.log('no place');
-            });
-        };
         angular.extend($scope, {
             center: {
                 lat: 45.890931,
@@ -406,7 +347,37 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             }
 
         }
+        showNoPlace = function () {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')("signal_send_no_place_title"),
+                template: $filter('translate')("signal_send_no_place_template"),
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom'
+                            }
+            ]
+            });
+            alertPopup.then(function (res) {
+                console.log('no place');
+            });
+        };
 
+        showNoConnection = function () {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')("signal_send_no_connection_title"),
+                template: $filter('translate')("signal_send_no_connection_template"),
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom'
+                            }
+            ]
+            });
+            alertPopup.then(function (res) {
+                console.log('no place');
+            });
+        };
         $scope.locateMe = function () {
             $window.navigator.geolocation.getCurrentPosition(function (position) {
                     $scope.$apply(function () {
@@ -445,19 +416,21 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                         }).
                         error(function (data, status, headers, config) {
                             //temporary
-                            var alertPopup = $ionicPopup.alert({
-                                title: $filter('translate')("signal_send_no_connection_title"),
-                                template: $filter('translate')("signal_send_no_connection_template"),
-                                buttons: [
-                                    {
-                                        text: $filter('translate')("signal_send_toast_alarm"),
-                                        type: 'button-custom'
-                            }
-            ]
-                            });
-                            alertPopup.then(function (res) {
-                                console.log('no place');
-                            });
+
+                            showNoConnection();
+                            //                            var alertPopup = $ionicPopup.alert({
+                            //                                title: $filter('translate')("signal_send_no_connection_title"),
+                            //                                template: $filter('translate')("signal_send_no_connection_template"),
+                            //                                buttons: [
+                            //                                    {
+                            //                                        text: $filter('translate')("signal_send_toast_alarm"),
+                            //                                        type: 'button-custom'
+                            //                            }
+                            //            ]
+                            //                            });
+                            //                            alertPopup.then(function (res) {
+                            //                                console.log('no place');
+                            //                            });
                         });
 
 
