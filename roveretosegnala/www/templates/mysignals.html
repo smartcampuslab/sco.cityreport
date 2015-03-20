@@ -1,11 +1,11 @@
 <ion-view title="{{'my_signals_title' | translate}}">
     <ion-content has-header="true" has-footer="true" padding="true">
-        <div class="card" ng-hide="{{!emptylist}}">
+        <div class="card" ng-hide="!emptylist">
             <div class="item item-text-wrap">
                 {{'archive_empty_list' | translate}}
             </div>
         </div>
-        <ion-list ng-hide="{{emptylist}}">
+        <ion-list ng-hide="emptylist">
             <ion-item ng-repeat="signal in mySignals.data" href="#/app/archiviodetail/{{signal.id}}" type="item-link">
                 <b> {{signal.attribute.title}}</b> <span class="alignright">{{signal.created | date:' dd-MM-yyyy'}}</span>
                 <p><i class="icon ion-ios-location" style="font-size:25px;"></i> {{signal.location.address}}</p>

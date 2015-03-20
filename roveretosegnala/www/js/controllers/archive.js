@@ -27,7 +27,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
                 }
                 archiveService.getItemsOnStateArchive(state, length).then(function (items) {
                     //check state for array
-                    $scope.emptylist = true;
+                    $scope.emptylist = false;
 
                     if (state == 'open') {
                         if ($scope.listopen.data) {
@@ -38,7 +38,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
                         } else {
                             $scope.listopen = items;
                         }
-                        if ($scope.listopen.length == 0) {
+                        if ($scope.listopen.data.length == 0) {
                             $scope.emptylist = true;
                         } else {
                             $scope.emptylist = false;
@@ -54,7 +54,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
                         } else {
                             $scope.listclosed = items;
                         }
-                        if ($scope.listclosed.length == 0) {
+                        if ($scope.listclosed.data.length == 0) {
                             $scope.emptylist = true;
                         } else {
                             $scope.emptylist = false;
@@ -69,7 +69,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
                         } else {
                             $scope.listprocessing = items;
                         }
-                        if ($scope.listprocessing.length == 0) {
+                        if ($scope.listprocessing.data.length == 0) {
                             $scope.emptylist = true;
                         } else {
                             $scope.emptylist = false;
@@ -140,7 +140,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
     })
 
 .controller('MySignalsCtrl', function ($scope, $stateParams, $filter, archiveService) {
-        $scope.emptylist = true;
+        $scope.emptylist = false;
         $scope.mySignals = {};
         $scope.noMoreMySignalsAvailable = false;
         $scope.loadMore = function (state) {
@@ -164,7 +164,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
 
 
                 $scope.$broadcast('scroll.infiniteScrollComplete');
-                if ($scope.mySignals.length == 0) {
+                if ($scope.mySignals.data.length == 0) {
                     $scope.emptylist = true;
                 } else {
                     $scope.emptylist = false;
