@@ -23,6 +23,7 @@ angular.module('roveretoSegnala', [
 ])
 
 .run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate) {
+    $rootScope.showmap = false;
     $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
     $ionicPlatform.ready(function () {

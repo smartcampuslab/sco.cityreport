@@ -45,6 +45,7 @@ angular.module('roveretoSegnala.controllers.map', [])
                         L.circle(e.latlng, radius).addTo(map);
 
                     }
+                    $rootScope.showmap = true;
                 });
                 archiveService.listForMap().then(function (data) {
                     $scope.mySignals = data;
@@ -104,6 +105,8 @@ angular.module('roveretoSegnala.controllers.map', [])
             //for refresh
             $ionicPlatform.ready(function () {
                 $scope.init();
+                //$rootScope.showmap = true;
+
             });
 
         })
