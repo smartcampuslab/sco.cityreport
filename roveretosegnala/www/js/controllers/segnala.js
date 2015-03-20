@@ -344,6 +344,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     allowEdit: false,
                     encodingType: Camera.EncodingType.JPEG,
                     popoverOptions: CameraPopoverOptions,
+                    saveToPhotoAlbum: false
                 };
             } else {
                 options = {
@@ -352,6 +353,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     allowEdit: false,
                     encodingType: Camera.EncodingType.JPEG,
                     popoverOptions: CameraPopoverOptions,
+                    saveToPhotoAlbum: false
                 };
             }
             // 3
@@ -529,7 +531,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                                     disableBack: true
                                 });
                                 Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
-
+                                //log
+                                Restlogging.appLog("AppProsume", "newissue");
                             }, function (error) {
                                 console.log("problems" + data + status + headers + config);
                                 //chiudi pop up ed errore sul server smarcommunity
@@ -564,6 +567,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                             disableBack: true
                         });
                         Toast.show($filter('translate')("signal_send_toast_ok"), "short", "bottom");
+                        //log
+                        Restlogging.appLog("AppProsume", "newissue");
 
                     }, function (error) {
                         console.log("problems" + "data:" + data + "status:" + status + "headers:" + headers + "config:" + config);

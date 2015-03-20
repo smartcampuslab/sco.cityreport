@@ -42,6 +42,8 @@ angular.module('roveretoSegnala.services.login', [])
             authapi.authorize("https://dev.smartcommunitylab.it").then(function (data) {
                 console.log("success:" + data.userId);
                 //prendi google id , metti in local storage e abilita menu
+                //log
+                Restlogging.appLog("AppCollaborate", "login");
                 $rootScope.userIsLogged = true;
                 localStorage.userId = data.userId;
             }, function (reason) {

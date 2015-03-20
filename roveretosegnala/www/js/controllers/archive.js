@@ -1,7 +1,9 @@
 angular.module('roveretoSegnala.controllers.archive', [])
 
-.controller('ArchiveCtrl', function ($scope, archiveService) {
+.controller('ArchiveCtrl', function ($scope, archiveService, $location) {
 
+        //log
+        Restlogging.appLog("AppConsume", "archive+" + $location.url().substr($location.url().lastIndexOf('/') + 1));
         $scope.listForMap = {};
         $scope.listopen = {};
         $scope.listclosed = {};
@@ -11,87 +13,75 @@ angular.module('roveretoSegnala.controllers.archive', [])
         $scope.noMoreProcessingItemsAvailable = false;
 
         $scope.loadMore = function (state) {
-                var length = 0;
+
+            var length = 0;
+            if (state == 'open') {
+                if ($scope.listopen.data) {
+                    length = $scope.listopen.data.length;
+                }
+            } else if (state == 'closed') {
+                if ($scope.listclosed.data) {
+                    length = $scope.listclosed.data.length;
+                }
+            } else {
+                if ($scope.listprocessing.data) {
+                    length = $scope.listprocessing.data.length;
+                }
+            }
+            archiveService.getItemsOnStateArchive(state, length).then(function (items) {
+                //check state for array
+                $scope.emptylist = false;
+
                 if (state == 'open') {
                     if ($scope.listopen.data) {
-                        length = $scope.listopen.data.length;
+                        $scope.listopen.data.push.apply($scope.listopen.data, items.data);
+                        if (items.data.length < archiveService.getMaxCounter()) {
+                            $scope.noMoreOpenItemsAvailable = true;
+                        }
+                    } else {
+                        $scope.listopen = items;
+                    }
+                    if ($scope.listopen.data.length == 0) {
+                        $scope.emptylist = true;
+                    } else {
+                        $scope.emptylist = false;
                     }
                 } else if (state == 'closed') {
                     if ($scope.listclosed.data) {
-                        length = $scope.listclosed.data.length;
+
+                        $scope.listclosed.data.push.apply($scope.listclosed.data, items.data);
+                        if (items.data.length < archiveService.getMaxCounter()) {
+
+                            $scope.noMoreClosedItemsAvailable = true;
+                        }
+                    } else {
+                        $scope.listclosed = items;
+                    }
+                    if ($scope.listclosed.data.length == 0) {
+                        $scope.emptylist = true;
+                    } else {
+                        $scope.emptylist = false;
                     }
                 } else {
                     if ($scope.listprocessing.data) {
-                        length = $scope.listprocessing.data.length;
-                    }
-                }
-                archiveService.getItemsOnStateArchive(state, length).then(function (items) {
-                    //check state for array
-                    $scope.emptylist = false;
+                        $scope.listprocessing.data.push.apply($scope.listprocessing.data, items.data);
+                        if (items.data.length < archiveService.getMaxCounter()) {
 
-                    if (state == 'open') {
-                        if ($scope.listopen.data) {
-                            $scope.listopen.data.push.apply($scope.listopen.data, items.data);
-                            if (items.data.length < archiveService.getMaxCounter()) {
-                                $scope.noMoreOpenItemsAvailable = true;
-                            }
-                        } else {
-                            $scope.listopen = items;
-                        }
-                        if ($scope.listopen.data.length == 0) {
-                            $scope.emptylist = true;
-                        } else {
-                            $scope.emptylist = false;
-                        }
-                    } else if (state == 'closed') {
-                        if ($scope.listclosed.data) {
-
-                            $scope.listclosed.data.push.apply($scope.listclosed.data, items.data);
-                            if (items.data.length < archiveService.getMaxCounter()) {
-
-                                $scope.noMoreClosedItemsAvailable = true;
-                            }
-                        } else {
-                            $scope.listclosed = items;
-                        }
-                        if ($scope.listclosed.data.length == 0) {
-                            $scope.emptylist = true;
-                        } else {
-                            $scope.emptylist = false;
+                            $scope.noMoreProcessingItemsAvailable = true;
                         }
                     } else {
-                        if ($scope.listprocessing.data) {
-                            $scope.listprocessing.data.push.apply($scope.listprocessing.data, items.data);
-                            if (items.data.length < archiveService.getMaxCounter()) {
-
-                                $scope.noMoreProcessingItemsAvailable = true;
-                            }
-                        } else {
-                            $scope.listprocessing = items;
-                        }
-                        if ($scope.listprocessing.data.length == 0) {
-                            $scope.emptylist = true;
-                        } else {
-                            $scope.emptylist = false;
-                        }
+                        $scope.listprocessing = items;
                     }
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                });
-            }
-            //    archiveService.getItemsOnStateArchive('open', 0).then(function (items) {
-            //        $scope.listopen = items;
-            //    });
-            //    archiveService.getItemsOnStateArchive('closed', 0).then(function (items) {
-            //        $scope.listclosed = items;
-            //    });
-            //    archiveService.getItemsOnStateArchive('processing', 0).then(function (items) {
-            //        $scope.listprocessing = items;
-            //    });
-            //    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    if ($scope.listprocessing.data.length == 0) {
+                        $scope.emptylist = true;
+                    } else {
+                        $scope.emptylist = false;
+                    }
+                }
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
+        }
 
-        //    angular.extend($scope, {
-        //        listForMap: $scope.listForMap
-        //    });
 
     })
     .filter('statusstring', function ($filter) {
@@ -109,6 +99,8 @@ angular.module('roveretoSegnala.controllers.archive', [])
     })
     .controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, $ionicHistory, archiveService, Config) {
         // "MovieService" is a service returning mock data (services.js)
+        Restlogging.appLog("AppConsume", "detail+" + $stateParams.id);
+
         $scope.signal = archiveService.getItem($stateParams.id);
         $scope.myActiveSlide = 0;
         $scope.categories = Config.getCategories();
@@ -140,6 +132,9 @@ angular.module('roveretoSegnala.controllers.archive', [])
     })
 
 .controller('MySignalsCtrl', function ($scope, $stateParams, $filter, archiveService) {
+        //log
+        Restlogging.appLog("AppConsume", "myissues");
+
         $scope.emptylist = false;
         $scope.mySignals = {};
         $scope.noMoreMySignalsAvailable = false;
@@ -231,64 +226,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
             //        }
             return deferred.promise;
         };
-        //        itemsService.list = function () {
-        //            var deferred = $q.defer();
-        //            if (items != null) {
-        //                deferred.resolve(items);
-        //            } else {
-        //                items = [];
-        //
-        //                $http({
-        //                    method: 'GET',
-        //                    url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues'
-        //
-        //                }).
-        //                success(function (data, status, headers, config) {
-        //                    items = data;
-        //                    itemsMap = {};
-        //                    for (var i = 0; i < items.data.length; i++) {
-        //                        itemsMap[items.data[i].id] = items.data[i];
-        //                    }
-        //                    deferred.resolve(items);
-        //                }).
-        //                error(function (data, status, headers, config) {
-        //                    console.log(data + status + headers + config);
-        //                    deferred.reject(err);
-        //                });
-        //                return deferred.promise;
-        //            }
-        //        };
 
-        //        itemsService.getItemsOnState4List = function (state) {
-        //            var status = null;
-        //            var start = null;
-        //            var deferred = $q.defer();
-        //            //            if (items != null) {
-        //            //                deferred.resolve(items);
-        //            //            } else {
-        //            if ((state == 'open') || (state == 'closed')) {
-        //                status = 'status=' + state;
-        //            } else {
-        //                status = 'not_status=open,closed'
-        //            }
-        //            $http({
-        //                method: 'GET',
-        //                url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues?' + status + '&count=' + counter
-        //
-        //            }).
-        //            success(function (data, status, headers, config) {
-        //                items = data;
-        //                for (var i = 0; i < data.length; i++) {
-        //                    itemsMap[data[i].id] = data[i];
-        //                }
-        //                deferred.resolve(items);
-        //            }).error(function (data, status, headers, config) {
-        //                console.log(data + status + headers + config);
-        //                deferred.reject(err);
-        //            });
-        //
-        //            return deferred.promise;
-        //        }
         itemsService.getMyItemsArchive = function (from) {
             var start = null;
             var deferred = $q.defer();

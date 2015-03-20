@@ -213,3 +213,20 @@ body {
 .tab-item.activated {
     background-color: #b22424 !important;
 }
+
+.wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.close:before {
+    content: '✕';
+    color: white;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}

@@ -64,8 +64,11 @@
                 </div>
                 <ion-scroll>
 
-
-                    <img ng-repeat="image in images" data-ng-src="{{image}}" ng-click="removeImage(image)" height="200px" />
+                    <div class="wrapper" ng-repeat="image in images">
+                        <img data-ng-src="{{image}}" width="200px" />
+                        <span class="close" ng-click="removeImage(image)"></span>
+                    </div>
+                    <!--                    <img ng-repeat="image in images" data-ng-src="{{image}}" ng-click="removeImage(image)" height="200px" />-->
                 </ion-scroll>
 
 

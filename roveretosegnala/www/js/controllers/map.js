@@ -6,8 +6,8 @@ angular.module('roveretoSegnala.controllers.map', [])
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
             $scope.init = function () {
-
-
+                //log
+                Restlogging.appLog("AppConsume", "map");
                 $rootScope.$viewHistory = {
                     histories: {
                         root: {
@@ -102,42 +102,8 @@ angular.module('roveretoSegnala.controllers.map', [])
                 events: {}
             });
             //for refresh
-            $ionicPlatform.ready(function(){
+            $ionicPlatform.ready(function () {
                 $scope.init();
             });
 
-//            $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
-                //                //                            //se vengo da detail e ho salvato archivio-> metto in archivio
-                //                //                            if ((oldUrl.indexOf("#/app/archiviodetail") > -1) && $scope.comefromarchivio) {
-                //                //                                // window.location.assign('#/app/archivio');
-                //                //                                $state.go('app.tab');
-                //                //                                $scope.comefromarchivio = false;
-                //                //                            } else if ((oldUrl.indexOf("#/app/archiviodetail") > -1) && newUrl.indexOf("#/app/mysignals") > -1) {
-                //                //                                //$window.location.reload(true);
-                //                //                                // clear page
-                //                //                                //$templateCache.removeAll();
-                //                //                            }
-                //                //                            //se newUrl e' dettaglio e vengo da archivo setto a true se no a false
-                //                //                            if (newUrl.indexOf("#/app/archiviodetail") > -1 && oldUrl.indexOf("#/app/tab") > -1) {
-                //                //                                $scope.comefromarchivio = true;
-                //                //                            } else {
-                //                //                                $scope.comefromarchivio = false;
-                //                //                            }
-//                //                //                            //                alert($ionicHistory.viewHistory());
-//                if ((newUrl.indexOf("#/app/archiviodetail") > -1)) {
-//                    $ionicHistory.nextViewOptions({
-//                        disableBack: false
-//                    });
-//                }
-//            });
-
-
-
-            //            $rootScope.goBack = function (evt) {
-            //                evt.preventDefault();
-            //                evt.stopPropagation();
-            //                console.log('GoBack')
-            //                window.history.back();
-            //            };
-            //            $ionicPlatform.registerBackButtonAction($rootScope.goBack, 100);
         })
