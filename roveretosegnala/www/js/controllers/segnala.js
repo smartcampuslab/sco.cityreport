@@ -348,36 +348,36 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         }
         showNoPlace = function () {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')("signal_send_no_place_title"),
-                template: $filter('translate')("signal_send_no_place_template"),
-                buttons: [
-                    {
-                        text: $filter('translate')("signal_send_toast_alarm"),
-                        type: 'button-custom'
+     var alertPopup = $ionicPopup.alert({
+         title: $filter('translate')("signal_send_no_place_title"),
+         template: $filter('translate')("signal_send_no_place_template"),
+         buttons: [
+             {
+                 text: $filter('translate')("signal_send_toast_alarm"),
+                 type: 'button-custom'
                             }
             ]
-            });
-            alertPopup.then(function (res) {
-                console.log('no place');
-            });
-        };
+     });
+     alertPopup.then(function (res) {
+         console.log('no place');
+     });
+ };
 
-        showNoConnection = function () {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')("signal_send_no_connection_title"),
-                template: $filter('translate')("signal_send_no_connection_template"),
-                buttons: [
-                    {
-                        text: $filter('translate')("signal_send_toast_alarm"),
-                        type: 'button-custom'
+ showNoConnection = function () {
+     var alertPopup = $ionicPopup.alert({
+         title: $filter('translate')("signal_send_no_connection_title"),
+         template: $filter('translate')("signal_send_no_connection_template"),
+         buttons: [
+             {
+                 text: $filter('translate')("signal_send_toast_alarm"),
+                 type: 'button-custom'
                             }
             ]
-            });
-            alertPopup.then(function (res) {
-                console.log('no place');
-            });
-        };
+     });
+     alertPopup.then(function (res) {
+         console.log('no place');
+     });
+ };
         $scope.locateMe = function () {
             $window.navigator.geolocation.getCurrentPosition(function (position) {
                     $scope.$apply(function () {
