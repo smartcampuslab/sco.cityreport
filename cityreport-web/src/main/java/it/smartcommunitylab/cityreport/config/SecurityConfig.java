@@ -65,7 +65,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		// TODO authenticated for user issue submission
 	        http
         	.csrf()
-        		.disable()
+        		.disable();
+	        
+	        http
+	        .rememberMe();
+	        
+	        http
+	        .authorizeRequests()
+	        	.antMatchers(HttpMethod.POST, "/**")
+	        		.hasAnyAuthority(ReportUserDetails.REPORTER).and()
+	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
+
+	        http
             .authorizeRequests()
             	.antMatchers("/","/console/**","/mgmt/**")
             		.authenticated()
@@ -77,16 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 	.permitAll()
                 	.and()
                 .logout()
-                	.permitAll();
-	        
-	        http
-	        .rememberMe();
-	        
-	        http
-	        .authorizeRequests()
-	        	.antMatchers(HttpMethod.POST, "/**")
-	        		.hasAnyRole(ReportUserDetails.REPORTER).and()
-	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
+                	.permitAll().deleteCookies("rememberme","JSESSIONID");
 	 }
 	
 	@Bean 
