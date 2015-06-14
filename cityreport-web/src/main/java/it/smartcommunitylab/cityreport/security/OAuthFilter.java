@@ -66,8 +66,9 @@ public class OAuthFilter  extends GenericFilterBean {
 
 	@Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-        if (request instanceof HttpServletRequest) {
+        if (request instanceof HttpServletRequest && isAuthenticationRequired()) {
             try {
+            	
 				String authToken = extractToken((HttpServletRequest)request);
 				BasicProfile basicProfile = profileService.getBasicProfile(authToken);
 				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(basicProfile.getUserId(),basicProfile.getUserId(), ReportUserDetails.REPORTER_AUTHORITIES);
@@ -85,6 +86,15 @@ public class OAuthFilter  extends GenericFilterBean {
         chain.doFilter(request, response);
     }   
 	
+	private boolean isAuthenticationRequired() {
+	    // apparently filters have to check this themselves.  So make sure they have a proper AuthenticatedAccount in their session.
+	    Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+	    if ((existingAuth == null) || !existingAuth.isAuthenticated()) {
+	        return true;
+	    }
+
+	    return false;
+	}
 	private String extractToken(HttpServletRequest request) {
 		String completeToken = request.getHeader(AUTHORIZATION);
 		if (completeToken == null) return null;

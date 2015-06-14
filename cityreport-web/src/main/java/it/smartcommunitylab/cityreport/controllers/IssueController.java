@@ -99,6 +99,11 @@ public class IssueController {
 	}
 
 
+	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/user/issues")
+	public @ResponseBody Response<List<ServiceIssue>> getMyServiceIssues(@PathVariable String providerId, @PathVariable String serviceId) {
+		return new Response<List<ServiceIssue>>(manager.findUserIssues(providerId, serviceId, getUserId()));
+	}
+
 	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/user/{userId}/issues")
 	public @ResponseBody Response<List<ServiceIssue>> getServiceIssues(@PathVariable String providerId, @PathVariable String serviceId, @PathVariable String userId) {
 		return new Response<List<ServiceIssue>>(manager.findUserIssues(providerId, serviceId, userId));
