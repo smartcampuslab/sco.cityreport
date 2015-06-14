@@ -15,6 +15,7 @@
  ******************************************************************************/
 package it.smartcommunitylab.cityreport.config;
 
+import it.smartcommunitylab.cityreport.security.OAuthFilter;
 import it.smartcommunitylab.cityreport.security.ReportUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// TODO authenticated for user issue submission
 	        http
         	.csrf()
         		.disable();
@@ -74,7 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        .authorizeRequests()
 	        	.antMatchers(HttpMethod.POST, "/**")
 	        		.hasAnyAuthority(ReportUserDetails.REPORTER).and()
-	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
+	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class)
+	        .addFilterBefore(oauthAuthenticationFilter(), BasicAuthenticationFilter.class);
 
 	        http
             .authorizeRequests()
@@ -90,7 +91,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logout()
                 	.permitAll().deleteCookies("rememberme","JSESSIONID");
 	 }
-	
+
+	@Bean 
+	public OAuthFilter oauthAuthenticationFilter() throws Exception{
+		 return new OAuthFilter();
+	}
+
 	@Bean 
 	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
 		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());

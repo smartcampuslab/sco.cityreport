@@ -134,6 +134,7 @@ public class IssueController {
 	}
 
 	private String getUserId() {
-		return ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername(): principal.toString();
 	}
 }
