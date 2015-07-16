@@ -47,8 +47,6 @@ angular.module('roveretoSegnala', [
             }, null);
         }
         Restlogging.init("http://150.241.239.65:8080");
-         startRatingSurvey();
-
     });
     $rootScope.login = function () {
         Login.login();
