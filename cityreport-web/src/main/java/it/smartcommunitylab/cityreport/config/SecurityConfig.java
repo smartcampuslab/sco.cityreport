@@ -15,6 +15,7 @@
  ******************************************************************************/
 package it.smartcommunitylab.cityreport.config;
 
+import it.smartcommunitylab.cityreport.security.OAuthFilter;
 import it.smartcommunitylab.cityreport.security.ReportUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// TODO authenticated for user issue submission
 	        http
         	.csrf()
-        		.disable()
+        		.disable();
+	        
+	        http
+	        .rememberMe();
+	        
+	        http
+	        .authorizeRequests()
+	        	.antMatchers(HttpMethod.POST, "/**")
+	        		.hasAnyAuthority(ReportUserDetails.REPORTER).and()
+	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class)
+	        .addFilterBefore(oauthAuthenticationFilter(), BasicAuthenticationFilter.class);
+
+	        http
             .authorizeRequests()
             	.antMatchers("/","/console/**","/mgmt/**")
             		.authenticated()
@@ -77,18 +89,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 	.permitAll()
                 	.and()
                 .logout()
-                	.permitAll();
-	        
-	        http
-	        .rememberMe();
-	        
-	        http
-	        .authorizeRequests()
-	        	.antMatchers(HttpMethod.POST, "/**")
-	        		.hasAnyRole(ReportUserDetails.REPORTER).and()
-	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
+                	.permitAll().deleteCookies("rememberme","JSESSIONID");
 	 }
-	
+
+	@Bean 
+	public OAuthFilter oauthAuthenticationFilter() throws Exception{
+		 return new OAuthFilter();
+	}
+
 	@Bean 
 	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
 		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());
