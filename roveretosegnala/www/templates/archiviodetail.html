@@ -26,7 +26,10 @@
         <div class="item item-divider">
             <i class="ion-images"></i> {{'archivedetail_images' | translate}}
         </div>
-        <a class="item item-list-detail">
+        <div class="item center-text" ng-hide="signal.media.length!=0">
+            {{'archivedetail_noimageavailable' | translate}}
+        </div>
+        <a class="item item-list-detail" ng-hide="signal.media.length==0">
             <ion-scroll direction="x">
                 <img ng-repeat="picture in signal.media" ng-src="{{picture}}" ng-click="showImages($index)" class="image-list-thumb" />
             </ion-scroll>

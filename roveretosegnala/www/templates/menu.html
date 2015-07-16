@@ -68,6 +68,12 @@
                     </div>
                 </ion-item>
 -->
+                <ion-item nav-clear menu-close ng-click="startRatingSurvey()">
+                    <div class="menu-entry">
+                        <img src="img/ic-questionario.png">
+                        <span>Questionario</span>
+                    </div>
+                </ion-item>
                 <ion-item nav-clear menu-close ng-click="logout()" ng-hide="!userIsLogged">
                     <div class="menu-entry">
 
@@ -82,12 +88,7 @@
                         <span>{{'menu_login' | translate}}</span>
                     </div>
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="startRatingSurvey()">
-                    <div class="menu-entry">
-                        <img src="img/ic-questionario.png">
-                        <span>Questionario</span>
-                    </div>
-                </ion-item>
+
                 <ion-item nav-clear menu-close ng-click="openModal(2)">
                     <div class="menu-entry">
 

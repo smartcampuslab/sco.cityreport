@@ -285,7 +285,8 @@ angular.module('roveretoSegnala', [
         menu_logout: 'Esci',
         archive_empty_list: 'Nessuna segnalazione presente',
         signal_send_no_connection_title: 'Errore',
-        signal_send_no_connection_template: 'Problemi di connessione'
+        signal_send_no_connection_template: 'Problemi di connessione',
+        archivedetail_noimageavailable: 'Nessuna immagine disponibile'
 
     });
     $translateProvider.translations('en', {
@@ -350,7 +351,9 @@ angular.module('roveretoSegnala', [
         menu_logout: 'Logout',
         archive_empty_list: 'No issues',
         signal_send_no_connection_title: 'Error',
-        signal_send_no_connection_template: 'Connection problem'
+        signal_send_no_connection_template: 'Connection problem',
+        archivedetail_noimageavailable: 'No images are available'
+
 
 
     });
@@ -416,7 +419,9 @@ angular.module('roveretoSegnala', [
         menu_logout: 'Logout',
         archive_empty_list: 'kein Bericht',
         signal_send_no_connection_title: 'Fehler',
-        signal_send_no_connection_template: 'Verbindungsprobleme'
+        signal_send_no_connection_template: 'Verbindungsprobleme',
+        archivedetail_noimageavailable: 'No images are available'
+
 
     });
 

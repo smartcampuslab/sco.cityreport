@@ -4,6 +4,7 @@ angular.module('roveretoSegnala.services.conf', [])
 
     var URL = 'https://dev.smartcommunitylab.it/cityreport';
     var provider = 'ComuneRovereto';
+    //    var provider = 'TestComuneRovereto';
     var service = 'problems';
 
     var cityName = {

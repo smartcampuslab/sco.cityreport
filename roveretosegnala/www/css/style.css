@@ -230,3 +230,7 @@ body {
     right: 0;
     cursor: pointer;
 }
+
+.center-text {
+    text-align: center;
+}
