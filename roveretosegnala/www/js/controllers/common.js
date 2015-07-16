@@ -53,7 +53,9 @@ angular.module('roveretoSegnala.controllers.common', [])
     }).then(function (modal) {
         $scope.oModal2 = modal;
     });
-
+    $scope.startRatingSurvey = function () {
+        startRatingSurvey(true);
+    }
     $scope.openModal = function (index) {
         if (index == 1) $scope.oModal1.show();
         else $scope.oModal2.show();
