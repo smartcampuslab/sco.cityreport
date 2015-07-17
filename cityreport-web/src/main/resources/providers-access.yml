@@ -57,5 +57,16 @@ providers:
                   - key: key2
                     value: value2  
                   
-          
+  - id: TestComuneRovereto
+    password: testrovereto
+    services:
+        - serviceId: problems
+          name: City Problems
+          description: Channel for signalling generic city problems
+          category: general
+          keywords:
+            - problem
+            - generic
+          ackMessage: Thank you for your report. The issue will be processed by our staff.
+  
           
