@@ -16,9 +16,9 @@
 
 package it.smartcommunitylab.cityreport.data;
 
-import java.util.List;
-
 import it.smartcommunitylab.cityreport.model.ServiceIssue;
+
+import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -36,4 +36,6 @@ public interface IssueRepository extends MongoRepository<ServiceIssue, String>, 
 	
     @Query("{'providerId':?0,'serviceId':?1, 'issuer.userId':?2}")
 	public List<ServiceIssue> findByUser(String providerId, String serviceId, String userId);
+    
+    public ServiceIssue findByExternalId(String externalId);
 }
