@@ -97,7 +97,8 @@ public class GericoConnector {
 
 			Map<String, Object> data = new HashMap<String, Object>();
 
-			String id = "" + manager.getCounter();
+			String id = "" + manager.increaseCounter();
+			
 			// String id = "" + issue.getId().hashCode();
 
 			data.put("external_id", id);

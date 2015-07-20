@@ -23,6 +23,8 @@ import it.smartcommunitylab.cityreport.utils.Constants;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,22 +59,31 @@ public class IssueManager {
 		issue.setCreated(System.currentTimeMillis());
 		issue.setStatus(Constants.STATUS_OPEN);
 		
-		increaseCounter();
-		
 		return repository.save(issue);
 	}
 	
-	private void increaseCounter() {
+	@PostConstruct
+	private synchronized void initVersion() {
 		String counterId = ServiceIssue.class.getCanonicalName();
 		DBObject counter = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(counterId)), DBObject.class, "counters");
 		if (counter == null) {
 			mongoTemplate.save(BasicDBObjectBuilder.start("_id", counterId).add("value", 1L).get(), "counters");
+		}
+	}	
+	
+	public long increaseCounter() {
+		String counterId = ServiceIssue.class.getCanonicalName();
+		DBObject counter = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(counterId)), DBObject.class, "counters");
+		if (counter == null) {
+			mongoTemplate.save(BasicDBObjectBuilder.start("_id", counterId).add("value", 1L).get(), "counters");
+			return 1L;
 		} else {
 		DBObject o = mongoTemplate.findAndModify(
 				Query.query(Criteria.where("_id").is(counterId)), 
 				new Update().inc("value", 1), 
 				DBObject.class, 
 				"counters");
+		return (Long)o.get("value");
 		}
 	}
 	
