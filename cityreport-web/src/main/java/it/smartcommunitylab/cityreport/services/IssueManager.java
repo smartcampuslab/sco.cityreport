@@ -23,11 +23,20 @@ import it.smartcommunitylab.cityreport.utils.Constants;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
 
 /**
  * @author raman
@@ -40,8 +49,11 @@ public class IssueManager {
 
 	@Autowired
 	private IssueRepository repository;
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
-	public ServiceIssue  createIssue(ServiceIssue issue) {
+	public ServiceIssue createIssue(ServiceIssue issue) {
 		logger.debug("creating issue {}",issue.getNotes());
 		
 		issue.setCreated(System.currentTimeMillis());
@@ -49,6 +61,43 @@ public class IssueManager {
 		
 		return repository.save(issue);
 	}
+	
+	@PostConstruct
+	private synchronized void initVersion() {
+		String counterId = ServiceIssue.class.getCanonicalName();
+		DBObject counter = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(counterId)), DBObject.class, "counters");
+		if (counter == null) {
+			mongoTemplate.save(BasicDBObjectBuilder.start("_id", counterId).add("value", 1L).get(), "counters");
+		}
+	}	
+	
+	public long increaseCounter() {
+		String counterId = ServiceIssue.class.getCanonicalName();
+		DBObject counter = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(counterId)), DBObject.class, "counters");
+		if (counter == null) {
+			mongoTemplate.save(BasicDBObjectBuilder.start("_id", counterId).add("value", 1L).get(), "counters");
+			return 1L;
+		} else {
+		DBObject o = mongoTemplate.findAndModify(
+				Query.query(Criteria.where("_id").is(counterId)), 
+				new Update().inc("value", 1), 
+				DBObject.class, 
+				"counters");
+		return (Long)o.get("value");
+		}
+	}
+	
+	public long getCounter() {
+		String counterId = ServiceIssue.class.getCanonicalName();
+		DBObject counter = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(counterId)), DBObject.class, "counters");
+		if (counter != null) {
+			return (Long)counter.get("value");
+		}
+		else {
+			return 0;
+		}
+	}	
+	
 	
 	public ServiceIssue findIssue(String id, String serviceId, String providerId) {
 		logger.debug("searching issue {}/{}/{}", id, providerId, serviceId);

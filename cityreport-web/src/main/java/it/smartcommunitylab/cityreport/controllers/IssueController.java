@@ -25,6 +25,7 @@ import it.smartcommunitylab.cityreport.services.IssueManager;
 import it.smartcommunitylab.cityreport.services.IssuerManager;
 import it.smartcommunitylab.cityreport.services.ServiceManager;
 import it.smartcommunitylab.cityreport.utils.Constants;
+import it.smartcommunitylab.cityreport.utils.GericoConnector;
 
 import java.util.List;
 
@@ -58,6 +59,8 @@ public class IssueController {
 	private ServiceManager serviceManager;
 	@Autowired
 	private IssuerManager issuerManager;
+	@Autowired
+	private GericoConnector connector;	
 	
 	@RequestMapping(method=RequestMethod.GET, value="/{providerId}/services/{serviceId}/issues/{issueId}")
 	public @ResponseBody Response<ServiceIssue> getIssue(@PathVariable String providerId, @PathVariable String serviceId, String issueId) {
@@ -126,6 +129,11 @@ public class IssueController {
 		issue.setServiceId(serviceId);
 		issue.setIssuer(issuer);
 		ServiceIssue result = manager.createIssue(issue);
+		
+		if ("ComuneRovereto".equals(providerId)) {
+			connector.sendIssue(issue);
+		}
+		
 		return new Response<IssueResponse>(new IssueResponse(providerId, serviceId, result.getId(), service.getAckMessage()));
 	}
 	
