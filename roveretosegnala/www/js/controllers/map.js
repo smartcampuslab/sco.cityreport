@@ -1,7 +1,7 @@
 ////https: //github.com/tombatossals/angular-leaflet-directive
 angular.module('roveretoSegnala.controllers.map', [])
     .controller('MapCtrl',
-        function ($ionicPlatform, $scope, $location, $rootScope, leafletData, archiveService, $ionicHistory, $ionicPlatform, $templateCache, $state) {
+        function ($ionicPlatform, $scope, $location, $rootScope, leafletData, archiveService, $ionicHistory, $ionicPlatform, $templateCache, $state, Config) {
             $scope.comefromarchivio = false;
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
@@ -95,9 +95,9 @@ angular.module('roveretoSegnala.controllers.map', [])
             angular.extend($scope, {
                 tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
                 center: {
-                    lat: 45.890931,
-                    lng: 11.041126,
-                    zoom: 12
+                    lat: Config.getCenterCoordinates()[0],
+                    lng: Config.getCenterCoordinates()[1],
+                    zoom: Config.getZoomLevel()
                 },
                 markers: $scope.myMarkers,
                 events: {}

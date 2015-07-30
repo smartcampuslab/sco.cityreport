@@ -6,6 +6,8 @@ angular.module('roveretoSegnala.services.conf', [])
     //var provider = 'ComuneRovereto';
     var provider = 'TestComuneRovereto';
     var service = 'problems';
+    var centerCoordinates = [45.890931, 11.041126];
+    var zoomLevel = 12;
 
     var cityName = {
         'it': 'Trento',
@@ -16,7 +18,12 @@ angular.module('roveretoSegnala.services.conf', [])
 
 
     return {
-
+        getCenterCoordinates: function () {
+            return centerCoordinates;
+        },
+        getZoomLevel: function () {
+            return zoomLevel;
+        },
         getVersion: function () {
             return 'v ' + APP_VERSION + (APP_BUILD && APP_BUILD != '' ? '<br/>(' + APP_BUILD + ')' : '');
         },
