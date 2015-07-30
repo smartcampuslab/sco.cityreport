@@ -47,7 +47,7 @@ angular.module('roveretoSegnala', [
             }, null);
         }
         Restlogging.init("http://150.241.239.65:8080");
-         startRatingSurvey();
+        startRatingSurvey();
 
     });
     $rootScope.login = function () {
@@ -266,8 +266,10 @@ angular.module('roveretoSegnala', [
         signal_error_send_title: 'Errore',
         signal_error_send_template: 'Errore nell\'inviare i dati',
         signal_send_confirm_place_title: 'Confermare l\'indirizzo trovato',
-        signal_send_no_place_title: 'Nessun posto trovato',
-        signal_send_no_place_template: 'Selezionare una posizione diversa',
+        signal_send_no_place_title: 'Coordinate',
+        signal_send_no_place_template: 'Nessun luogo trovato nelle vicinanze',
+        signal_send_lat_template: 'lat: ',
+        signal_send_long_template: ', long: ',
         segnala_input_place_suggestion: 'Indirizzo...',
         signal_send_toast_ok: 'Nuova segnalazione inviata con successo',
         signal_send_toast_error: 'Problema nell\'invio della segnalazione',
@@ -332,8 +334,10 @@ angular.module('roveretoSegnala', [
         signal_error_send_title: 'Error',
         signal_error_send_template: 'Error sending data',
         signal_send_confirm_place_title: 'Please, confirm the address found',
-        signal_send_no_place_title: 'No places found',
-        signal_send_no_place_template: 'Please, select a different position',
+        signal_send_no_place_title: 'Coordinates',
+        signal_send_no_place_template: 'No place has been found ',
+        signal_send_lat_template: 'lat: ',
+        signal_send_long_template: ', long: ',
         segnala_input_place_suggestion: 'Place...',
         signal_send_toast_ok: 'New issue submitted successfuylly',
         signal_send_toast_error: 'Error sending the issue',
@@ -400,8 +404,10 @@ angular.module('roveretoSegnala', [
         signal_error_send_title: 'Fehler',
         signal_error_send_template: 'Fehler beim Senden der Daten',
         signal_send_confirm_place_title: 'Bitte, bestätigen Sie die Adresse gefunden',
-        signal_send_no_place_title: 'Keine Unterkünfte gefunden',
-        signal_send_no_place_template: 'Bitte wählen Sie eine andere Positione',
+        signal_send_no_place_title: 'Coordinates',
+        signal_send_no_place_template: 'No place has been found ',
+        signal_send_lat_template: 'lat: ',
+        signal_send_long_template: ', long: ',
         segnala_input_place_suggestion: 'Straße...',
         signal_send_toast_ok: 'Neuer Bericht erfolgreich gesendet',
         signal_send_toast_error: 'Fehler beim Senden der Warnung',

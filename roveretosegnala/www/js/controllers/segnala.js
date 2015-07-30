@@ -165,7 +165,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
                     $scope.showConfirm(name);
                 } else {
-                    showNoPlace();
+                    $scope.showConfirm($filter('translate')("signal_send_lat_template") + args.leafletEvent.latlng.lat.toString().substring(0, 7) + " " + $filter('translate')("signal_send_long_template") + args.leafletEvent.latlng.lng.toString().substring(0, 7), args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
+                    // showNoPlace(args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
                 }
             }).
             error(function (data, status, headers, config) {
@@ -348,10 +349,10 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             }
 
         }
-        showNoPlace = function () {
+        showNoPlace = function (lat, long) {
             var alertPopup = $ionicPopup.alert({
                 title: $filter('translate')("signal_send_no_place_title"),
-                template: $filter('translate')("signal_send_no_place_template"),
+                template: $filter('translate')("signal_send_no_place_template") + $filter('translate')("signal_send_lat_template") + lat + $filter('translate')("signal_send_long_template") + long,
                 buttons: [
                     {
                         text: $filter('translate')("signal_send_toast_alarm"),
@@ -372,6 +373,13 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     {
                         text: $filter('translate')("signal_send_toast_alarm"),
                         type: 'button-custom'
+                            },
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom',
+                        onTap: function (e) {
+
+                        }
                             }
             ]
             });
@@ -411,7 +419,9 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
                                 $scope.showConfirm(name, position.coords.latitude, position.coords.longitude);
                             } else {
-                                showNoPlace();
+                                $scope.showConfirm(position.coords.latitude + " " + position.coords.longitude, position.coords.latitude, position.coords.longitude);
+
+                                //showNoPlace(position.coords.latitude, position.coords.longitude);
 
                             }
                         }).
