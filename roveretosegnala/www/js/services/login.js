@@ -5,6 +5,7 @@ angular.module('roveretoSegnala.services.login', [])
 
     return {
         login: function () {
+            var login_deferred = $q.defer();
             //log into the system and set UserID
             var authapi = {
                 authorize: function (url) {
@@ -46,12 +47,15 @@ angular.module('roveretoSegnala.services.login', [])
                 Restlogging.appLog("AppCollaborate", "login");
                 $rootScope.userIsLogged = true;
                 localStorage.userId = data.userId;
+                login_deferred.resolve(true);
             }, function (reason) {
                 alert('Failed: ' + reason);
                 //reset data
                 $rootScope.userIsLogged = false;
                 localStorage.userId = "null";
+                login_deferred.reject(false);
             });
+            return login_deferred.promise;
         },
         logout: function () {
             //return UserID

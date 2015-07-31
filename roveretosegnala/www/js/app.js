@@ -22,7 +22,7 @@ angular.module('roveretoSegnala', [
 
 ])
 
-.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate) {
+.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate, Toast, $filter) {
     $rootScope.showmap = false;
     $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
@@ -51,13 +51,23 @@ angular.module('roveretoSegnala', [
 
     });
     $rootScope.login = function () {
-        Login.login();
+        Login.login().then(function (data) {
+            Toast.show($filter('translate')("login_done"), "short", "bottom");
+
+        }, function (data) {
+            Toast.show("problem", "short", "bottom");
+
+        });
     };
+
 
     $rootScope.logout = function () {
         Login.logout();
+        Toast.show($filter('translate')("logout_done"), "short", "bottom");
 
     };
+
+
 
     // for BlackBerry 10, WP8, iOS
     setTimeout(function () {
@@ -291,7 +301,9 @@ angular.module('roveretoSegnala', [
         signal_send_no_connection_title: 'Errore',
         signal_send_no_connection_template: 'Problemi di connessione',
         archivedetail_noimageavailable: 'Nessuna immagine disponibile',
-        network_problem: 'Errore di rete'
+        network_problem: 'Errore di rete',
+        login_done: 'Login avvenuto con successo',
+        logout_done: 'Logout effettuato con successo'
 
     });
     $translateProvider.translations('en', {
@@ -360,7 +372,9 @@ angular.module('roveretoSegnala', [
         signal_send_no_connection_title: 'Error',
         signal_send_no_connection_template: 'Connection problem',
         archivedetail_noimageavailable: 'No images are available',
-        network_problem: 'Some network problem occurred'
+        network_problem: 'Some network problem occurred',
+        login_done: 'Login done',
+        logout_done: 'Logout done'
 
 
 
@@ -431,7 +445,9 @@ angular.module('roveretoSegnala', [
         signal_send_no_connection_title: 'Fehler',
         signal_send_no_connection_template: 'Verbindungsprobleme',
         archivedetail_noimageavailable: 'No images are available',
-        network_problem: 'Some network problem occurred'
+        network_problem: 'Some network problem occurred',
+        login_done: 'Login done',
+        logout_done: 'Logout done'
 
     });
 
