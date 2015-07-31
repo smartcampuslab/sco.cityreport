@@ -1,6 +1,6 @@
 angular.module('roveretoSegnala.controllers.archive', [])
 
-.controller('ArchiveCtrl', function ($scope, archiveService, $location) {
+.controller('ArchiveCtrl', function ($scope, archiveService, $location, Toast, $filter) {
 
         //log
         Restlogging.appLog("AppConsume", "archive+" + $location.url().substr($location.url().lastIndexOf('/') + 1));
@@ -79,6 +79,13 @@ angular.module('roveretoSegnala.controllers.archive', [])
                     }
                 }
                 $scope.$broadcast('scroll.infiniteScrollComplete');
+            }, function (reason) {
+                Toast.show($filter('translate')("network_problem"), "short", "bottom");
+                $scope.noMoreOpenItemsAvailable = true;
+                $scope.noMoreClosedItemsAvailable = true;
+                $scope.noMoreProcessingItemsAvailable = true;
+                $scope.emptylist = true;
+
             });
         }
 
@@ -165,11 +172,16 @@ angular.module('roveretoSegnala.controllers.archive', [])
                     $scope.emptylist = false;
                 }
 
+            }, function (reason) {
+                Toast.show($filter('translate')("network_problem"), "short", "bottom");
+                $scope.noMoreMySignalsAvailable = true;
+                $scope.emptylist = true;
+
             });
         }
 
     })
-    .factory('archiveService', function ($http, $q, Config, Login) {
+    .factory('archiveService', function ($http, $q, Config, Login, Toast, $filter) {
         var items = null;
         var itemsformap = null;
         var itemsopen = null;
@@ -197,7 +209,9 @@ angular.module('roveretoSegnala.controllers.archive', [])
                         deferred.resolve(itemsformap);
                     })
                 })
-            })
+            }, function (reason) {
+                Toast.show($filter('translate')("network_problem"), "short", "bottom");
+            });
             return deferred.promise;
         };
         itemsService.listForMapByState = function (state) {
@@ -243,8 +257,8 @@ angular.module('roveretoSegnala.controllers.archive', [])
                     itemsMap[data.data[i].id] = data.data[i];
                 }
                 deferred.resolve(items);
-            }).error(function (data, status, headers, config) {
-                console.log(data + status + headers + config);
+            }).error(function (err) {
+                //console.log(data + status + headers + config);
                 deferred.reject(err);
             });
             return deferred.promise;
@@ -275,8 +289,8 @@ angular.module('roveretoSegnala.controllers.archive', [])
                     itemsMap[data.data[i].id] = data.data[i];
                 }
                 deferred.resolve(items);
-            }).error(function (data, status, headers, config) {
-                console.log(data + status + headers + config);
+            }).error(function (err) {
+                //console.log(data + status + headers + config);
                 deferred.reject(err);
             });
             return deferred.promise;
