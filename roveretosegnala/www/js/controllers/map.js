@@ -5,6 +5,15 @@ angular.module('roveretoSegnala.controllers.map', [])
             $scope.comefromarchivio = false;
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
+            var mymap = document.getElementById('map-container');
+            if (mymap != null) {
+                resizeElementHeight(mymap);
+            }
+            window.onresize = function () {
+                if (mymap != null) {
+                    resizeElementHeight(mymap);
+                }
+            }
             $scope.init = function () {
                 //log
                 Restlogging.appLog("AppConsume", "map");
@@ -45,10 +54,19 @@ angular.module('roveretoSegnala.controllers.map', [])
                         L.circle(e.latlng, radius).addTo(map);
 
                     }
-                    $rootScope.showmap = true;
+
+
                 });
                 archiveService.listForMap().then(function (data) {
-                    $scope.mySignals = data;
+                    $scope.mySignals = {
+                        data: []
+                    };
+                    for (var i = 0; i < data.data.length; i++) {
+                        if (data.data[i].location.coordinates[0] != 0 && data.data[i].location.coordinates[1] != 0) {
+                            $scope.mySignals.data.push(data.data[i]);
+                        }
+                    }
+                    //$scope.mySignals = data;
                     var markers = [];
                     for (i = 0; i < $scope.mySignals.data.length; i++) {
                         markers.push({
@@ -69,8 +87,20 @@ angular.module('roveretoSegnala.controllers.map', [])
                             },
                             //                        focus: true
                         });
+
                     }
                     $scope.myMarkers = markers;
+                    leafletData.getMap().then(function (map) {
+                        //                                            var bounds = [];
+                        //                                            for (var i = 0; i < $scope.myMarkers.length; i++) {
+                        //                                                bounds.push([$scope.myMarkers[i].lat, $scope.myMarkers[i].lng])
+                        //                                            }
+                        //                                            map.fitBounds(bounds);
+
+                        $rootScope.showmap = true;
+                    });
+                    // $rootScope.showmap = true;
+
                 });
             }
             $scope.detail = function (view) {
@@ -92,6 +122,21 @@ angular.module('roveretoSegnala.controllers.map', [])
                 }
 
             }
+
+
+
+                        if (archiveService.getMapCenterForSignal()) {
+                            angular.extend($scope, {
+                                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                                center: {
+                                    lat: archiveService.getMapCenterForSignal().lat,
+                                    lng: archiveService.getMapCenterForSignal().long,
+                                    zoom: 18
+                                },
+                                markers: $scope.myMarkers,
+                                events: {}
+                            });
+                        } else {
             angular.extend($scope, {
                 tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
                 center: {
@@ -102,6 +147,7 @@ angular.module('roveretoSegnala.controllers.map', [])
                 markers: $scope.myMarkers,
                 events: {}
             });
+            }
             //for refresh
             $ionicPlatform.ready(function () {
                 $scope.init();
@@ -109,4 +155,17 @@ angular.module('roveretoSegnala.controllers.map', [])
 
             });
 
+            function resizeElementHeight(element) {
+                var height = 0;
+                var body = window.document.body;
+                if (window.innerHeight) {
+                    height = window.innerHeight;
+                } else if (body.parentElement.clientHeight) {
+                    height = body.parentElement.clientHeight;
+                } else if (body && body.clientHeight) {
+                    height = body.clientHeight;
+                }
+                console.log('height' + height);
+                element.style.height = ((height - element.offsetTop) + "px");
+            }
         })

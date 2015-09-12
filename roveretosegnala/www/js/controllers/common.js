@@ -1,6 +1,6 @@
 angular.module('roveretoSegnala.controllers.common', [])
 
-.controller('AppCtrl', function ($scope, $ionicModal, $ionicHistory, segnalaService, $timeout, Toast, $filter) {
+.controller('AppCtrl', function ($scope, $ionicModal, $ionicHistory, segnalaService, $timeout, Toast, $filter, archiveService, $state) {
     /*    // Form data for the login modal
         $scope.loginData = {};
 
@@ -53,6 +53,16 @@ angular.module('roveretoSegnala.controllers.common', [])
     }).then(function (modal) {
         $scope.oModal2 = modal;
     });
+
+    $scope.openMap = function () {
+        //reset poi to zoom before open zoom
+        archiveService.resetMapCenterForSignal();
+        if (!$state.is('app.map')) {
+            $state.go('app.map');
+        } else {
+            $state.reload();
+        }
+    }
     $scope.startRatingSurvey = function () {
         startRatingSurvey(true);
     }

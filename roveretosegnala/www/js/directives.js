@@ -424,10 +424,10 @@ angular.module('roveretoSegnala.directives', [])
             id="{{ attrs.inputid }}"\
             style="width:75%;"\
             ng-required="{{ placeautocompleteRequired }}" />\
-          <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
+          <ul ng-show="completing && (suggestions).length > 0">\
             <li\
               suggestion\
-              ng-repeat="suggestion in suggestions | filter:searchFilter | orderBy:\'toString()\' track by $index"\
+              ng-repeat="suggestion in suggestions | orderBy:\'toString()\' track by $index"\
               index="{{ $index }}"\
               val="{{ suggestion }}"\
               ng-class="{ active: ($index === selectedIndex) }"\

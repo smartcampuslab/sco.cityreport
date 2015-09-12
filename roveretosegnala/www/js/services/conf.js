@@ -3,16 +3,16 @@ angular.module('roveretoSegnala.services.conf', [])
 .factory('Config', function ($q, $http, $window, $filter, $rootScope) {
 
     var URL = 'https://dev.smartcommunitylab.it/cityreport';
-    //var provider = 'ComuneRovereto';
-    var provider = 'TestComuneRovereto';
+    var provider = 'ComuneRovereto'; //versione gerico
+    //var provider = 'TestComuneRovereto'; //versione ies cities
     var service = 'problems';
-    var centerCoordinates = [45.890931, 11.041126];
+    var centerCoordinates = [45.886734, 11.033981];
     var zoomLevel = 12;
 
     var cityName = {
-        'it': 'Trento',
-        'en': 'Trento',
-        'de': 'Trento'
+        'it': 'Rovereto',
+        'en': 'Rovereto',
+        'de': 'Rovereto'
     };
 
 

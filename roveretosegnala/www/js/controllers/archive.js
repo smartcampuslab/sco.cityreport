@@ -104,7 +104,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
             }
         };
     })
-    .controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, $ionicHistory, archiveService, Config) {
+    .controller('ArchivioDetailCtrl', function ($scope, $stateParams, $filter, $ionicModal, $ionicHistory, archiveService, Config, $state) {
         // "MovieService" is a service returning mock data (services.js)
         Restlogging.appLog("AppConsume", "detail+" + $stateParams.id);
 
@@ -114,6 +114,12 @@ angular.module('roveretoSegnala.controllers.archive', [])
         /*
             $scope.title = $filter('translate')("title_ar");
         */
+        $scope.goToMap = function () {
+            $state.go('app.map');
+            //set coordinate
+            archiveService.setMapCenterForSignal($scope.signal.location.coordinates[0], $scope.signal.location.coordinates[1]);
+        };
+
         $scope.showImages = function (index) {
             $scope.activeSlide = index;
             $scope.showModal('templates/image-popover.html');
@@ -189,8 +195,25 @@ angular.module('roveretoSegnala.controllers.archive', [])
         var itemsprocessing = null;
         var itemsMap = null;
         var counter = '10';
-
+        var mapCenterForSignal = null;
         var itemsService = {};
+        itemsService.setMapCenterForSignal = function (lat, long) {
+            if (!mapCenterForSignal) {
+                mapCenterForSignal = {
+                    lat: 0,
+                    long: 0
+                }
+            }
+            mapCenterForSignal.lat = lat;
+            mapCenterForSignal.long = long
+
+        }
+        itemsService.getMapCenterForSignal = function () {
+            return mapCenterForSignal;
+        }
+        itemsService.resetMapCenterForSignal = function () {
+            mapCenterForSignal = null;
+        }
         itemsService.getMaxCounter = function () {
             return counter;
         }

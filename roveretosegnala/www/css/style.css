@@ -129,16 +129,6 @@ body {
 .menu-entry-disabled span {
     vertical-align: middle;
 }
-/*
-.bar.bar-stable {
-    background-color: #c62828;
-    color: #c62828;
-}
-
-.bar.bar-stable .title {
-    background-color: #c62828;
-    color: #c62828;
-}*/
 
 .alignright {
     float: right;
@@ -183,12 +173,6 @@ body {
     max-height: 100%;
     bottom: 0;
     left: 0;
-    /*
-    margin: auto;
-    overflow: auto;
-    position: fixed;
-*/
-    
     right: 0;
     top: 0;
 }
