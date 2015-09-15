@@ -149,8 +149,14 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 places = data.response.docs;
                 name = '';
                 if (data.response.docs[0]) {
-                    if (data.response.docs[0].street)
+                    if (data.response.docs[0].name) {
+                        name = name + data.response.docs[0].name;
+                    }
+                    if (data.response.docs[0].street) {
+                        if (name)
+                            name = name + ', ';
                         name = name + data.response.docs[0].street;
+                    }
                     if (data.response.docs[0].housenumber) {
                         if (name)
                             name = name + ', ';
@@ -351,6 +357,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
         //objs.sort(compare);
         $scope.typePlace = function (typedthings) {
+            $scope.result = typedthings;
             $scope.newplaces = PlacesRetriever.getplaces(typedthings);
             $scope.newplaces.then(function (data) {
                 $scope.places = data;
@@ -360,7 +367,9 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             });
         }
 
-
+        //        $scope.setNameParam = function (typed) {
+        //            $scope.result = typed;
+        //        }
         $scope.urlForImage = function (imageName) {
             var name = imageName.substr(imageName.lastIndexOf('/') + 1);
             var trueOrigin = cordova.file.dataDirectory + name;
@@ -475,14 +484,14 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             if ($stateParams.place) {
                 $scope.result = $stateParams.place;
             } else {
-                $scope.resul = '';
+                $scope.result = '';
             }
         }
 
         $scope.submit = function () {
             var remoteURL = [];
             $scope.signal.location.coordinates = segnalaService.getPosition();
-            $scope.signal.location.address = segnalaService.getName();
+            $scope.signal.location.address = $scope.result;
             if ($scope.images) {
                 $scope.signal.media = $scope.images;
             }
@@ -491,7 +500,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 //show popup for confirm the insert
                 var confirmPopup = $ionicPopup.confirm({
                     title: $filter('translate')("signal_send_confirm_issue_title"),
-                    template: name,
+                    template: $scope.result,
                     buttons: [
                         {
                             text: $filter('translate')("signal_send_popup_cancel"),
