@@ -18,6 +18,7 @@ package it.smartcommunitylab.cityreport.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.util.StringUtils;
 
 import eu.trentorise.smartcampus.profileservice.model.BasicProfile;
 
@@ -177,5 +178,18 @@ public class Issuer {
 		issuer.setSurname(basicProfile.getSurname());
 		issuer.setUserId(basicProfile.getUserId());
 		return issuer;
+	}
+	
+	public String fullName() {
+		if (StringUtils.hasText(organizationId)) {
+			return organizationId;
+		} else {
+			String res = (StringUtils.hasText(name) ? name : "");
+			if (StringUtils.hasText(surname)) {
+				if (res.length() > 0) res += " ";
+				res += surname;
+			}
+			return res;
+		}
 	}
 }
