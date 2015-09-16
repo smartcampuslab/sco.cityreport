@@ -133,6 +133,7 @@ public class GericoConnector {
 		issue.setAttribute(new HashMap<String, Object>());
 		issue.getAttribute().put("title", entry.get(F_OGGETTO));
 		issue.getAttribute().put("description", entry.get(F_NOTE));
+		issue.getAttribute().put("activator", entry.get(F_ATTIVATORE));
 		issue.setLocation(new Location());
 		issue.getLocation().setAddress((String) entry.get(F_STRADA));
 		issue.setIssuer(new Issuer());
