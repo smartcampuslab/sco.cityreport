@@ -63,7 +63,7 @@ public class GericoConnector {
 	private final static Logger logger = LoggerFactory.getLogger(GericoConnector.class);
 
 	@SuppressWarnings("unchecked")
-	@Scheduled(initialDelay=30000, fixedRate=7200000)
+	@Scheduled(initialDelay=10000, fixedRate=7200000)
 	public void getIssues() throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
 		logger.debug("Scheduled Gerico");
 		
@@ -132,7 +132,7 @@ public class GericoConnector {
 			issue.setCreated(System.currentTimeMillis());
 			issue.setAttribute(new HashMap<String, Object>());
 			issue.getAttribute().put("title", entry.get(F_OGGETTO));
-			issue.getAttribute().put("description", F_NOTE);
+			issue.getAttribute().put("description", entry.get(F_NOTE));
 			issue.setLocation(new Location());
 			issue.getLocation().setAddress((String) entry.get(F_STRADA));
 			issue.setIssuer(new Issuer());
