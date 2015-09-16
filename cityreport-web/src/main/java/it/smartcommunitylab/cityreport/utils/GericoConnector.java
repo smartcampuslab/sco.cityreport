@@ -129,20 +129,20 @@ public class GericoConnector {
 			issue.setServiceId("problems");
 			issue.setExternalId(externalId);
 			issue.setCreated(System.currentTimeMillis());
-			issue.setAttribute(new HashMap<String, Object>());
-			issue.getAttribute().put("title", entry.get(F_OGGETTO));
-			issue.getAttribute().put("description", entry.get(F_NOTE));
-			issue.setLocation(new Location());
-			issue.getLocation().setAddress((String) entry.get(F_STRADA));
-			issue.setIssuer(new Issuer());
-			try {
-				issue.getLocation().setCoordinates(new double[]{
-						Double.parseDouble((String)entry.get(F_LATITUDINE)),
-						Double.parseDouble((String)entry.get(F_LONGITUDINE))
-				});
-			} catch (Exception e) {
-				return;
-			}
+		}
+		issue.setAttribute(new HashMap<String, Object>());
+		issue.getAttribute().put("title", entry.get(F_OGGETTO));
+		issue.getAttribute().put("description", entry.get(F_NOTE));
+		issue.setLocation(new Location());
+		issue.getLocation().setAddress((String) entry.get(F_STRADA));
+		issue.setIssuer(new Issuer());
+		try {
+			issue.getLocation().setCoordinates(new double[]{
+					Double.parseDouble((String)entry.get(F_LATITUDINE)),
+					Double.parseDouble((String)entry.get(F_LONGITUDINE))
+			});
+		} catch (Exception e) {
+			return;
 		}
 		issue.setStatus(status);
 		issue.setStatusNotes((String)entry.get(F_NOTE_EXTERNAL));
