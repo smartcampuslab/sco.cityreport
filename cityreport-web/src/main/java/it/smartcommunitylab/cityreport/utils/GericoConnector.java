@@ -122,7 +122,6 @@ public class GericoConnector {
 		
 		if (issue != null) {
 			logger.info("Updating " + issue.getExternalId());
-			issueRepository.save(issue);
 		} else {
 			logger.info("Creating " + externalId);
 			issue = new ServiceIssue();
@@ -144,12 +143,12 @@ public class GericoConnector {
 			} catch (Exception e) {
 				return;
 			}
-			
-			issueRepository.save(issue);
 		}
 		issue.setStatus(status);
 		issue.setStatusNotes((String)entry.get(F_NOTE_EXTERNAL));
 		issue.setNotes((String)entry.get(F_NOTE_EXTERNAL));
+		
+		issueRepository.save(issue);
 	}
 
 
