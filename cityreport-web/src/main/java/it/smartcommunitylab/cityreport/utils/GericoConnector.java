@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import eu.trentorise.smartcampus.network.RemoteConnector;
 
@@ -48,6 +49,8 @@ public class GericoConnector {
 	private static final String F_MEZZO = "mezzo";
 	private static final String F_PUBBLICO = "pubblico";
 	private static final String F_ATTIVATORE = "attivatore";
+	private static final Object F_ID = "id";
+
 	private static final String APP_NAME = "App segnala";
 	private static final String APP_ID = "app_s";
 
@@ -102,6 +105,9 @@ public class GericoConnector {
 	 */
 	private void processExternalEntry(Map<String, Object> entry) {
 		String externalId = (String)entry.get(F_EXTERNAL_ID);
+		if (!StringUtils.hasText(externalId)) {
+			externalId = (String)entry.get(F_ID);
+		}
 		ServiceIssue issue = issueRepository.findByExternalId(externalId);
 
 		String status = (String)entry.get(F_STATO);
