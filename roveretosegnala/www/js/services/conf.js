@@ -2,7 +2,10 @@ angular.module('roveretoSegnala.services.conf', [])
 
 .factory('Config', function ($q, $http, $window, $filter, $rootScope) {
 
-    var URL = 'https://dev.smartcommunitylab.it/cityreport';
+    var URL = 'https://tn.smartcommunitylab.it/cityreport';
+    //var URL = 'https://dev.smartcommunitylab.it/cityreport';
+    var APP_VERSION = '0.1.0';
+    var APP_BUILD = '';
     var provider = 'ComuneRovereto'; //versione gerico
     //var provider = 'TestComuneRovereto'; //versione ies cities
     var service = 'problems';
@@ -18,6 +21,9 @@ angular.module('roveretoSegnala.services.conf', [])
 
 
     return {
+        getVersion: function () {
+            return 'v ' + APP_VERSION + (APP_BUILD && APP_BUILD != '' ? '<br/>(' + APP_BUILD + ')' : '');
+        },
         getCenterCoordinates: function () {
             return centerCoordinates;
         },

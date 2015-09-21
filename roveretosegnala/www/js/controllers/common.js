@@ -1,6 +1,6 @@
 angular.module('roveretoSegnala.controllers.common', [])
 
-.controller('AppCtrl', function ($scope, $ionicModal, $ionicHistory, segnalaService, $timeout, Toast, $filter, archiveService, $state) {
+.controller('AppCtrl', function ($scope, $ionicModal, $ionicHistory, segnalaService, $timeout, Toast, $filter, archiveService, $state, Config) {
     /*    // Form data for the login modal
         $scope.loginData = {};
 
@@ -33,7 +33,7 @@ angular.module('roveretoSegnala.controllers.common', [])
         };*/
 
 
-
+    $scope.version = Config.getVersion();
     // Modal 1
     $ionicModal.fromTemplateUrl('templates/login.html', {
         id: '1', // We need to use and ID to identify the modal that is firing the event!

@@ -40,7 +40,7 @@ angular.module('roveretoSegnala.services.login', [])
                     return deferred.promise;
                 }
             };
-            authapi.authorize("https://dev.smartcommunitylab.it").then(function (data) {
+            authapi.authorize("https://tn.smartcommunitylab.it").then(function (data) {
                 console.log("success:" + data.userId);
                 //prendi google id , metti in local storage e abilita menu
                 //log

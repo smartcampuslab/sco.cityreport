@@ -218,3 +218,40 @@ body {
 .center-text {
     text-align: center;
 }
+
+.detail-icon {
+    font-size: 25px;
+    margin-right: 8px
+}
+
+.detail-icon-container {
+    width: 30px
+}
+
+.detail-space {
+    margin-top: 24px!important
+}
+
+.italic {
+    font-style: italic;
+}
+
+.credits_title {
+    text-align: center;
+    color: #c62828;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.credits_subtitle {
+    text-align: center;
+    color: #c62828;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.credits_version {
+    text-align: center;
+}

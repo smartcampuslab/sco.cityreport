@@ -22,7 +22,7 @@ angular.module('roveretoSegnala', [
 
 ])
 
-.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate, Toast, $filter) {
+.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate, Toast, $filter, Config) {
     $rootScope.showmap = false;
     $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
@@ -60,7 +60,7 @@ angular.module('roveretoSegnala', [
         });
     };
 
-
+    //$rootScope.appName = Config.cityName;
     $rootScope.logout = function () {
         Login.logout();
         Toast.show($filter('translate')("logout_done"), "short", "bottom");
@@ -236,6 +236,7 @@ angular.module('roveretoSegnala', [
     $urlRouterProvider.otherwise('/app/map');
 
     $translateProvider.translations('it', {
+        appName: "Rovereto Segnala",
         map_title: "Mappa",
         credits_title: 'Credits',
         credits_app: 'Rovereto Segnala',
@@ -306,10 +307,15 @@ angular.module('roveretoSegnala', [
         archivedetail_noimageavailable: 'Nessuna immagine disponibile',
         network_problem: 'Errore di rete',
         login_done: 'Login avvenuto con successo',
-        logout_done: 'Logout effettuato con successo'
+        logout_done: 'Logout effettuato con successo',
+        administration_notes: 'Note dell\'amministrazione',
+        credits_licenses_button: 'VEDI LICENZE',
+        button_cancel: 'Chiudi',
+        button_detail: 'Dettagli'
 
     });
     $translateProvider.translations('en', {
+        appName: "Rovereto Segnala",
         map_title: "Map",
         credits_title: 'Credits',
         credits_app: 'Rovereto Reports',
@@ -380,12 +386,18 @@ angular.module('roveretoSegnala', [
         archivedetail_noimageavailable: 'No images are available',
         network_problem: 'Some network problem occurred',
         login_done: 'Login done',
-        logout_done: 'Logout done'
+        logout_done: 'Logout done',
+        administration_notes: 'Note dell\'amministrazione',
+        credits_licenses_button: 'READ LICENSES',
+        button_cancel: 'Cancel',
+        button_detail: 'Details'
+
 
 
 
     });
     $translateProvider.translations('de', {
+        appName: "Rovereto Segnala",
         map_title: "Karte",
         credits_title: 'Credits',
         credits_app: 'Rovereto Berichte',
@@ -456,7 +468,10 @@ angular.module('roveretoSegnala', [
         archivedetail_noimageavailable: 'No images are available',
         network_problem: 'Some network problem occurred',
         login_done: 'Login done',
-        logout_done: 'Logout done'
+        logout_done: 'Logout done',
+        credits_licenses_button: 'VEDI LICENZE',
+        button_cancel: 'Cancel',
+        button_detail: 'Details'
 
     });
 

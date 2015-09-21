@@ -4,7 +4,7 @@
         <button class="button button-icon icon  ion-chevron-left" ng-click="myGoBack()"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-<!--
+        <!--
 <button class="button button-icon icon" ng-click="goToMap()">
     Visualizza su mappa
 </button>
@@ -20,28 +20,47 @@
 
         <div class="signal-detail-element"><b> {{signal.attribute.title}}</b> <span class="alignright ">{{signal.created | date:'dd-MM-yyyy'}}</span>
         </div>
-
-        <div class="signal-detail-element">
+        <!--
+        <div class="row signal-detail-element" ng-hide="!signal.attribute.activator">
+            <div class="col-10"><i class="icon ion-information-circled detail-icon"></i> </div>
+            <div class="col">{{signal.attribute.activator}}</div>
+        </div>
+-->
+        <div class="signal-detail-element" ng-hide="!signal.attribute.description">
             {{signal.attribute.description}}
         </div>
+        <div class="alignright italic " ng-hide="!signal.attribute.activator">Creato da {{signal.attribute.activator}}</div>
 
-        <div class="signal-detail-element">
-            <i class="icon ion-location" style="font-size:25px; margin-right:8px"></i> {{signal.location.address}}
+        <div class="row signal-detail-element detail-space" ng-hide="!signal.location.address">
+            <div class="col-10"> <i class="icon ion-location detail-icon"></i>
+            </div>
+            <div class="col"> {{signal.location.address}}</div>
         </div>
 
-        <div class="signal-detail-element">
-            <i class="icon ion-pricetag" style="font-size:25px; margin-right:8px"></i>{{signal.attribute.category.label}}
+        <div class="row signal-detail-element" ng-hide="!signal.attribute.category.label">
+            <div class="col-10"><i class="icon ion-pricetag detail-icon"></i>
+            </div>
+            <div class="col">{{signal.attribute.category.label}}</div>
         </div>
-        <div class="signal-detail-element">
-            <i class="icon ion-speedometer" style="font-size:25px; margin-right:8px"></i>{{signal.status|statusstring}}
+        <div class="row signal-detail-element" ng-hide="!signal.status">
+            <div class="col-10"> <i class="icon ion-speedometer detail-icon"></i>
+            </div>
+            <div class="col">{{signal.status|statusstring}}</div>
         </div>
-        <div class="item item-divider">
+        <div class="signal-detail-element detail-space" ng-hide="!signal.notes">
+            <b>{{'administration_notes' | translate}}</b>
+        </div>
+        <div class="signal-detail-element" ng-hide="!signal.notes">
+            {{signal.notes}}
+        </div>
+        <div class="item item-divider detail-space">
             <i class="ion-images"></i> {{'archivedetail_images' | translate}}
         </div>
-        <div class="item center-text" ng-hide="signal.media.length!=0">
+
+        <div class="item center-text" ng-hide="signal.media!=null&& signal.media.length!=0">
             {{'archivedetail_noimageavailable' | translate}}
         </div>
-        <a class="item item-list-detail" ng-hide="signal.media.length==0">
+        <a class="item item-list-detail" ng-hide=" signal.media==null||signal.media.length==0">
             <ion-scroll direction="x">
                 <img ng-repeat="picture in signal.media" ng-src="{{picture}}" ng-click="showImages($index)" class="image-list-thumb" />
             </ion-scroll>

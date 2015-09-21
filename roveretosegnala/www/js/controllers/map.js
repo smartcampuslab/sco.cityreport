@@ -1,7 +1,7 @@
 ////https: //github.com/tombatossals/angular-leaflet-directive
 angular.module('roveretoSegnala.controllers.map', [])
     .controller('MapCtrl',
-        function ($ionicPlatform, $scope, $location, $rootScope, leafletData, archiveService, $ionicHistory, $ionicPlatform, $templateCache, $state, Config) {
+        function ($ionicPlatform, $scope, $location, $rootScope, leafletData, archiveService, $ionicHistory, $ionicPlatform, $templateCache, $state, Config, $filter) {
             $scope.comefromarchivio = false;
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
@@ -74,10 +74,10 @@ angular.module('roveretoSegnala.controllers.map', [])
                             lng: $scope.mySignals.data[i].location.coordinates[1],
 
                             message: '<div ng-controller="MapCtrl">' +
-                                '<div><label><strong> <i>' + $scope.mySignals.data[i].attribute.title + '</i></strong></label></div>' +
-                                '<div><label><i class="icon ion-location" style="font-size:25px;"></i> ' + $scope.mySignals.data[i].location.address + '</i></label></div>' +
-                                '<div align="center" style="white-space:nowrap;" ><button class="button button-custom" ng-click="closeWin()" style="width:49%">Cancel</button>' +
-                                '<button class="button button-custom" ng-click="detail(\'#/app/archiviodetail/' + $scope.mySignals.data[i].id + '\')" style="width:49%">Detail</button>' +
+                                '<div style="text-align:center;" ><label><strong> <i>' + $scope.mySignals.data[i].attribute.title + '</i></strong></label></div>' +
+                                '<div ng-hide="' + ($scope.mySignals.data[i].location.address == "") + '"><label><i class="icon ion-location" style="font-size:25px;"></i> ' + $scope.mySignals.data[i].location.address + '</i></label></div>' +
+                                '<div align="center" style="white-space:nowrap;" ><button class="button button-custom" ng-click="closeWin()" style="width:49%">' + $filter('translate')("button_cancel") + '</button>' +
+                                '<button class="button button-custom" ng-click="detail(\'#/app/archiviodetail/' + $scope.mySignals.data[i].id + '\')" style="width:49%">' + $filter('translate')("button_detail") + '</button>' +
                                 '</div></form>' +
                                 '</div>',
 
@@ -125,28 +125,28 @@ angular.module('roveretoSegnala.controllers.map', [])
 
 
 
-                        if (archiveService.getMapCenterForSignal()) {
-                            angular.extend($scope, {
-                                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-                                center: {
-                                    lat: archiveService.getMapCenterForSignal().lat,
-                                    lng: archiveService.getMapCenterForSignal().long,
-                                    zoom: 18
-                                },
-                                markers: $scope.myMarkers,
-                                events: {}
-                            });
-                        } else {
-            angular.extend($scope, {
-                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-                center: {
-                    lat: Config.getCenterCoordinates()[0],
-                    lng: Config.getCenterCoordinates()[1],
-                    zoom: Config.getZoomLevel()
-                },
-                markers: $scope.myMarkers,
-                events: {}
-            });
+            if (archiveService.getMapCenterForSignal()) {
+                angular.extend($scope, {
+                    tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                    center: {
+                        lat: archiveService.getMapCenterForSignal().lat,
+                        lng: archiveService.getMapCenterForSignal().long,
+                        zoom: 18
+                    },
+                    markers: $scope.myMarkers,
+                    events: {}
+                });
+            } else {
+                angular.extend($scope, {
+                    tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                    center: {
+                        lat: Config.getCenterCoordinates()[0],
+                        lng: Config.getCenterCoordinates()[1],
+                        zoom: Config.getZoomLevel()
+                    },
+                    markers: $scope.myMarkers,
+                    events: {}
+                });
             }
             //for refresh
             $ionicPlatform.ready(function () {
