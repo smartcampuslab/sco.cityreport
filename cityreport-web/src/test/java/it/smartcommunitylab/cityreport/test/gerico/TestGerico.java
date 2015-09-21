@@ -44,15 +44,19 @@ public class TestGerico {
 	@Test
 	public void testCreation() throws JsonGenerationException, JsonMappingException, IOException, NoSuchAlgorithmException {
 		Map<String, Object> data = new HashMap<String,Object>();
-		String id = "104";
-		data.put("external_id", id);
+		String id = new ObjectId().toString();
+		data.put("external_id_new", id);
 		data.put("attivatore", "app_s");
 		data.put("mezzo", "app_s");
 		data.put("origine", "cit");
-		data.put("operatore_inserimento","loris");
-		data.put("attivatore_dettaglio","loris");
+		data.put("origine_dettaglio", "test test test");
+		data.put("email", "test@test.com");
 		data.put("note", "una prova");
 		data.put("oggetto", "prova");
+		data.put("stato", "A");
+		data.put("strada", "via verdi");
+		data.put("latitudine", "11.1111111");
+		data.put("longitudine", "45.5555555");
 		data.put("mac", generateMac("286b5d03a4b2fa092f091c2b982cb028090e2936",id));
 		String body = new ObjectMapper().writeValueAsString(data);
 		body = URLEncoder.encode(body, "utf-8");
