@@ -105,7 +105,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         return segnalaService;
     })
 
-.controller('Map4AdrressCtrl', function ($scope, $location, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, leafletData, archiveService, segnalaService) {
+.controller('Map4AdrressCtrl', function ($scope, $location, $ionicHistory, $window, $q, $http, $filter, $ionicPopup, leafletData, archiveService, segnalaService, $ionicLoading) {
 
         leafletData.getMap().then(function (map) {
 
@@ -138,14 +138,18 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             }).addTo(map);
         });
         $scope.$on("leafletDirectiveMap.click", function (event, args) {
+            $ionicLoading.show();
             segnalaService.setPosition(args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
             //            alert(args.leafletEvent.latlng.lat + ' ' + args.leafletEvent.latlng.lng);
             var placedata = $q.defer();
             var places = {};
             var url = "https://os.smartcommunitylab.it/core.geocoder/spring/location?latlng=" + args.leafletEvent.latlng.lat + ',' + args.leafletEvent.latlng.lng;
 
-            $http.get(encodeURI(url)).
+            $http.get(encodeURI(url), {
+                timeout: 5000
+            }).
             success(function (data, status, headers, config) {
+                $ionicLoading.hide();
                 places = data.response.docs;
                 name = '';
                 if (data.response.docs[0]) {
@@ -176,6 +180,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 }
             }).
             error(function (data, status, headers, config) {
+                $ionicLoading.hide();
                 showNoConnection();
 
             });
@@ -432,6 +437,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             });
         };
         $scope.locateMe = function () {
+            $ionicLoading.show();
             $window.navigator.geolocation.getCurrentPosition(function (position) {
                     $scope.$apply(function () {
                         $scope.position = position;
@@ -439,8 +445,10 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                         var placedata = $q.defer();
                         var places = {};
                         var url = "https://os.smartcommunitylab.it/core.geocoder/spring/location?latlng=" + position.coords.latitude + ',' + position.coords.longitude;
-
-                        $http.get(encodeURI(url)).
+                        //add timeout
+                        $http.get(encodeURI(url), {
+                            timeout: 5000
+                        }).
                         success(function (data, status, headers, config) {
                             places = data.response.docs;
                             //show a pop up where u can choose if address is correct and set up in the bar
@@ -460,9 +468,10 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                                     name = name + data.response.docs[0].city;
                                 }
 
-
+                                $ionicLoading.hide();
                                 $scope.showConfirm(name, position.coords.latitude, position.coords.longitude);
                             } else {
+                                $ionicLoading.hide();
                                 $scope.showConfirm(position.coords.latitude + " " + position.coords.longitude, position.coords.latitude, position.coords.longitude);
 
                                 //showNoPlace(position.coords.latitude, position.coords.longitude);
@@ -471,7 +480,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                         }).
                         error(function (data, status, headers, config) {
                             //temporary
-
+                            $ionicLoading.hide();
                             showNoConnection();
                         });
 
@@ -479,6 +488,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     });
                 },
                 function (error) {
+                    $ionicLoading.hide();
                     showNoPlaceFound();
                 }, {
                     enableHighAccuracy: true,
@@ -703,7 +713,9 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         var names = [];
         i = i.replace(/\ /g, "+");
         var url = "https://os.smartcommunitylab.it/core.geocoder/spring/address?latlng=" + Config.getCenterCoordinates()[0] + ", " + Config.getCenterCoordinates()[1] + "&distance=" + distance + "&address=" + i;
-        $http.get(url).
+        $http.get(url, {
+            timeout: 5000
+        }).
         success(function (data, status, headers, config) {
             places = [];
             //            places = data.response.docs;

@@ -291,7 +291,6 @@ angular.module('roveretoSegnala', [
         signal_send_confirm_place_title: 'Confermare l\'indirizzo trovato',
         signal_send_confirm_issue_title: 'Confermando l\'invio della segnalazione non ne potrai più modificare il contenuto. Sei sicuro di voler procedere?',
         signal_send_no_place_title: 'Coordinate',
-        signal_send_no_place_template: 'Nessun luogo trovato nelle vicinanze',
         signal_send_lat_template: 'lat: ',
         signal_send_long_template: ', long: ',
         segnala_input_place_suggestion: 'Indirizzo...',
@@ -323,7 +322,7 @@ angular.module('roveretoSegnala', [
         button_cancel: 'Chiudi',
         button_detail: 'Dettagli',
         signal_send_no_place_title: 'Errore',
-        signal_send_no_place_template: 'Problemi a stabilire la connessione'
+        signal_send_no_place_template: 'Problemi a stabilire la posizione'
 
     });
     $translateProvider.translations('en', {
@@ -372,7 +371,6 @@ angular.module('roveretoSegnala', [
         signal_send_confirm_place_title: 'Please, confirm the address found',
         signal_send_confirm_issue_title: 'Confirming the sending of the message, it will not be possible to change its content. Are you sure you want to proceed?',
         signal_send_no_place_title: 'Coordinates',
-        signal_send_no_place_template: 'No place has been found ',
         signal_send_lat_template: 'lat: ',
         signal_send_long_template: ', long: ',
         segnala_input_place_suggestion: 'Place...',
@@ -404,7 +402,7 @@ angular.module('roveretoSegnala', [
         button_cancel: 'Cancel',
         button_detail: 'Details',
         signal_send_no_place_title: 'Error',
-        signal_send_no_place_template: 'We have some problems to get your position'
+        signal_send_no_place_template: 'We have some problems to get the position'
 
 
 
@@ -456,7 +454,6 @@ angular.module('roveretoSegnala', [
         signal_send_confirm_place_title: 'Bitte, bestätigen Sie die Adresse gefunden',
         signal_send_confirm_issue_title: 'Bestätigt das Senden der Nachricht, da Sie seinen Inhalt zu ändern. Sind Sie sicher, dass Sie fortfahren möchten?',
         signal_send_no_place_title: 'Coordinates',
-        signal_send_no_place_template: 'No place has been found ',
         signal_send_lat_template: 'lat: ',
         signal_send_long_template: ', long: ',
         segnala_input_place_suggestion: 'Straße...',
@@ -487,7 +484,7 @@ angular.module('roveretoSegnala', [
         button_cancel: 'Cancel',
         button_detail: 'Details',
         signal_send_no_place_title: 'Error',
-        signal_send_no_place_template: 'We have some problems to get your position'
+        signal_send_no_place_template: 'We have some problems to get the position'
 
     });
 
