@@ -60,13 +60,23 @@ angular.module('roveretoSegnala', [
         });
     };
 
-    //$rootScope.appName = Config.cityName;
+    //    //$rootScope.appName = Config.cityName;
+    //    $rootScope.logout = function () {
+    //        Login.logout();
+    //        Toast.show($filter('translate')("logout_done"), "short", "bottom");
+    //
+    //    };
     $rootScope.logout = function () {
-        Login.logout();
-        Toast.show($filter('translate')("logout_done"), "short", "bottom");
+        Login.logout().then(function (data) {
+                Toast.show($filter('translate')("logout_done"), "short", "bottom");
+            },
+            function (error) {
 
+                Toast.show("problem", "short", "bottom");
+
+
+            });
     };
-
 
 
     // for BlackBerry 10, WP8, iOS
@@ -311,7 +321,9 @@ angular.module('roveretoSegnala', [
         administration_notes: 'Note dell\'amministrazione',
         credits_licenses_button: 'VEDI LICENZE',
         button_cancel: 'Chiudi',
-        button_detail: 'Dettagli'
+        button_detail: 'Dettagli',
+        signal_send_no_place_title: 'Errore',
+        signal_send_no_place_template: 'Problemi a stabilire la connessione'
 
     });
     $translateProvider.translations('en', {
@@ -390,7 +402,9 @@ angular.module('roveretoSegnala', [
         administration_notes: 'Note dell\'amministrazione',
         credits_licenses_button: 'READ LICENSES',
         button_cancel: 'Cancel',
-        button_detail: 'Details'
+        button_detail: 'Details',
+        signal_send_no_place_title: 'Error',
+        signal_send_no_place_template: 'We have some problems to get your position'
 
 
 
@@ -471,7 +485,9 @@ angular.module('roveretoSegnala', [
         logout_done: 'Logout done',
         credits_licenses_button: 'VEDI LICENZE',
         button_cancel: 'Cancel',
-        button_detail: 'Details'
+        button_detail: 'Details',
+        signal_send_no_place_title: 'Error',
+        signal_send_no_place_template: 'We have some problems to get your position'
 
     });
 

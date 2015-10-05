@@ -152,7 +152,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     if (data.response.docs[0].name) {
                         name = name + data.response.docs[0].name;
                     }
-                    if (data.response.docs[0].street) {
+                    if (data.response.docs[0].street && (data.response.docs[0].name != data.response.docs[0].street)) {
                         if (name)
                             name = name + ', ';
                         name = name + data.response.docs[0].street;
@@ -407,15 +407,25 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     {
                         text: $filter('translate')("signal_send_toast_alarm"),
                         type: 'button-custom'
-                            },
-                    {
-                        text: $filter('translate')("signal_send_toast_alarm"),
-                        type: 'button-custom',
-                        onTap: function (e) {
-
-                        }
                             }
             ]
+            });
+            alertPopup.then(function (res) {
+                console.log('no place');
+            });
+        };
+
+        showNoPlaceFound = function () {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')("signal_send_no_place_title"),
+                template: $filter('translate')("signal_send_no_place_template"),
+                buttons: [
+                    {
+                        text: $filter('translate')("signal_send_toast_alarm"),
+                        type: 'button-custom'
+                            }
+
+                        ]
             });
             alertPopup.then(function (res) {
                 console.log('no place');
@@ -469,7 +479,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                     });
                 },
                 function (error) {
-                    showNoConnection();
+                    showNoPlaceFound();
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
                 });
         };
         $scope.changeString = function (suggestion) {
@@ -684,12 +698,11 @@ angular.module('roveretoSegnala.controllers.segnala', [])
         return places;
     }
     PlacesRetriever.getplaces = function (i) {
+
         var placedata = $q.defer();
         var names = [];
         i = i.replace(/\ /g, "+");
         var url = "https://os.smartcommunitylab.it/core.geocoder/spring/address?latlng=" + Config.getCenterCoordinates()[0] + ", " + Config.getCenterCoordinates()[1] + "&distance=" + distance + "&address=" + i;
-        //var url = "https://os.smartcommunitylab.it/core.geocoder/collection1/select?d=10.0&sort=geodist()+asc&spatial=true&sfield=coordinate&wt=json&rows=10&defType=edismax&omitHeader=false&bq=osm_key:highway^100+osm_value:bus_stop^-10&start=0&q=+(name:( +" + i + ")+OR+street:( +" + i + "))+&pt=" + Config.getCenterCoordinates()[0] + "," + Config.getCenterCoordinates()[1] + "&fq={!geofilt}";
-        //var url = "https://os.smartcommunitylab.it/core.geocoder/collection1/select?d=10.0&sort=geodist%28%29+asc&spatial=true&sfield=coordinate&wt=json&rows=10&defType=edismax&omitHeader=false&bq=osm_key%3Ahighway%5E100+osm_value%3Abus_stop%5E-10&start=0&q=%2B%28name%3A%28+%2B+" + i + "%29+OR+street%3A%28+%2B+" + i + "%29%29+&pt=" + Config.getCenterCoordinates()[0] + "%2C" + Config.getCenterCoordinates()[1] + "&fq=%7B%21geofilt%7D";
         $http.get(url).
         success(function (data, status, headers, config) {
             places = [];

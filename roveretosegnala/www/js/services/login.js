@@ -1,6 +1,6 @@
 angular.module('roveretoSegnala.services.login', [])
 
-.factory('Login', function ($q, $http, $rootScope) {
+.factory('Login', function ($q, $http, $rootScope, Config) {
     var UserID = null
 
     return {
@@ -8,11 +8,12 @@ angular.module('roveretoSegnala.services.login', [])
             var login_deferred = $q.defer();
             //log into the system and set UserID
             var authapi = {
+
                 authorize: function (url) {
                     var deferred = $q.defer();
 
                     //Build the OAuth consent page URL
-                    var authUrl = url + '/cityreport/userlogin';
+                    var authUrl = url + '/' + Config.app() + '/userlogin';
                     //Open the OAuth consent page in the InAppBrowser
                     var authWindow = window.open(authUrl, '_blank', 'location=no,toolbar=no');
                     authWindow.addEventListener('loadstart', function (e) {
@@ -27,8 +28,12 @@ angular.module('roveretoSegnala.services.login', [])
                         }
 
                         if (success) {
-                            console.log('success:' + decodeURIComponent(success[1]));
-                            deferred.resolve(JSON.parse(decodeURIComponent(success[1])));
+                            var str = success[1];
+                            if (str.substring(str.length - 1) == '#') {
+                                str = str.substring(0, str.length - 1)
+                            }
+                            console.log('success:' + decodeURIComponent(str));
+                            deferred.resolve(JSON.parse(decodeURIComponent(str)));
                         } else if (error) {
                             //The user denied access to the app
                             deferred.reject({
@@ -40,7 +45,9 @@ angular.module('roveretoSegnala.services.login', [])
                     return deferred.promise;
                 }
             };
-            authapi.authorize("https://tn.smartcommunitylab.it").then(function (data) {
+            //authapi.authorize("https://tn.smartcommunitylab.it").then(function (data) {
+            authapi.authorize("https://dev.smartcommunitylab.it").then(function (data) {
+
                 console.log("success:" + data.userId);
                 //prendi google id , metti in local storage e abilita menu
                 //log
@@ -58,10 +65,29 @@ angular.module('roveretoSegnala.services.login', [])
             return login_deferred.promise;
         },
         logout: function () {
-            //return UserID
-            $rootScope.userIsLogged = false;
-            localStorage.userId = "null";
+            var deferred = $q.defer();
+
+            $http({
+                method: 'GET',
+                url: Config.URL() + '/logout',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+
+                }
+            }).
+            success(function (data, status, headers, config) {
+                $rootScope.userIsLogged = false;
+                localStorage.userId = "null";
+                deferred.resolve(data);
+            }).
+            error(function (data, status, headers, config) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+
         },
+
         getUserId: function () {
             //return UserID
             return localStorage.userId;
