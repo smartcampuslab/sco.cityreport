@@ -6,6 +6,7 @@ angular.module('roveretoSegnala.controllers.map', [])
             $scope.selectedMarker = "-";
             $scope.myMarkers = [];
             var mymap = document.getElementById('map-container');
+
             if (mymap != null) {
                 resizeElementHeight(mymap);
             }
@@ -54,7 +55,6 @@ angular.module('roveretoSegnala.controllers.map', [])
                         L.circle(e.latlng, radius).addTo(map);
 
                     }
-
 
                 });
                 archiveService.listForMap().then(function (data) {
@@ -154,6 +154,13 @@ angular.module('roveretoSegnala.controllers.map', [])
                 //$rootScope.showmap = true;
 
             });
+            document.addEventListener("resume", function () {
+                console.log('resume');
+
+                if (mymap != null) {
+                    resizeElementHeight(mymap);
+                }
+            }, false);
 
             function resizeElementHeight(element) {
                 var height = 0;

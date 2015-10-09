@@ -1,5 +1,6 @@
 <ion-view view-title="{{'segnala_title' | translate}}" data-ng-init="setAutocomplete(params.place)">
     <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear button-close-issue ion-close-round" ng-click="goToMap()"></button>
         <button class="button button-icon button-clear ion-checkmark-round" ng-click="submit()"></button>
     </ion-nav-buttons>
     <ion-content>

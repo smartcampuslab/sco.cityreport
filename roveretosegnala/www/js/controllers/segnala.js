@@ -511,7 +511,14 @@ angular.module('roveretoSegnala.controllers.segnala', [])
                 $scope.result = '';
             }
         }
-
+        $scope.goToMap = function () {
+            segnalaService.setSignal(null);
+            window.location.assign("#/app/map/");
+            $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true
+            });
+        }
         $scope.submit = function () {
             var remoteURL = [];
             $scope.signal.location.coordinates = segnalaService.getPosition();
@@ -657,6 +664,8 @@ angular.module('roveretoSegnala.controllers.segnala', [])
             }
             return check;
         }
+
+
         $scope.getBase64Image = function (img) {
 
             Base64.encode(img.src);

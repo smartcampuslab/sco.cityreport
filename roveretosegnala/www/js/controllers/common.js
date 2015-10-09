@@ -79,10 +79,10 @@ angular.module('roveretoSegnala.controllers.common', [])
     $scope.openSignal = function () {
             segnalaService.setSignal(null);
             window.location.assign("#/app/segnala/");
-            $ionicHistory.nextViewOptions({
-                disableAnimate: true,
-                disableBack: true
-            });
+                        $ionicHistory.nextViewOptions({
+                            disableAnimate: true,
+                            disableBack: true
+                        });
         }
         /* Listen for broadcasted messages */
     $scope.openLoginPopUp = function () {

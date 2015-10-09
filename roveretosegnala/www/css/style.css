@@ -255,3 +255,7 @@ body {
 .credits_version {
     text-align: center;
 }
+
+.button-close-issue {
+    padding-right: 16px!important;
+}
