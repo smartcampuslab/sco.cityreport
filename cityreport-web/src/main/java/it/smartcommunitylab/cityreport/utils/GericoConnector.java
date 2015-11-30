@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -290,8 +291,9 @@ public class GericoConnector {
 	private String getUserEmail(String userId) {
 		try {
 			TokenData token = service.generateClientToken();
-			AccountProfile profile = profileService.getAccountProfile(token.getAccess_token());
-			String email = profile.getAttribute("google", "OIDC_CLAIM_email");
+			List<AccountProfile> profiles = profileService.getAccountProfilesByUserId(Collections.singletonList(userId), token.getAccess_token());
+			if (profiles == null || profiles.size() == 0) return null;
+			String email = profiles.get(0).getAttribute("google", "OIDC_CLAIM_email");
 			return email;
 		} catch (Exception e) {
 			e.printStackTrace();
