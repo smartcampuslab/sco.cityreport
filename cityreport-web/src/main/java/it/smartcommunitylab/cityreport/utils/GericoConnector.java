@@ -16,19 +16,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import eu.trentorise.smartcampus.aac.AACService;
+import eu.trentorise.smartcampus.aac.model.TokenData;
 import eu.trentorise.smartcampus.network.RemoteConnector;
+import eu.trentorise.smartcampus.profileservice.BasicProfileService;
+import eu.trentorise.smartcampus.profileservice.model.AccountProfile;
 
 @Component
 public class GericoConnector {
@@ -59,9 +67,21 @@ public class GericoConnector {
 	
 	@Autowired
 	private IssueManager manager;
+
+	@Autowired
+	private Environment env;
+	private AACService service;
+	private BasicProfileService profileService;
 	
+	@PostConstruct
+	private void init() {
+		service = new AACService(env.getProperty("ext.aacURL"), env.getProperty("ext.clientId"), env.getProperty("ext.clientSecret"));
+		profileService = new BasicProfileService(env.getProperty("ext.aacURL"));
+	}
+
 	private final static Logger logger = LoggerFactory.getLogger(GericoConnector.class);
 
+	
 	@SuppressWarnings("unchecked")
 	@Scheduled(initialDelay=10000, fixedRate=7200000)
 	public void getIssues() throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
@@ -199,7 +219,9 @@ public class GericoConnector {
 			data.put(F_ORIGINE, "cit");
 //			data.put("operatore_inserimento", "loris");
 			data.put(F_ORIGINE_DETTAGLIO, issue.getIssuer().fullName());
-			data.put(F_EMAIL, issue.getIssuer().getEmail());
+			String email = getUserEmail(issue.getIssuer().getUserId());
+			
+			data.put(F_EMAIL, email);
 
 			String oggetto = "";
 			if (issue.getAttribute() != null && issue.getAttribute().containsKey("title")) {
@@ -233,10 +255,13 @@ public class GericoConnector {
 			}
 
 			data.put(F_MAC, generateMac("286b5d03a4b2fa092f091c2b982cb028090e2936", id));
-			String body = new ObjectMapper().writeValueAsString(data);
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(Feature.WRITE_NULL_MAP_VALUES, false);			
+			String body =mapper.writeValueAsString(data);
 			logger.info("Sending user signal: "+body);
 			body = URLEncoder.encode(body, "utf-8");
 			logger.info("Sending user signal (URL encoded): "+body);
+			logger.info("Using email: "+ email);
 
 			
 			String result = RemoteConnector.getJSON("https://www2.comune.rovereto.tn.it/", "gerico/ws_crea_richiesta/" + body, null);
@@ -262,5 +287,16 @@ public class GericoConnector {
 		return DigestUtils.shaHex((id+key).getBytes("utf8"));
 	}
 	
+	private String getUserEmail(String userId) {
+		try {
+			TokenData token = service.generateClientToken();
+			AccountProfile profile = profileService.getAccountProfile(token.getAccess_token());
+			String email = profile.getAttribute("google", "OIDC_CLAIM_email");
+			return email;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }
