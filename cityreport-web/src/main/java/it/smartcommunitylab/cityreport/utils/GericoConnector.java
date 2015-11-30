@@ -232,7 +232,8 @@ public class GericoConnector {
 			data.put(F_OGGETTO, oggetto);
 
 			String note = "";
-			if (issue.getAttribute() != null && issue.getAttribute().containsKey("description")) {
+			if (issue.getAttribute() != null && issue.getAttribute().containsKey("description") &&
+					issue.getAttribute().get("description") != null) {
 				note += (String) issue.getAttribute().get("description") + "\n";
 			}
 			if (issue.getMedia() != null) {
@@ -240,7 +241,7 @@ public class GericoConnector {
 					note += media + "\n";
 				}
 			}
-			note = URLEncoder.encode(note, "utf-8");
+			note = URLEncoder.encode(note.trim(), "utf-8");
 			data.put(F_NOTE, note);
 			data.put(F_STATO, "A");
 
