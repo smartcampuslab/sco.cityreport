@@ -234,8 +234,11 @@ public class GericoConnector {
 
 			data.put(F_MAC, generateMac("286b5d03a4b2fa092f091c2b982cb028090e2936", id));
 			String body = new ObjectMapper().writeValueAsString(data);
+			logger.info("Sending user signal: "+body);
 			body = URLEncoder.encode(body, "utf-8");
+			logger.info("Sending user signal (URL encoded): "+body);
 
+			
 			String result = RemoteConnector.getJSON("https://www2.comune.rovereto.tn.it/", "gerico/ws_crea_richiesta/" + body, null);
 			try {
 				issue.setExternalId(id);
