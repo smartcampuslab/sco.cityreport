@@ -13,3 +13,5 @@
 /roveretosegnala/plugins/*
 /roveretosegnala/hs_err_pid29911.log
 /roveretosegnala/hs_err_pid29680.log
+
+.DS_Store

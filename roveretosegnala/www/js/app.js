@@ -17,12 +17,12 @@ angular.module('roveretoSegnala', [
     'roveretoSegnala.filters',
     'roveretoSegnala.directives',
     'roveretoSegnala.services.conf',
-    'roveretoSegnala.services.login',
- 'services.geo'
+    'smartcommunitylab.services.login',
+    'services.geo'
 
 ])
 
-.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate, Toast, $filter, Config) {
+.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate, Toast, $filter, Config, LoginService) {
     $rootScope.showmap = false;
     $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
@@ -48,6 +48,15 @@ angular.module('roveretoSegnala', [
         }
         Restlogging.init("http://150.241.239.65:8080");
         startRatingSurvey();
+
+        LoginService.init({
+            loginType: LoginService.LOGIN_TYPE.AAC,
+            googleWebClientId: Config.getWebClientId(),
+            clientId: Config.getClientId(),
+            clientSecret: Config.getClientSecKey(),
+            aacUrl: Config.getAACURL()
+        });
+
 
     });
     $rootScope.login = function () {

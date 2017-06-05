@@ -4,7 +4,7 @@ angular.module('roveretoSegnala.services.conf', [])
 
     var URL = 'https://tn.smartcommunitylab.it/cityreport';
     //var URL = 'https://dev.smartcommunitylab.it/cityreport';
-    var APP_VERSION = '0.1.1';
+    var APP_VERSION = '0.1.2';
     var APP_BUILD = '';
     var app = 'cityreport'
     var provider = 'ComuneRovereto'; //versione gerico
@@ -18,7 +18,6 @@ angular.module('roveretoSegnala.services.conf', [])
         'en': 'Rovereto',
         'de': 'Rovereto'
     };
-
 
 
     return {
