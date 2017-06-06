@@ -22,7 +22,7 @@ angular.module('roveretoSegnala', [
 
 ])
 
-.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, Login, GeoLocate, Toast, $filter, Config, LoginService) {
+.run(function ($ionicPlatform, $rootScope, $cordovaSplashscreen, $state, $translate, GeoLocate, Toast, $filter, Config, LoginService) {
     $rootScope.showmap = false;
     $rootScope.userIsLogged = (localStorage.userId != null && localStorage.userId != "null");
 
@@ -49,18 +49,26 @@ angular.module('roveretoSegnala', [
         Restlogging.init("http://150.241.239.65:8080");
         startRatingSurvey();
 
+        var baseUrl = Config.URL();
         LoginService.init({
-            loginType: LoginService.LOGIN_TYPE.AAC,
-            googleWebClientId: Config.getWebClientId(),
-            clientId: Config.getClientId(),
-            clientSecret: Config.getClientSecKey(),
-            aacUrl: Config.getAACURL()
+            loginType: LoginService.LOGIN_TYPE.COOKIE,
+            googleWebClientId: CONF.googleWebClientId,
+            customConfig: {
+                BASE_URL: baseUrl,
+                AUTHORIZE_URL: baseUrl + '/userlogin',
+                SUCCESS_REGEX: /userloginsuccess\?profile=(.+)$/,
+                ERROR_REGEX: /userloginerror\?error=(.+)$/,
+                LOGIN_URL: baseUrl + '/userlogininternal',
+                REGISTER_URL: baseUrl + '/register',
+                REVOKE_URL: baseUrl + '/logout',
+                RESET_URL: 'https://tn.smartcommunitylab.it/aac/internal/reset',
+                REDIRECT_URL: 'http://localhost'
+            }
         });
-
 
     });
     $rootScope.login = function () {
-        Login.login().then(function (data) {
+        LoginService.login(LoginService.PROVIDER.GOOGLE).then(function (data) {
             Toast.show($filter('translate')("login_done"), "short", "bottom");
 
         }, function (data) {
@@ -76,7 +84,7 @@ angular.module('roveretoSegnala', [
     //
     //    };
     $rootScope.logout = function () {
-        Login.logout().then(function (data) {
+        LoginService.logout().then(function (data) {
                 Toast.show($filter('translate')("logout_done"), "short", "bottom");
             },
             function (error) {

@@ -9,7 +9,7 @@ angular.module('roveretoSegnala.controllers.segnala', [])
 
                 if (!!window.cordova) {
                     // Use the Cordova Toast plugin
-                    $cordovaToast.show(message, duration, position);
+                    window.plugins.toast.showWithOptions(message, duration, position);
                 } else {
                     if (duration == 'short') {
                         duration = 2000;

@@ -187,7 +187,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
         }
 
     })
-    .factory('archiveService', function ($http, $q, Config, Login, Toast, $filter) {
+    .factory('archiveService', function ($http, $q, Config, Toast, $filter, LoginService) {
         var items = null;
         var itemsformap = null;
         var itemsopen = null;
@@ -270,7 +270,7 @@ angular.module('roveretoSegnala.controllers.archive', [])
 
             $http({
                 method: 'GET',
-                url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues?' + '&user_id=' + Login.getUserId() + '&start=' + from + '&count=' + counter
+                url: Config.URL() + '/' + Config.provider() + '/services/' + Config.service() + '/issues?' + '&user_id=' + LoginService.getUserId() + '&start=' + from + '&count=' + counter
 
             }).
             success(function (data, status, headers, config) {

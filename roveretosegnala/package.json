@@ -24,6 +24,7 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-camera",
     "cordova-plugin-geolocation",
-    "cordova-plugin-googleplus"
+    "cordova-plugin-googleplus",
+    "cordova-plugin-x-toast"
   ]
 }
